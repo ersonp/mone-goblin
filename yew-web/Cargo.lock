@@ -822,19 +822,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "todo_yew_web"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "gloo-dialogs",
- "reqwasm",
- "serde",
- "wasm-bindgen-futures",
- "web-sys",
- "yew",
-]
-
-[[package]]
 name = "tokio"
 version = "1.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1191,4 +1178,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "yew-web"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "gloo-dialogs",
+ "reqwasm",
+ "serde",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "yew",
 ]

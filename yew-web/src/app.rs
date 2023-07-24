@@ -66,7 +66,7 @@ pub fn app() -> Html {
             <footer class="mt-3 mb-6">
                 <a
                   class="italic tracking-wider hover:text-sky-500 ease-in duration-300"
-                  href="https://github.com/emarifer/todoapp-tauri-yew"
+                  href="https://github.com/ersonp/mone-goblin"
                   target="_blank"
                 >
                   {format!("MIT Licensed | Copyright © {} Enrique Marín", Local::now().year())}
