@@ -1,0 +1,11 @@
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/getrandom-6038ff9cc11872dd.rmeta: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/error.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/util.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/error_impls.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/util_libc.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/use_file.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/macos.rs
+
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/getrandom-6038ff9cc11872dd.d: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/error.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/util.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/error_impls.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/util_libc.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/use_file.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/macos.rs
+
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/lib.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/error.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/util.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/error_impls.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/util_libc.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/use_file.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/getrandom-0.2.10/src/macos.rs:

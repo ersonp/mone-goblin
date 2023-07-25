@@ -1,0 +1,11 @@
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/sha2-3b23e44faa6e6952.rmeta: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/core_api.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha256.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha512.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/consts.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha256/soft.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha512/soft.rs
+
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/sha2-3b23e44faa6e6952.d: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/core_api.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha256.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha512.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/consts.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha256/soft.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha512/soft.rs
+
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/lib.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/core_api.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha256.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha512.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/consts.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha256/soft.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/sha2-0.10.7/src/sha512/soft.rs:

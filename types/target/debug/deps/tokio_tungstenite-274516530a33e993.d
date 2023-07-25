@@ -1,0 +1,10 @@
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/tokio_tungstenite-274516530a33e993.rmeta: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/compat.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/connect.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/handshake.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/stream.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/tls.rs
+
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/tokio_tungstenite-274516530a33e993.d: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/compat.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/connect.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/handshake.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/stream.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/tls.rs
+
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/lib.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/compat.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/connect.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/handshake.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/stream.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-tungstenite-0.18.0/src/tls.rs:

@@ -1,0 +1,9 @@
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/concurrent_queue-bfeeed393944c8d0.rmeta: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/bounded.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/single.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/unbounded.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/sync.rs
+
+/Users/ersonpereira/Workspace/projects/mone-goblin/types/target/debug/deps/concurrent_queue-bfeeed393944c8d0.d: /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/lib.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/bounded.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/single.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/unbounded.rs /Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/sync.rs
+
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/lib.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/bounded.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/single.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/unbounded.rs:
+/Users/ersonpereira/.cargo/registry/src/github.com-1ecc6299db9ec823/concurrent-queue-2.2.0/src/sync.rs:
