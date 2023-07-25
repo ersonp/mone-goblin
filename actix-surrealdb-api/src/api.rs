@@ -3,6 +3,7 @@ use actix_web::{
     get,
     patch,
     post,
+    web,
     web::{Json, Path},
     // HttpResponse,
 };
@@ -11,10 +12,10 @@ use crate::db::*;
 use crate::model::*;
 use crate::prelude::*;
 
-#[post("/todo/{title}")]
-pub async fn create(title: Path<String>) -> Result<Json<Task>> {
-    let todo = add_task(title.into_inner()).await?;
-
+#[post("/inv/{inv_name}/{inv_type}/{return_rate}/{return_rate_type}/{inv_amount}/{return_amount}/{name}/{start_date}/{end_date}")]
+pub async fn create(inv: web::Path<Investment>) -> Result<Json<Investment>> {
+    let mut inv = inv.into_inner();
+    let todo = add_inv(&mut inv).await?;
     Ok(Json(todo))
 
     // match todo_id {
@@ -23,30 +24,30 @@ pub async fn create(title: Path<String>) -> Result<Json<Task>> {
     // }
 }
 
-#[get("/todo/{id}")]
-pub async fn get(id: Path<String>) -> Result<Json<Task>> {
-    let task = get_task(id.into_inner()).await?;
+#[get("/inv/{id}")]
+pub async fn get(id: Path<String>) -> Result<Json<Investment>> {
+    let task = get_inv(id.into_inner()).await?;
 
     Ok(Json(task))
 }
 
-#[patch("/todo/{id}")]
+#[patch("/inv/{id}")]
 pub async fn update(id: Path<String>) -> Result<Json<AffectedRows>> {
-    let updated = toggle_task(id.into_inner()).await?;
+    let updated = update_inv(id.into_inner()).await?;
 
     Ok(Json(updated))
 }
 
-#[delete("/todo/{id}")]
+#[delete("/inv/{id}")]
 pub async fn delete(id: Path<String>) -> Result<Json<AffectedRows>> {
-    let deleted = delete_task(id.into_inner()).await?;
+    let deleted = delete_inv(id.into_inner()).await?;
 
     Ok(Json(deleted))
 }
 
-#[get("/todos")]
-pub async fn list() -> Result<Json<Vec<Task>>> {
-    let todos = get_all_tasks().await?;
+#[get("/invs")]
+pub async fn list() -> Result<Json<Vec<Investment>>> {
+    let todos = get_all_invs().await?;
 
     Ok(Json(todos))
 }

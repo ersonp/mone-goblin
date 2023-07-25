@@ -5,45 +5,40 @@ use crate::prelude::*;
 use crate::DB;
 
 #[allow(dead_code)]
-const TASK: &str = "task";
+const INVESTMENT: &str = "investment";
 
-pub async fn add_task(title: String) -> Result<Task> {
-    let created: Task = DB
-        .create(TASK)
-        .content(Task {
-            id: None,
-            title,
-            completed: false,
-            created_at: Local::now(),
-        })
-        .await?;
+pub async fn add_inv(inv: &mut Investment) -> Result<Investment> {
+    inv.id = None;
+    inv.created_at = Local::now();
+    inv.updated_at = Local::now();
+    let created: Investment = DB.create(INVESTMENT).content(inv).await?;
 
     Ok(created)
 }
 
-pub async fn get_task(id: String) -> Result<Task> {
+pub async fn get_inv(id: String) -> Result<Investment> {
     let th = id.split_once(":").unwrap();
-    let rec: Task = DB.select(th).await?;
+    let rec: Investment = DB.select(th).await?;
 
     Ok(rec)
 }
 
-pub async fn delete_task(id: String) -> Result<AffectedRows> {
+pub async fn delete_inv(id: String) -> Result<AffectedRows> {
     let th = id.split_once(":").unwrap();
     let _rec: Record = DB.delete(th).await?;
 
     Ok(AffectedRows { rows_affected: 1 })
 }
 
-pub async fn toggle_task(id: String) -> Result<AffectedRows> {
+pub async fn update_inv(id: String) -> Result<AffectedRows> {
     let (tb, id) = id.split_once(":").unwrap();
     let sql =
         "UPDATE type::thing($tb, $id) SET completed = function() { return !this.completed; };";
 
     let mut response = DB.query(sql).bind(("tb", tb)).bind(("id", id)).await?;
 
-    let _task_updated = response
-        .take::<Vec<Task>>(0)?
+    let _investment_updated = response
+        .take::<Vec<Investment>>(0)?
         .into_iter()
         .next()
         .ok_or(Error::Generic("Failed to update record".into()))?;
@@ -51,15 +46,15 @@ pub async fn toggle_task(id: String) -> Result<AffectedRows> {
     Ok(AffectedRows { rows_affected: 1 })
 }
 
-pub async fn get_all_tasks() -> Result<Vec<Task>> {
+pub async fn get_all_invs() -> Result<Vec<Investment>> {
     // let tasks: Vec<Task> = DB.select(TASK).await?;
 
     // Ok(tasks)
     let sql = "SELECT * FROM type::table($table) ORDER BY created_at DESC;";
 
-    let mut response = DB.query(sql).bind(("table", TASK)).await?;
+    let mut response = DB.query(sql).bind(("table", INVESTMENT)).await?;
 
-    let tasks: Vec<Task> = response.take(0)?;
+    let tasks: Vec<Investment> = response.take(0)?;
 
     Ok(tasks)
 }

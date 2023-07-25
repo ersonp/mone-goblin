@@ -3,11 +3,19 @@ use serde::{Deserialize, Serialize};
 use surrealdb::sql::Thing;
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct Task {
+pub struct Investment {
     pub id: Option<Thing>,
-    pub title: String,
-    pub completed: bool,
+    pub inv_name: String,
+    pub inv_type: String,
+    pub return_rate: i32,
+    pub return_rate_type: String,
+    pub inv_amount: i32,
+    pub return_amount: i32,
+    pub name: String,
+    pub start_date: DateTime<Local>,
+    pub end_date: DateTime<Local>,
     pub created_at: DateTime<Local>,
+    pub updated_at: DateTime<Local>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
