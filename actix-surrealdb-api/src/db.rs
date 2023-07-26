@@ -1,6 +1,6 @@
 use chrono::offset::Local;
+use types::*;
 
-use crate::model::*;
 use crate::prelude::*;
 use crate::DB;
 

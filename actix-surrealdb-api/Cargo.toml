@@ -13,3 +13,4 @@ thiserror = "1.0.40"
 chrono = { version = "0.4.24", features = ["serde"] }
 futures = "0.3.28"
 actix-cors = "0.6.4"
+types = { path = "../types" }

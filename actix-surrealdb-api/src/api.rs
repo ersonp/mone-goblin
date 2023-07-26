@@ -7,9 +7,9 @@ use actix_web::{
     web::{Json, Path},
     // HttpResponse,
 };
+use types::*;
 
 use crate::db::*;
-use crate::model::*;
 use crate::prelude::*;
 
 #[post("/inv/{inv_name}/{inv_type}/{return_rate}/{return_rate_type}/{inv_amount}/{return_amount}/{name}/{start_date}/{end_date}")]

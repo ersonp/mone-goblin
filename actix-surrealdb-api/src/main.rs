@@ -1,7 +1,6 @@
 mod api;
 mod db;
 mod error;
-mod model;
 mod prelude;
 
 use actix_cors::Cors;
