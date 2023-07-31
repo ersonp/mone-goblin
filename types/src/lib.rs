@@ -2,7 +2,7 @@ use chrono::{DateTime, Local};
 use serde::{Deserialize, Serialize};
 use surrealdb::sql::Thing;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 pub struct Investment {
     pub id: Option<Thing>,
     pub inv_name: String,

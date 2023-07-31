@@ -2,65 +2,69 @@ use gloo_dialogs::alert;
 use wasm_bindgen_futures::spawn_local;
 use yew::UseReducerHandle;
 
-use crate::{state::*, todo_api::*};
+use crate::{inv_api::*, state::*};
 
-pub struct TaskController {
-    state: UseReducerHandle<TaskState>,
+pub struct InvestmentController {
+    state: UseReducerHandle<InvestmentState>,
 }
 
-impl TaskController {
-    pub fn new(state: UseReducerHandle<TaskState>) -> TaskController {
-        TaskController { state }
+impl InvestmentController {
+    pub fn new(state: UseReducerHandle<InvestmentState>) -> InvestmentController {
+        InvestmentController { state }
     }
 
-    pub fn init_tasks(&self) {
-        let tasks = self.state.clone();
+    pub fn init_investments(&self) {
+        let investments = self.state.clone();
 
         spawn_local(async move {
-            let fetched_tasks = fetch_tasks().await;
+            let fetched_investments = fetch_investments().await;
 
-            match fetched_tasks {
-                Ok(ft) => tasks.dispatch(TaskAction::Set(ft)),
+            match fetched_investments {
+                Ok(ft) => investments.dispatch(InvestmentAction::Set(ft)),
                 Err(e) => alert(&e.to_string()),
             }
         });
     }
 
-    pub fn create_task(&self, title: String) {
-        let tasks = self.state.clone();
+    pub fn create_investment(&self, title: String) {
+        let investments = self.state.clone();
 
         spawn_local(async move {
-            let response = create_task(&title).await;
+            let response = create_investment(&title).await;
 
             match response {
-                Ok(task) => tasks.dispatch(TaskAction::Add(task)),
+                Ok(investment) => investments.dispatch(InvestmentAction::Add(investment)),
                 Err(e) => alert(&e.to_string()),
             }
         });
     }
 
-    pub fn toggle_task(&self, id: String) {
-        let tasks = self.state.clone();
+    pub fn toggle_investment(&self, id: String) {
+        let investments = self.state.clone();
 
         spawn_local(async move {
-            let response = toggle_task(id.clone()).await;
+            let response = toggle_investment(id.clone()).await;
 
             match response {
-                Ok(af) if af.rows_affected == 1 => tasks.dispatch(TaskAction::Toggle(id.clone())),
+                Ok(af) if af.rows_affected == 1 => {
+                    investments.dispatch(InvestmentAction::Toggle(id.clone()))
+                }
                 Ok(_) => alert("Did not get a response"),
                 Err(e) => alert(&e.to_string()),
             }
         });
     }
 
-    pub fn delete_task(&self, id: String) {
-        let tasks = self.state.clone();
+    pub fn delete_investment(&self, id: String) {
+        let investments = self.state.clone();
 
         spawn_local(async move {
-            let response = delete_task(id.clone()).await;
+            let response = delete_investment(id.clone()).await;
 
             match response {
-                Ok(af) if af.rows_affected == 1 => tasks.dispatch(TaskAction::Delete(id.clone())),
+                Ok(af) if af.rows_affected == 1 => {
+                    investments.dispatch(InvestmentAction::Delete(id.clone()))
+                }
                 Ok(_) => alert("Did not get a response"),
                 Err(e) => alert(&e.to_string()),
             }

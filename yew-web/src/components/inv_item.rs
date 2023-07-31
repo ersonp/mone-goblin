@@ -1,67 +1,80 @@
 use chrono::Timelike;
+use types::Investment;
 use yew::{classes, function_component, html, Callback, Event, Html, MouseEvent, Properties};
 
-use crate::model::Task;
-
 #[derive(Properties, PartialEq)]
-pub struct TaskItemProps {
-    pub task: Task,
-    pub deletetask: Callback<String>,
-    pub toggletask: Callback<String>,
+pub struct InvestmentItemProps {
+    pub investment: Investment,
+    pub deleteinvestment: Callback<String>,
+    pub toggleinvestment: Callback<String>,
 }
 
-#[function_component(TaskItem)]
-pub fn task_item(
-    TaskItemProps {
-        task,
-        deletetask,
-        toggletask,
-    }: &TaskItemProps,
+#[function_component(InvestmentItem)]
+pub fn investment_item(
+    InvestmentItemProps {
+        investment,
+        deleteinvestment,
+        toggleinvestment,
+    }: &InvestmentItemProps,
 ) -> Html {
-    let date = task.created_at.date_naive().format("%d-%m-%Y");
+    let date = investment.created_at.date_naive().format("%d-%m-%Y");
 
     let time_and_date = &format!(
         "{:02}:{:02} • {}",
-        task.created_at.hour(),
-        task.created_at.minute(),
+        investment.created_at.hour(),
+        investment.created_at.minute(),
         date
     );
 
     let label_style = "w-full p-3 ml-2 text-lg truncate";
 
-    let completed_task = match task.completed {
-        true => Some("text-gray-600 line-through"),
-        false => None,
-    };
+    // let completed_investment = match investment.completed {
+    //     true => Some("text-gray-600 line-through"),
+    //     false => None,
+    // };
 
     let handle_click = {
-        let task = task.clone();
-        let on_delete_task = deletetask.clone();
+        let investment = investment.clone();
+        let on_delete_investment = deleteinvestment.clone();
 
-        move |_e: MouseEvent| on_delete_task.emit(task.id.clone())
+        // (todo) fix this
+        let id = match investment.id.clone() {
+            Some(id) => id.tb,
+            None => "".to_string(),
+        };
+        move |_e: MouseEvent| on_delete_investment.emit(id.clone())
     };
 
     let handle_toggle = {
-        let task = task.clone();
-        let on_toggle_task = toggletask.clone();
+        let investment = investment.clone();
+        let on_toggle_investment = toggleinvestment.clone();
 
-        move |_e: Event| on_toggle_task.emit(task.id.clone())
+        let id = match investment.id.clone() {
+            Some(id) => id.tb,
+            None => "".to_string(),
+        };
+        move |_e: Event| on_toggle_investment.emit(id.clone())
     };
-
+    //  horrible way to "fix" this
+    let id = match investment.id.clone() {
+        Some(id) => id.tb,
+        None => "".to_string(),
+    };
+    let id2 = id.clone();
     html! {
         <li>
             <div class="flex flex-col my-2 pl-4 py-1 border rounded border-gray-700 hover:-translate-y-1.5 ease-in duration-300">
                 <div class="flex items-center">
-                    <input id={task.clone().id}
+
+                    <input id={id}
                         type="checkbox"
-                        checked={task.completed}
                         class="w-5 h-5 accent-purple-600"
                         onchange={handle_toggle} />
 
-                    <label for={task.clone().id}
-                    title={task.clone().title}
-                    class={classes!(label_style, completed_task)}>
-                        {&task.title}
+                    <label for={id2}
+                    title={investment.clone().inv_name}
+                    class={classes!(label_style)}>
+                        {&investment.inv_name}
                     </label>
                 </div>
 

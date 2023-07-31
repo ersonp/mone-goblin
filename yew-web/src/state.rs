@@ -1,59 +1,63 @@
 use std::collections::VecDeque;
 use std::rc::Rc;
+use surrealdb::sql::thing;
+use types::Investment;
 use yew::Reducible;
 
-use crate::model::Task;
-
 /// reducer's Action
-pub enum TaskAction {
-    Set(VecDeque<Task>),
-    Add(Task),
+pub enum InvestmentAction {
+    Set(VecDeque<Investment>),
+    Add(Investment),
     Toggle(String),
     Delete(String),
 }
 
 /// reducer's State
-pub struct TaskState {
-    pub tasks: VecDeque<Task>,
+pub struct InvestmentState {
+    pub investments: VecDeque<Investment>,
 }
 
 /// Implementation by default when starting the application
-impl Default for TaskState {
+impl Default for InvestmentState {
     fn default() -> Self {
         Self {
-            tasks: VecDeque::from([]),
+            investments: VecDeque::from([]),
         }
     }
 }
 
 /// Implementation of Reducible (required for the reducer)
-impl Reducible for TaskState {
+impl Reducible for InvestmentState {
     /// Reducer Action Type
-    type Action = TaskAction;
+    type Action = InvestmentAction;
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
-        let next_tasks = match action {
-            TaskAction::Set(tasks) => tasks,
-            TaskAction::Add(task) => {
-                let mut tasks = self.tasks.clone();
-                tasks.push_front(task);
-                tasks
+        let next_investments = match action {
+            InvestmentAction::Set(investments) => investments,
+            InvestmentAction::Add(investment) => {
+                let mut investments = self.investments.clone();
+                investments.push_front(investment);
+                investments
             }
-            TaskAction::Toggle(id) => {
-                let mut tasks = self.tasks.clone();
-                let task = tasks.iter_mut().find(|task| task.id == id);
-                if let Some(t) = task {
-                    t.completed = !t.completed;
-                }
-                tasks
+            InvestmentAction::Toggle(id) => {
+                let mut investments = self.investments.clone();
+                // not sure how i "fixed" this
+                // converted id: String to Option<Thing> with thing(&id).ok()
+                let investment = investments
+                    .iter_mut()
+                    .find(|investment| investment.id == thing(&id).ok());
+                investments
             }
-            TaskAction::Delete(id) => {
-                let mut tasks = self.tasks.clone();
-                tasks.retain(|task| task.id != id);
-                tasks
+            InvestmentAction::Delete(id) => {
+                let mut investments = self.investments.clone();
+                investments.retain(|investment| investment.id != thing(&id).ok());
+                investments
             }
         };
 
-        Self { tasks: next_tasks }.into()
+        Self {
+            investments: next_investments,
+        }
+        .into()
     }
 }

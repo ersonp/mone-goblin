@@ -1,9 +1,8 @@
 mod app;
 mod components;
 mod controllers;
-mod model;
+mod inv_api;
 mod state;
-mod todo_api;
 
 use app::App;
 

@@ -3,45 +3,45 @@ use std::rc::Rc;
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
 
 use crate::{
-    components::{task_form::TaskForm, task_list::TaskList},
+    components::{inv_form::InvestmentForm, inv_list::InvestmentList},
     controllers::*,
-    state::TaskState,
+    state::InvestmentState,
 };
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let tasks = use_reducer(TaskState::default);
-    let task_controller = Rc::new(TaskController::new(tasks.clone()));
+    let investments = use_reducer(InvestmentState::default);
+    let investment_controller = Rc::new(InvestmentController::new(investments.clone()));
 
-    // Get all tasks on app startup
+    // Get all investments on app startup
     {
-        let task_controller = task_controller.clone();
+        let investment_controller = investment_controller.clone();
 
         use_effect_with_deps(
             move |_| {
-                task_controller.init_tasks();
+                investment_controller.init_investments();
                 || {} // return empty destructor closure (cleanup use_effect)
             },
             (),
         ); // only call on first render
     }
 
-    let on_create_task = {
-        let task_controller = task_controller.clone();
+    let on_create_investment = {
+        let investment_controller = investment_controller.clone();
 
-        Callback::from(move |title: String| task_controller.create_task(title))
+        Callback::from(move |title: String| investment_controller.create_investment(title))
     };
 
-    let on_delete_task = {
-        let task_controller = task_controller.clone();
+    let on_delete_investment = {
+        let investment_controller = investment_controller.clone();
 
-        Callback::from(move |id: String| task_controller.delete_task(id))
+        Callback::from(move |id: String| investment_controller.delete_investment(id))
     };
 
-    let on_toggle_task = {
-        let task_controller = task_controller.clone();
+    let on_toggle_investment = {
+        let investment_controller = investment_controller.clone();
 
-        Callback::from(move |id: String| task_controller.toggle_task(id))
+        Callback::from(move |id: String| investment_controller.toggle_investment(id))
     };
 
     html! {
@@ -49,18 +49,18 @@ pub fn app() -> Html {
             <header class="flex flex-col mx-auto w-full">
                 <h1 class="text-3xl text-center font-black mb-5">{"Whattodo!"}</h1>
 
-                <img class="h-32 mb-8 hover:scale-110 ease-in-out duration-500" src="img/task-done-flat.svg" alt="Todo App logo"/>
+                <img class="h-32 mb-8 hover:scale-110 ease-in-out duration-500" src="img/investment-done-flat.svg" alt="Todo App logo"/>
 
-                <TaskForm createtask={on_create_task} />
+                <InvestmentForm createinvestment={on_create_investment} />
             </header>
 
 
             <main class="mx-auto my-4 w-full">
-                <h1 class="text-3xl font-black">{"Todo"}</h1>
+                <h1 class="text-3xl font-black">{"Investments"}</h1>
 
                 <hr class="mb-6 border-t-2" />
 
-                <TaskList tasks={tasks.tasks.clone()} deletetask={on_delete_task} toggletask={on_toggle_task} />
+                <InvestmentList investments={investments.investments.clone()} deleteinvestment={on_delete_investment} toggleinvestment={on_toggle_investment} />
             </main>
 
             <footer class="mt-3 mb-6">

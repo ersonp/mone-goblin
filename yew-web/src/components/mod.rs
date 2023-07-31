@@ -1,3 +1,3 @@
-pub mod task_form;
-pub mod task_item;
-pub mod task_list;
+pub mod inv_form;
+pub mod inv_item;
+pub mod inv_list;

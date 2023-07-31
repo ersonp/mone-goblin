@@ -13,3 +13,5 @@ serde = { version = "1.0.159", features = ["derive"] }
 wasm-bindgen-futures = "0.4.34"
 web-sys = "0.3.61"
 yew = { version = "0.20.0", features = ["csr"] }
+types = { path = "../types" }
+surrealdb = "1.0.0-beta.9"
