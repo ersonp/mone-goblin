@@ -49,7 +49,7 @@ pub fn app() -> Html {
             <header class="flex flex-col mx-auto w-full">
                 <h1 class="text-3xl text-center font-black mb-5">{"Whattodo!"}</h1>
 
-                <img class="h-32 mb-8 hover:scale-110 ease-in-out duration-500" src="img/investment-done-flat.svg" alt="Todo App logo"/>
+                <img class="h-32 mb-8 hover:scale-110 ease-in-out duration-500" src="img/logo.svg" alt="MoneGoblin App logo"/>
 
                 <InvestmentForm createinvestment={on_create_investment} />
             </header>
