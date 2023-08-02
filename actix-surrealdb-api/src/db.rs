@@ -1,16 +1,15 @@
-use chrono::offset::Local;
+use chrono::offset::Utc;
 use types::*;
 
 use crate::prelude::*;
 use crate::DB;
 
-#[allow(dead_code)]
 const INVESTMENT: &str = "investment";
 
 pub async fn add_inv(inv: &mut Investment) -> Result<Investment> {
     inv.id = None;
-    inv.created_at = Local::now();
-    inv.updated_at = Local::now();
+    inv.created_at = Some(Utc::now());
+    inv.updated_at = Some(Utc::now());
     let created: Investment = DB.create(INVESTMENT).content(inv).await?;
 
     Ok(created)

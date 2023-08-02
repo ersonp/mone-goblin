@@ -1,4 +1,5 @@
 use gloo_dialogs::alert;
+use log::info;
 use wasm_bindgen_futures::spawn_local;
 use yew::UseReducerHandle;
 
@@ -18,7 +19,6 @@ impl InvestmentController {
 
         spawn_local(async move {
             let fetched_investments = fetch_investments().await;
-
             match fetched_investments {
                 Ok(ft) => investments.dispatch(InvestmentAction::Set(ft)),
                 Err(e) => alert(&e.to_string()),
@@ -39,15 +39,15 @@ impl InvestmentController {
         });
     }
 
-    pub fn toggle_investment(&self, id: String) {
+    pub fn edit_investment(&self, id: String) {
         let investments = self.state.clone();
 
         spawn_local(async move {
-            let response = toggle_investment(id.clone()).await;
+            let response = edit_investment(id.clone()).await;
 
             match response {
                 Ok(af) if af.rows_affected == 1 => {
-                    investments.dispatch(InvestmentAction::Toggle(id.clone()))
+                    investments.dispatch(InvestmentAction::Edit(id.clone()))
                 }
                 Ok(_) => alert("Did not get a response"),
                 Err(e) => alert(&e.to_string()),

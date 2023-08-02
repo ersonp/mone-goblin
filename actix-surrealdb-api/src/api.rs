@@ -12,8 +12,8 @@ use types::*;
 use crate::db::*;
 use crate::prelude::*;
 
-#[post("/inv/{inv_name}/{inv_type}/{return_rate}/{return_rate_type}/{inv_amount}/{return_amount}/{name}/{start_date}/{end_date}")]
-pub async fn create(inv: web::Path<Investment>) -> Result<Json<Investment>> {
+#[post("/inv")]
+pub async fn create(inv: web::Json<Investment>) -> Result<Json<Investment>> {
     let mut inv = inv.into_inner();
     let todo = add_inv(&mut inv).await?;
     Ok(Json(todo))
@@ -48,6 +48,6 @@ pub async fn delete(id: Path<String>) -> Result<Json<AffectedRows>> {
 #[get("/invs")]
 pub async fn list() -> Result<Json<Vec<Investment>>> {
     let todos = get_all_invs().await?;
-
+    println!("meaw");
     Ok(Json(todos))
 }

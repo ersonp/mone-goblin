@@ -8,7 +8,7 @@ use yew::Reducible;
 pub enum InvestmentAction {
     Set(VecDeque<Investment>),
     Add(Investment),
-    Toggle(String),
+    Edit(String),
     Delete(String),
 }
 
@@ -39,7 +39,7 @@ impl Reducible for InvestmentState {
                 investments.push_front(investment);
                 investments
             }
-            InvestmentAction::Toggle(id) => {
+            InvestmentAction::Edit(id) => {
                 let mut investments = self.investments.clone();
                 // not sure how i "fixed" this
                 // converted id: String to Option<Thing> with thing(&id).ok()

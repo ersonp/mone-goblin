@@ -17,12 +17,16 @@ pub fn investment_item(
         toggleinvestment,
     }: &InvestmentItemProps,
 ) -> Html {
-    let date = investment.created_at.date_naive().format("%d-%m-%Y");
+    let date = investment
+        .created_at
+        .unwrap_or_default()
+        .date_naive()
+        .format("%d-%m-%Y");
 
     let time_and_date = &format!(
         "{:02}:{:02} • {}",
-        investment.created_at.hour(),
-        investment.created_at.minute(),
+        investment.created_at.unwrap_or_default().hour(),
+        investment.created_at.unwrap_or_default().minute(),
         date
     );
 

@@ -1,4 +1,5 @@
 use chrono::{offset::Local, Datelike};
+use log::info;
 use std::rc::Rc;
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
 
@@ -13,6 +14,7 @@ pub fn app() -> Html {
     let investments = use_reducer(InvestmentState::default);
     let investment_controller = Rc::new(InvestmentController::new(investments.clone()));
 
+    info!("Hello");
     // Get all investments on app startup
     {
         let investment_controller = investment_controller.clone();
@@ -25,6 +27,7 @@ pub fn app() -> Html {
             (),
         ); // only call on first render
     }
+    info!("Hello2");
 
     let on_create_investment = {
         let investment_controller = investment_controller.clone();
@@ -38,10 +41,10 @@ pub fn app() -> Html {
         Callback::from(move |id: String| investment_controller.delete_investment(id))
     };
 
-    let on_toggle_investment = {
+    let on_edit_investment = {
         let investment_controller = investment_controller.clone();
 
-        Callback::from(move |id: String| investment_controller.toggle_investment(id))
+        Callback::from(move |id: String| investment_controller.edit_investment(id))
     };
 
     html! {
@@ -60,7 +63,7 @@ pub fn app() -> Html {
 
                 <hr class="mb-6 border-t-2" />
 
-                <InvestmentList investments={investments.investments.clone()} deleteinvestment={on_delete_investment} toggleinvestment={on_toggle_investment} />
+                <InvestmentList investments={investments.investments.clone()} deleteinvestment={on_delete_investment} toggleinvestment={on_edit_investment} />
             </main>
 
             <footer class="mt-3 mb-6">
