@@ -1,12 +1,12 @@
 use std::collections::VecDeque;
-use types::Investment;
+use types::Investment2;
 use yew::{function_component, html, Callback, Html, Properties};
 
 use super::inv_item::InvestmentItem;
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentListProps {
-    pub investments: VecDeque<Investment>,
+    pub investments: VecDeque<Investment2>,
     pub deleteinvestment: Callback<String>,
     pub toggleinvestment: Callback<String>,
 }

@@ -1,10 +1,10 @@
 use chrono::Timelike;
-use types::Investment;
+use types::Investment2;
 use yew::{classes, function_component, html, Callback, Event, Html, MouseEvent, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentItemProps {
-    pub investment: Investment,
+    pub investment: Investment2,
     pub deleteinvestment: Callback<String>,
     pub toggleinvestment: Callback<String>,
 }
@@ -42,40 +42,42 @@ pub fn investment_item(
         let on_delete_investment = deleteinvestment.clone();
 
         // (todo) fix this
-        let id = match investment.id.clone() {
-            Some(id) => id.tb,
-            None => "".to_string(),
-        };
-        move |_e: MouseEvent| on_delete_investment.emit(id.clone())
+        // let id = match investment.id.clone() {
+        //     Some(id) => id.tb,
+        //     None => "".to_string(),
+        // };
+        // move |_e: MouseEvent| on_delete_investment.emit(id.clone())
+        move |_e: MouseEvent| on_delete_investment.emit(investment.id.clone())
     };
 
     let handle_toggle = {
         let investment = investment.clone();
         let on_toggle_investment = toggleinvestment.clone();
 
-        let id = match investment.id.clone() {
-            Some(id) => id.tb,
-            None => "".to_string(),
-        };
-        move |_e: Event| on_toggle_investment.emit(id.clone())
+        // let id = match investment.id.clone() {
+        //     Some(id) => id.tb,
+        //     None => "".to_string(),
+        // };
+        // move |_e: Event| on_toggle_investment.emit(id.clone())
+        move |_e: Event| on_toggle_investment.emit(investment.id.clone())
     };
     //  horrible way to "fix" this
-    let id = match investment.id.clone() {
-        Some(id) => id.tb,
-        None => "".to_string(),
-    };
-    let id2 = id.clone();
+    // let id = match investment.id.clone() {
+    //     Some(id) => id.tb,
+    //     None => "".to_string(),
+    // };
+    // let id2 = id.clone();
     html! {
         <li>
             <div class="flex flex-col my-2 pl-4 py-1 border rounded border-gray-700 hover:-translate-y-1.5 ease-in duration-300">
                 <div class="flex items-center">
 
-                    <input id={id}
+                    <input id={investment.id.clone()}
                         type="checkbox"
                         class="w-5 h-5 accent-purple-600"
                         onchange={handle_toggle} />
 
-                    <label for={id2}
+                    <label for={investment.id.clone()}
                     title={investment.clone().inv_name}
                     class={classes!(label_style)}>
                         {&investment.inv_name}

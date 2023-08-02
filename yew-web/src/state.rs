@@ -1,20 +1,19 @@
 use std::collections::VecDeque;
 use std::rc::Rc;
-use surrealdb::sql::thing;
-use types::Investment;
+use types::Investment2;
 use yew::Reducible;
 
 /// reducer's Action
 pub enum InvestmentAction {
-    Set(VecDeque<Investment>),
-    Add(Investment),
+    Set(VecDeque<Investment2>),
+    Add(Investment2),
     Edit(String),
     Delete(String),
 }
 
 /// reducer's State
 pub struct InvestmentState {
-    pub investments: VecDeque<Investment>,
+    pub investments: VecDeque<Investment2>,
 }
 
 /// Implementation by default when starting the application
@@ -45,12 +44,12 @@ impl Reducible for InvestmentState {
                 // converted id: String to Option<Thing> with thing(&id).ok()
                 let investment = investments
                     .iter_mut()
-                    .find(|investment| investment.id == thing(&id).ok());
+                    .find(|investment| investment.id == id);
                 investments
             }
             InvestmentAction::Delete(id) => {
                 let mut investments = self.investments.clone();
-                investments.retain(|investment| investment.id != thing(&id).ok());
+                investments.retain(|investment| investment.id != id);
                 investments
             }
         };
