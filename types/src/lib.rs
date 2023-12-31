@@ -20,6 +20,7 @@ pub struct Investment {
 
 #[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
 pub struct Investment2 {
+    #[serde(skip_serializing_if = "String::is_empty")]
     pub id: String,
     pub inv_name: String,
     pub inv_type: String,
