@@ -35,6 +35,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let cors = Cors::default()
             .allow_any_origin()
             .allowed_methods(vec!["GET", "POST", "PATCH", "DELETE"])
+            .allow_any_header()
             .send_wildcard();
 
         App::new()
