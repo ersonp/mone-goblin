@@ -1,6 +1,7 @@
 use chrono::{offset::Local, Datelike};
 use log::info;
 use std::rc::Rc;
+use types::Investment2;
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
 
 use crate::{
@@ -32,7 +33,7 @@ pub fn app() -> Html {
     let on_create_investment = {
         let investment_controller = investment_controller.clone();
 
-        Callback::from(move |title: String| investment_controller.create_investment(title))
+        Callback::from(move |inv: Investment2| investment_controller.create_investment(inv))
     };
 
     let on_delete_investment = {

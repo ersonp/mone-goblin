@@ -1,9 +1,9 @@
 use gloo_dialogs::alert;
-use log::info;
 use wasm_bindgen_futures::spawn_local;
 use yew::UseReducerHandle;
 
 use crate::{inv_api::*, state::*};
+use types::*;
 
 pub struct InvestmentController {
     state: UseReducerHandle<InvestmentState>,
@@ -26,11 +26,12 @@ impl InvestmentController {
         });
     }
 
-    pub fn create_investment(&self, title: String) {
+    pub fn create_investment(&self, inv: Investment2) {
         let investments = self.state.clone();
 
         spawn_local(async move {
-            let response = create_investment(&title).await;
+            let inv = serde_json::json!(inv);
+            let response = create_investment(inv.to_string()).await;
 
             match response {
                 Ok(investment) => investments.dispatch(InvestmentAction::Add(investment)),

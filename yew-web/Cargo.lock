@@ -2698,6 +2698,7 @@ dependencies = [
  "log",
  "reqwasm",
  "serde",
+ "serde_json",
  "surrealdb",
  "types",
  "wasm-bindgen-futures",
