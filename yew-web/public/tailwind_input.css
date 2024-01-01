@@ -12,6 +12,18 @@
 
 @layer base {
   body {
+    transition: all 0.1s ease;
     @apply bg-gray-50 dark:bg-gray-900 p-5 text-cyan-50 font-kanit;
   }
+}
+
+.animate-icon {
+  transition: all 0.5s ease;
+  stroke: black;
+  /* default color for light mode */
+}
+
+.dark .animate-icon {
+  stroke: white;
+  /* color for dark mode */
 }

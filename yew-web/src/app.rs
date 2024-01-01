@@ -45,17 +45,17 @@ pub fn app() -> Html {
     html! {
         <div class="flex flex-col mt-14 mx-auto gap-6">
             <header class="flex flex-col mx-auto w-full text-black dark:text-white">
-
             </header>
             <main class="mx-auto my-4 w-full">
-
-                <h1 class="text-3xl font-black text-black dark:text-white">{"Investments"}</h1>
-                <DarkModeContent />
+                <div class="flex">
+                    <h1 class="text-3xl font-black text-black dark:text-white">{"Investments"}</h1>
+                    <div class="ml-auto flex items-center">
+                        <DarkModeContent />
+                    </div>
+                </div>
                 <hr class="mb-6 border-t-2" />
-
                 <InvestmentList investments={investments.investments.clone()} createinvestment={on_create_investment} deleteinvestment={on_delete_investment} toggleinvestment={on_edit_investment} />
             </main>
-
             <footer class="mt-3 mb-6">
             </footer>
         </div>
