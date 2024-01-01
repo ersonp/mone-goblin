@@ -1,4 +1,3 @@
-use log::info;
 use reqwasm::{http::Request, Error};
 use serde_json;
 use std::collections::VecDeque;

@@ -12,6 +12,6 @@
 
 @layer base {
   body {
-    @apply bg-primary p-5 text-cyan-50 font-kanit;
+    @apply bg-gray-50 dark:bg-gray-900 p-5 text-cyan-50 font-kanit;
   }
 }

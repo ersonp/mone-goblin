@@ -49,7 +49,7 @@ pub fn app() -> Html {
     };
 
     html! {
-        <div class="flex flex-col mt-14 w-[400px] mx-auto gap-6">
+        <div class="flex flex-col mt-14 mx-auto gap-6">
             <header class="flex flex-col mx-auto w-full">
                 <h1 class="text-3xl text-center font-black mb-5">{"Whattodo!"}</h1>
 
@@ -57,8 +57,6 @@ pub fn app() -> Html {
 
                 <InvestmentForm createinvestment={on_create_investment} />
             </header>
-
-
             <main class="mx-auto my-4 w-full">
                 <h1 class="text-3xl font-black">{"Investments"}</h1>
 
