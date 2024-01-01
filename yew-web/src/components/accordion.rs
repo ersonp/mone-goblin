@@ -37,8 +37,8 @@ impl Component for Accordion {
     fn view(&self, ctx: &yew::Context<Self>) -> Html {
         html! {
             <div class="w-full mx-auto">
-                <div class="rounded">
-                    <div class={if self.open { "bg-gray-50 dark:bg-gray-700 rounded-t" } else { "" }}>
+                <div class="rounded transition-all duration-500 ease-in-out">
+                    <div class={if self.open { "bg-gray-50 dark:bg-gray-700 rounded-t" } else { "bg-gray-50 dark:bg-gray-700 rounded-t" }}>
                         <button  class="flex items-center justify-between w-full p-3 font-medium rtl:text-left rounded-t hover:bg-gray-50 hover:dark:bg-gray-700" onclick={ctx.link().callback(|_| Form::Toggle)}>
                         <span class="flex items-center text-gray-500 dark:text-grey-400"> {"Total: 5,00,000"}</span>
                         <svg class="w-7" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@ impl Component for Accordion {
                         </svg>
                         </button>
                     </div>
-                    <div class={if self.open { "block" } else { "hidden" }}>
+                    <div class={if self.open { "max-h-[1000px] transition-all duration-500 ease-in-out overflow-hidden" } else { "max-h-0 transition-all duration-500 ease-in-out overflow-hidden" }}>
                         <p class="w-full p-4 text-gray-500 text-base bg-gray-50 dark:bg-gray-700 rounded-b">
                         <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                             <InvestmentForm createinvestment={self.createinvestment.clone()} />
