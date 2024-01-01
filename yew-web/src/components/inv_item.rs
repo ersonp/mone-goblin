@@ -121,9 +121,10 @@ pub fn investment_item(
                             <dd class="mt-1 sm:hidden">{investment.clone().inv_type}</dd>
                         </dl>
                     </td>
-                    <td class="flex items-center px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{"Edit"}</a>
-                        <a onclick={handle_click} class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">{"Remove"}</a>
+                    <td class="flex flex-col items-start px-6 py-4">
+                        <a href="#" class="font-medium hover:underline">{"Renew"}</a>
+                        <a href="#" class="font-medium text-blue-600 hover:underline">{"Edit"}</a>
+                        <a onclick={handle_click} class="font-medium text-red-600 hover:underline">{"Remove"}</a>
                     </td>
                 </tr>
 
