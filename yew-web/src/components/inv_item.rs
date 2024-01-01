@@ -1,4 +1,3 @@
-use chrono::Timelike;
 use types::Investment2;
 use yew::{function_component, html, Callback, Event, Html, MouseEvent, Properties};
 
@@ -87,7 +86,7 @@ pub fn investment_item(
                     <td class="px-6 py-4">{investment.clone().name}</td>
                     <td class="px-6 py-4">{investment.clone().inv_type}</td>
                     <td class="px-6 py-4">{investment.clone().return_rate}</td>
-                    <td class="px-6 py-4">{investment.clone().return_rate_type}</td>
+                    <td class="px-6 py-4">{investment.clone().return_type}</td>
                     <td class="px-6 py-4">{investment.clone().inv_amount}</td>
                     <td class="px-6 py-4">{investment.clone().return_amount}</td>
                     <td class="flex items-center px-6 py-4">

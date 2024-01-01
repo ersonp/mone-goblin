@@ -45,7 +45,7 @@ pub fn investment_list(
                                 <th scope="col" class="px-6 py-3">{"Name"}</th>
                                 <th scope="col" class="px-6 py-3">{"Investment Type"}</th>
                                 <th scope="col" class="px-6 py-3">{"Return Rate"}</th>
-                                <th scope="col" class="px-6 py-3">{"Return Rate Type"}</th>
+                                <th scope="col" class="px-6 py-3">{"Return Type"}</th>
                                 <th scope="col" class="px-6 py-3">{"Investment"}</th>
                                 <th scope="col" class="px-6 py-3">{"Return"}</th>
                                 <th scope="col" class="px-6 py-3">
