@@ -1,5 +1,5 @@
-use chrono::{offset::Local, Datelike};
-use log::info;
+use crate::components::switcher::DarkModeContent; // Add this line to import the switcher module
+
 use std::rc::Rc;
 use types::Investment2;
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
@@ -11,7 +11,6 @@ pub fn app() -> Html {
     let investments = use_reducer(InvestmentState::default);
     let investment_controller = Rc::new(InvestmentController::new(investments.clone()));
 
-    info!("Hello");
     // Get all investments on app startup
     {
         let investment_controller = investment_controller.clone();
@@ -24,7 +23,6 @@ pub fn app() -> Html {
             (),
         ); // only call on first render
     }
-    info!("Hello2");
 
     let on_create_investment = {
         let investment_controller = investment_controller.clone();
@@ -46,13 +44,13 @@ pub fn app() -> Html {
 
     html! {
         <div class="flex flex-col mt-14 mx-auto gap-6">
-            <header class="flex flex-col mx-auto w-full">
+            <header class="flex flex-col mx-auto w-full text-black dark:text-white">
 
             </header>
             <main class="mx-auto my-4 w-full">
 
-                <h1 class="text-3xl font-black">{"Investments"}</h1>
-
+                <h1 class="text-3xl font-black text-black dark:text-white">{"Investments"}</h1>
+                <DarkModeContent />
                 <hr class="mb-6 border-t-2" />
 
                 <InvestmentList investments={investments.investments.clone()} createinvestment={on_create_investment} deleteinvestment={on_delete_investment} toggleinvestment={on_edit_investment} />
