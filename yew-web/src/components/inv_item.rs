@@ -17,18 +17,29 @@ pub fn investment_item(
         toggleinvestment,
     }: &InvestmentItemProps,
 ) -> Html {
-    let date = investment
-        .created_at
-        .unwrap_or_default()
-        .date_naive()
-        .format("%d-%m-%Y");
+    let start_date = if let Some(date) = investment.start_date {
+        date.date_naive().format("%d-%m-%Y").to_string()
+    } else {
+        String::new()
+    };
 
-    let time_and_date = &format!(
-        "{:02}:{:02} • {}",
-        investment.created_at.unwrap_or_default().hour(),
-        investment.created_at.unwrap_or_default().minute(),
-        date
-    );
+    let end_date = if let Some(date) = investment.end_date {
+        date.date_naive().format("%d-%m-%Y").to_string()
+    } else {
+        String::new()
+    };
+    // let date = investment
+    //     .created_at
+    //     .unwrap_or_default()
+    //     .date_naive()
+    //     .format("%d-%m-%Y");
+
+    // let time_and_date = &format!(
+    //     "{:02}:{:02} • {}",
+    //     investment.created_at.unwrap_or_default().hour(),
+    //     investment.created_at.unwrap_or_default().minute(),
+    //     date
+    // );
 
     let label_style = "w-full p-3 ml-2 text-lg truncate";
 
@@ -70,16 +81,15 @@ pub fn investment_item(
     html! {
             <tbody>
                 <tr class="border-b dark:border-gray-700">
-                    <td class="px-6 py-4">
-                        <input id={investment.id.clone()}
-                        type="checkbox"
-                        class="w-5 h-5 accent-purple-600"
-                        onchange={handle_toggle} />
-                    </td>
+                    <td class="px-6 py-4">{start_date}</td>
+                    <td class="px-6 py-4">{end_date}</td>
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{investment.clone().inv_name}</th>
-                    <td class="px-6 py-4">{time_and_date}</td>
-                    <td class="px-6 py-4">{"300"}</td>
-                    <td class="px-6 py-4">{"$2999"}</td>
+                    <td class="px-6 py-4">{investment.clone().name}</td>
+                    <td class="px-6 py-4">{investment.clone().inv_type}</td>
+                    <td class="px-6 py-4">{investment.clone().return_rate}</td>
+                    <td class="px-6 py-4">{investment.clone().return_rate_type}</td>
+                    <td class="px-6 py-4">{investment.clone().inv_amount}</td>
+                    <td class="px-6 py-4">{investment.clone().return_amount}</td>
                     <td class="flex items-center px-6 py-4">
                         <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{"Edit"}</a>
                         <a onclick={handle_click} class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">{"Remove"}</a>

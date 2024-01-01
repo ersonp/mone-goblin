@@ -39,13 +39,17 @@ pub fn investment_list(
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-6 py-3">{"Product name"}</th>
-                                <th scope="col" class="px-6 py-3">{"Category"}</th>
-                                <th scope="col" class="px-6 py-3">{"Brand"}</th>
-                                <th scope="col" class="px-6 py-3">{"Description"}</th>
-                                <th scope="col" class="px-6 py-3">{"Price"}</th>
+                                <th scope="col" class="px-6 py-3">{"Start Date"}</th>
+                                <th scope="col" class="px-6 py-3">{"End Date"}</th>
+                                <th scope="col" class="px-6 py-3">{"Investment Name"}</th>
+                                <th scope="col" class="px-6 py-3">{"Name"}</th>
+                                <th scope="col" class="px-6 py-3">{"Investment Type"}</th>
+                                <th scope="col" class="px-6 py-3">{"Return Rate"}</th>
+                                <th scope="col" class="px-6 py-3">{"Return Rate Type"}</th>
+                                <th scope="col" class="px-6 py-3">{"Investment"}</th>
+                                <th scope="col" class="px-6 py-3">{"Return"}</th>
                                 <th scope="col" class="px-6 py-3">
-                                    <span class="sr-only">{"Actions"}</span>
+                                    <span >{"More"}</span>
                                 </th>
                             </tr>
                         </thead>

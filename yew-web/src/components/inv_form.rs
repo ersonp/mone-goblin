@@ -12,30 +12,30 @@ pub struct InvestmentFormProps {
 
 #[function_component(InvestmentForm)]
 pub fn investment_form(props: &InvestmentFormProps) -> Html {
-    let bank_name = use_node_ref();
     let inv_name = use_node_ref();
+    let name = use_node_ref();
     let inv_type = use_node_ref();
 
     let handle_click = {
-        let bank_name = bank_name.clone();
         let inv_name = inv_name.clone();
+        let name = name.clone();
         let inv_type = inv_type.clone();
         let on_create_investment = props.createinvestment.clone();
 
         Callback::from(move |_e: MouseEvent| {
-            let mut input_bank: String = String::new();
+            let mut input_inv: String = String::new();
             let mut input_name: String = String::new();
             let mut input_type: String = String::new();
-            if let Some(input) = bank_name.cast::<HtmlInputElement>() {
-                input_bank = input.value();
-                if input_bank.is_empty() {
-                    alert("Bank Name can not be blank");
+            if let Some(input) = inv_name.cast::<HtmlInputElement>() {
+                input_inv = input.value();
+                if input_inv.is_empty() {
+                    alert("Investment Name can not be blank");
                     return;
                 }
                 // Reset the input
                 input.set_value("");
             }
-            if let Some(input) = inv_name.cast::<HtmlInputElement>() {
+            if let Some(input) = name.cast::<HtmlInputElement>() {
                 input_name = input.value();
                 if input_name.is_empty() {
                     alert("Name can not be blank");
@@ -57,7 +57,7 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
             let investment = Investment2 {
                 id: "".to_string(),
                 name: input_name,
-                inv_name: input_bank,
+                inv_name: input_inv,
                 inv_amount: 0,
                 return_amount: 0,
                 inv_type: input_type,
@@ -74,14 +74,14 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
     };
 
     {
-        let bank_name = bank_name.clone();
         let inv_name = inv_name.clone();
+        let name = name.clone();
         let inv_type = inv_type.clone();
         use_effect(move || {
-            if let Some(input) = bank_name.cast::<HtmlInputElement>() {
+            if let Some(input) = inv_name.cast::<HtmlInputElement>() {
                 input.focus().unwrap();
             }
-            if let Some(input) = inv_name.cast::<HtmlInputElement>() {
+            if let Some(input) = name.cast::<HtmlInputElement>() {
                 input.focus().unwrap();
             }
             if let Some(input) = inv_type.cast::<HtmlInputElement>() {
@@ -94,12 +94,12 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
         <div class="mx-auto w-full">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 <div>
-                    <label for="bank_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Bank Name"}</label>
-                    <input ref={bank_name} type="text" id="bank_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="BCCB" required=true/>
+                    <label for="inv_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Investment Name"}</label>
+                    <input ref={inv_name} type="text" id="inv_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="BCCB" required=true/>
                 </div>
                 <div>
                     <label for="inv_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Name"}</label>
-                    <input ref={inv_name} type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Erson" required=true/>
+                    <input ref={name} type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Erson" required=true/>
                 </div>
                 <div>
                     <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Select an option"}</label>
