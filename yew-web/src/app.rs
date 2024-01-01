@@ -47,9 +47,6 @@ pub fn app() -> Html {
     html! {
         <div class="flex flex-col mt-14 mx-auto gap-6">
             <header class="flex flex-col mx-auto w-full">
-                <h1 class="text-3xl text-center font-black mb-5">{"Whattodo!"}</h1>
-
-                <img class="h-32 mb-8 hover:scale-110 ease-in-out duration-500" src="img/logo.svg" alt="MoneGoblin App logo"/>
 
             </header>
             <main class="mx-auto my-4 w-full">
@@ -62,13 +59,6 @@ pub fn app() -> Html {
             </main>
 
             <footer class="mt-3 mb-6">
-                <a
-                  class="italic tracking-wider hover:text-sky-500 ease-in duration-300"
-                  href="https://github.com/ersonp/mone-goblin"
-                  target="_blank"
-                >
-                  {format!("MIT Licensed | Copyright © {} Enrique Marín", Local::now().year())}
-                </a>
             </footer>
         </div>
     }
