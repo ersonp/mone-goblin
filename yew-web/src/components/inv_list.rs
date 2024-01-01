@@ -28,38 +28,37 @@ pub fn investment_list(
         .collect::<Html>();
 
     html! {
-
-        <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
-        <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                    <Accordion open={true} createinvestment={createinvestment.clone()}/>
+        <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 ">
+            <div class="mx-auto px-4 lg:px-12">
+                <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                        <Accordion open={true} createinvestment={createinvestment.clone()}/>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">{"Start Date"}</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">{"End Date"}</th>
+                                    <th scope="col" class="px-6 py-3">{"Investment Name"}</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">{"Name"}</th>
+                                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">{"Investment Type"}</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">{"Return Type"}</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">{"Return Rate"}</th>
+                                    <th scope="col" class="px-6 py-3 hidden lg:table-cell">{"Investment"}</th>
+                                    <th scope="col" class="px-6 py-3">{"Return"}</th>
+                                    <th scope="col" class="px-6 py-3">
+                                        <span >{"Actions"}</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            {investments}
+                        </table>
+                    </div>
+                    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+                    </nav>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">{"Start Date"}</th>
-                                <th scope="col" class="px-6 py-3">{"End Date"}</th>
-                                <th scope="col" class="px-6 py-3">{"Investment Name"}</th>
-                                <th scope="col" class="px-6 py-3">{"Name"}</th>
-                                <th scope="col" class="px-6 py-3">{"Investment Type"}</th>
-                                <th scope="col" class="px-6 py-3">{"Return Rate"}</th>
-                                <th scope="col" class="px-6 py-3">{"Return Type"}</th>
-                                <th scope="col" class="px-6 py-3">{"Investment"}</th>
-                                <th scope="col" class="px-6 py-3">{"Return"}</th>
-                                <th scope="col" class="px-6 py-3">
-                                    <span >{"More"}</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        {investments}
-                    </table>
-                </div>
-            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-            </nav>
-        </div>
-    </div>
-    </section>
+            </div>
+        </section>
     }
 }
