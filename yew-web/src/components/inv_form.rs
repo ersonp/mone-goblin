@@ -119,12 +119,10 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                     // Add more options as needed
                 </select>
 
-                <button onclick={handle_click} title="Add Todo" class="bg-sky-600 hover:bg-sky-400 rounded-md text-xl px-4 py-2">
-                    <svg class="w-7" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 \
-                        18V15H20V18H23V20H20V23H18V20H15V18H18Z" />
-                    </svg>
+                <button onclick={handle_click} type="button" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                    {"Add Investment"}
                 </button>
+
             </div>
         </div>
     }

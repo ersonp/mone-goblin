@@ -58,6 +58,7 @@ pub fn app() -> Html {
                 <InvestmentForm createinvestment={on_create_investment} />
             </header>
             <main class="mx-auto my-4 w-full">
+
                 <h1 class="text-3xl font-black">{"Investments"}</h1>
 
                 <hr class="mb-6 border-t-2" />

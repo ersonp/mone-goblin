@@ -1,6 +1,6 @@
 use chrono::Timelike;
 use types::Investment2;
-use yew::{classes, function_component, html, Callback, Event, Html, MouseEvent, Properties};
+use yew::{function_component, html, Callback, Event, Html, MouseEvent, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentItemProps {
