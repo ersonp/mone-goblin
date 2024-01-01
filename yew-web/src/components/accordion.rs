@@ -41,7 +41,7 @@ impl Component for Accordion {
                     <div class={if self.open { "bg-gray-50 dark:bg-gray-700 rounded-t" } else { "bg-gray-50 dark:bg-gray-700 rounded-t" }}>
                         <button  class="flex items-center justify-between w-full p-3 font-medium rtl:text-left rounded-t hover:bg-gray-50 hover:dark:bg-gray-700" onclick={ctx.link().callback(|_| Form::Toggle)}>
                         <span class="flex items-center text-gray-500 dark:text-grey-400"> {"Total: 5,00,000"}</span>
-                        <svg class="w-7" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-7 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 \
                         18V15H20V18H23V20H20V23H18V20H15V18H18Z" />
                         </svg>

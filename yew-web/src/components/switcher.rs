@@ -3,7 +3,7 @@ use yew::{function_component, html, use_state, Callback, Html};
 
 #[function_component(DarkModeContent)]
 pub fn dark_mode_content() -> Html {
-    let dark_mode = use_state(|| false);
+    let dark_mode = use_state(|| true);
 
     let toggle_dark_mode = {
         let dark_mode = dark_mode.clone();
