@@ -4,11 +4,7 @@ use std::rc::Rc;
 use types::Investment2;
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
 
-use crate::{
-    components::{inv_form::InvestmentForm, inv_list::InvestmentList},
-    controllers::*,
-    state::InvestmentState,
-};
+use crate::{components::inv_list::InvestmentList, controllers::*, state::InvestmentState};
 
 #[function_component(App)]
 pub fn app() -> Html {
@@ -55,7 +51,6 @@ pub fn app() -> Html {
 
                 <img class="h-32 mb-8 hover:scale-110 ease-in-out duration-500" src="img/logo.svg" alt="MoneGoblin App logo"/>
 
-                <InvestmentForm createinvestment={on_create_investment} />
             </header>
             <main class="mx-auto my-4 w-full">
 
@@ -63,7 +58,7 @@ pub fn app() -> Html {
 
                 <hr class="mb-6 border-t-2" />
 
-                <InvestmentList investments={investments.investments.clone()} deleteinvestment={on_delete_investment} toggleinvestment={on_edit_investment} />
+                <InvestmentList investments={investments.investments.clone()} createinvestment={on_create_investment} deleteinvestment={on_delete_investment} toggleinvestment={on_edit_investment} />
             </main>
 
             <footer class="mt-3 mb-6">

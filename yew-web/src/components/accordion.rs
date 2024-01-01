@@ -1,7 +1,13 @@
+use inv_form::InvestmentForm;
+use types::Investment2;
 use yew::prelude::*;
 
+use super::inv_form;
+
+#[derive(Properties, PartialEq, Clone)]
 pub struct Accordion {
-    open: bool,
+    pub open: bool,
+    pub createinvestment: Callback<Investment2>,
 }
 
 pub enum Form {
@@ -10,10 +16,13 @@ pub enum Form {
 
 impl Component for Accordion {
     type Message = Form;
-    type Properties = ();
+    type Properties = Accordion;
 
-    fn create(_: &yew::Context<Self>) -> Self {
-        Self { open: false }
+    fn create(ctx: &yew::Context<Self>) -> Self {
+        Self {
+            open: false,
+            createinvestment: ctx.props().createinvestment.clone(),
+        }
     }
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
@@ -41,9 +50,7 @@ impl Component for Accordion {
                     <div class={if self.open { "block" } else { "hidden" }}>
                         <p class="w-full p-4 text-gray-500 text-base bg-gray-50 dark:bg-gray-700 rounded-b">
                         <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                            <button type="button" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                                {"Add product"}
-                            </button>
+                            <InvestmentForm createinvestment={self.createinvestment.clone()} />
                         </div>
                         </p>
                     </div>
