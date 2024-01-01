@@ -92,34 +92,59 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
 
     html! {
         <div class="mx-auto w-full">
-            <label class="text-xl font-semibold" for="new-investment">{"Add Item"}</label>
-
-            <hr class="mb-4 border-t-2" />
-
-            <div class="flex justify-center items-center gap-4 flex-col my-2 pl-4 py-1">
-                <input
-                    ref={bank_name}
-                    class="rounded-md focus:outline-none focus:ring focus:ring-blue-400 text-xl px-4 py-2 bg-slate-700"
-                    id="bank-name"
-                    type="text"
-                    placeholder="Bank Name" />
-                <input
-                    ref={inv_name}
-                    class="rounded-md focus:outline-none focus:ring focus:ring-blue-400 text-xl px-4 py-2 bg-slate-700"
-                    id="name"
-                    type="text"
-                    placeholder="Name" />
-                <select
-                    ref={inv_type}
-                    class="rounded-md focus:outline-none focus:ring focus:ring-blue-400 text-xl px-4 py-2 bg-slate-700"
-                    id="investment-type" placeholder="Name">
-                    <option selected=true disabled=true value="">{"Investment type"}</option>
-                    <option value="FD">{"FD"}</option>
-                    <option value="RD">{"RD"}</option>
-                    // Add more options as needed
-                </select>
-
-                <button onclick={handle_click} type="button" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div>
+                    <label for="bank_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Bank Name"}</label>
+                    <input ref={bank_name} type="text" id="bank_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="BCCB" required=true/>
+                </div>
+                <div>
+                    <label for="inv_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Name"}</label>
+                    <input ref={inv_name} type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Erson" required=true/>
+                </div>
+                <div>
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Select an option"}</label>
+                    <select
+                        ref={inv_type}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        id="investment-type">
+                        <option selected=true disabled=true value="">{"Investment type"}</option>
+                        <option value="FD">{"FD"}</option>
+                        <option value="RD">{"RD"}</option>
+                        // Add more options as needed
+                    </select>
+                </div>
+                <div>
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Select an option"}</label>
+                    <select
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        id="return-rate-type" >
+                        <option selected=true disabled=true value="">{"Return Rate type"}</option>
+                        <option value="Ordinary">{"Ordinary"}</option>
+                        <option value="Culmulative">{"Culmulative"}</option>
+                        // Add more options as needed
+                    </select>
+                </div>
+                <div>
+                    <label for="inv_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Rate"}</label>
+                    <input type="number" id="inv_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="90210" required=true/>
+                </div>
+                <div>
+                    <label for="return_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Amount"}</label>
+                    <input type="number" id="return_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="90210" required=true/>
+                </div>
+                <div>
+                <label for="return_rate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Rate"}</label>
+                    <input type="number" id="return_rate" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="90210" required=true/>
+                </div>
+                <div>
+                    <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Start Date"}</label>
+                    <input type="date" id="start_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
+                </div>
+                <div>
+                    <label for="end_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"End Date"}</label>
+                    <input type="date" id="end_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
+                </div>
+                <button onclick={handle_click} type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
                     {"Add Investment"}
                 </button>
 
