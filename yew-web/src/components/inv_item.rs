@@ -70,21 +70,23 @@ pub fn investment_item(
     html! {
             <tbody>
                 <tr class="border-b dark:border-gray-700">
-                    <td class="px-4 py-3">
+                    <td class="px-6 py-4">
                         <input id={investment.id.clone()}
                         type="checkbox"
                         class="w-5 h-5 accent-purple-600"
                         onchange={handle_toggle} />
                     </td>
-                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{investment.clone().inv_name}</th>
-                    <td class="px-4 py-3">{time_and_date}</td>
-                    <td class="px-4 py-3">{"300"}</td>
-                    <td class="px-4 py-3">{"$2999"}</td>
-                    <td class="px-4 py-3 flex items-center justify-end">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{investment.clone().inv_name}</th>
+                    <td class="px-6 py-4">{time_and_date}</td>
+                    <td class="px-6 py-4">{"300"}</td>
+                    <td class="px-6 py-4">{"$2999"}</td>
+                    <td class="flex items-center px-6 py-4">
                         <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{"Edit"}</a>
                         <a onclick={handle_click} class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">{"Remove"}</a>
                     </td>
                 </tr>
+
             </tbody>
+
     }
 }
