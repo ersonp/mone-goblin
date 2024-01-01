@@ -172,16 +172,16 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                     </select>
                 </div>
                 <div>
-                    <label for="inv_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Rate"}</label>
-                    <input ref={inv_amount} type="number" id="inv_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="90210" required=true/>
+                    <label for="inv_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Invested Amount"}</label>
+                    <input ref={inv_amount} type="number" id="inv_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10000" required=true/>
                 </div>
                 <div>
                     <label for="return_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Amount"}</label>
-                    <input ref={return_amount} ype="number" id="return_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="90210" required=true/>
+                    <input ref={return_amount} ype="number" id="return_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="11000" required=true/>
                 </div>
                 <div>
                 <label for="return_rate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Rate"}</label>
-                    <input ref={return_rate} type="number" id="return_rate" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="90210" required=true/>
+                    <input ref={return_rate} type="number" id="return_rate" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="8" required=true/>
                 </div>
                 <div>
                     <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Start Date"}</label>
