@@ -5,7 +5,7 @@ use std::rc::Rc;
 use types::Investment2;
 use web_sys::{HtmlFormElement, HtmlInputElement};
 use yew::prelude::NodeRef;
-use yew::{function_component, html, use_node_ref, Callback, Html, Properties, SubmitEvent};
+use yew::{function_component, html, Callback, Html, Properties, SubmitEvent};
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentFormProps {
@@ -40,6 +40,95 @@ impl FormRefs {
             form: NodeRef::default(),
         }
     }
+
+    fn get_inv_name(&self) -> String {
+        let input_inv = match validate_input(&self.inv_name, "Investment Name can not be blank") {
+            Some(value) => value,
+            None => "".to_string(),
+        };
+        input_inv
+    }
+    fn get_name(&self) -> String {
+        let input_name = match validate_input(&self.name, "Name can not be blank") {
+            Some(value) => value,
+            None => "".to_string(),
+        };
+        input_name
+    }
+    fn get_inv_type(&self) -> String {
+        let input_type = match validate_input(&self.inv_type, "Investment type can not be blank") {
+            Some(value) => value,
+            None => "".to_string(),
+        };
+        input_type
+    }
+    fn get_return_type(&self) -> String {
+        let input_return_type =
+            match validate_input(&self.return_type, "Return type can not be blank") {
+                Some(value) => value,
+                None => "".to_string(),
+            };
+        input_return_type
+    }
+    fn get_inv_amount(&self) -> i32 {
+        let input_inv_amount =
+            match validate_input(&self.inv_amount, "Investment Amount can not be blank") {
+                Some(value) => value.parse::<i32>().unwrap_or_default(),
+                None => 0,
+            };
+        input_inv_amount
+    }
+    fn get_return_amount(&self) -> i32 {
+        let input_return_amount =
+            match validate_input(&self.return_amount, "Return Amount can not be blank") {
+                Some(value) => value.parse::<i32>().unwrap_or_default(),
+                None => 0,
+            };
+        input_return_amount
+    }
+    fn get_return_rate(&self) -> i32 {
+        let input_return_rate =
+            match validate_input(&self.return_rate, "Return Rate can not be blank") {
+                Some(value) => value.parse::<i32>().unwrap_or_default(),
+                None => 0,
+            };
+        input_return_rate
+    }
+    fn get_start_date(&self) -> Option<DateTime<Utc>> {
+        let input_start_date = match validate_input(&self.start_date, "Start Date can not be blank")
+        {
+            Some(value) => {
+                let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
+                let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
+                    Some(time) => NaiveDateTime::new(naive_date, time),
+                    None => {
+                        // Handle invalid time here
+                        return None;
+                    }
+                };
+                Some(DateTime::<Utc>::from_utc(naive_datetime, Utc))
+            }
+            None => None,
+        };
+        input_start_date
+    }
+    fn get_end_date(&self) -> Option<DateTime<Utc>> {
+        let input_end_date = match validate_input(&self.end_date, "End Date can not be blank") {
+            Some(value) => {
+                let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
+                let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
+                    Some(time) => NaiveDateTime::new(naive_date, time),
+                    None => {
+                        // Handle invalid time here
+                        return None;
+                    }
+                };
+                Some(DateTime::<Utc>::from_utc(naive_datetime, Utc))
+            }
+            None => None,
+        };
+        input_end_date
+    }
 }
 
 fn validate_input(input: &NodeRef, error_message: &str) -> Option<String> {
@@ -65,100 +154,18 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
 
         Callback::from(move |event: SubmitEvent| {
             event.prevent_default();
-            let input_inv = match validate_input(
-                &form_refs.borrow().inv_name,
-                "Investment Name can not be blank",
-            ) {
-                Some(value) => value,
-                None => return,
-            };
-            let input_name = match validate_input(&form_refs.borrow().name, "Name can not be blank")
-            {
-                Some(value) => value,
-                None => return,
-            };
-
-            let input_type = match validate_input(
-                &form_refs.borrow().inv_type,
-                "Investment type can not be blank",
-            ) {
-                Some(value) => value,
-                None => return,
-            };
-
-            let input_return_type = match validate_input(
-                &form_refs.borrow().return_type,
-                "Return type can not be blank",
-            ) {
-                Some(value) => value,
-                None => return,
-            };
-
-            let input_inv_amount = match validate_input(
-                &form_refs.borrow().inv_amount,
-                "Investment Amount can not be blank",
-            ) {
-                Some(value) => value.parse::<i32>().unwrap_or_default(),
-                None => return,
-            };
-            let input_return_amount = match validate_input(
-                &form_refs.borrow().return_amount,
-                "Return Amount can not be blank",
-            ) {
-                Some(value) => value.parse::<i32>().unwrap_or_default(),
-                None => return,
-            };
-            let input_return_rate = match validate_input(
-                &form_refs.borrow().return_rate,
-                "Return Rate can not be blank",
-            ) {
-                Some(value) => value.parse::<i32>().unwrap_or_default(),
-                None => return,
-            };
-            let input_start_date = match validate_input(
-                &form_refs.borrow().start_date,
-                "Start Date can not be blank",
-            ) {
-                Some(value) => {
-                    let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
-                    let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
-                        Some(time) => NaiveDateTime::new(naive_date, time),
-                        None => {
-                            // Handle invalid time here
-                            return;
-                        }
-                    };
-                    DateTime::<Utc>::from_utc(naive_datetime, Utc)
-                }
-                None => return,
-            };
-            let input_end_date =
-                match validate_input(&form_refs.borrow().end_date, "End Date can not be blank") {
-                    Some(value) => {
-                        let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
-                        let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
-                            Some(time) => NaiveDateTime::new(naive_date, time),
-                            None => {
-                                // Handle invalid time here
-                                return;
-                            }
-                        };
-                        DateTime::<Utc>::from_utc(naive_datetime, Utc)
-                    }
-                    None => return,
-                };
 
             let investment = Investment2 {
                 id: "".to_string(),
-                name: input_name,
-                inv_name: input_inv,
-                inv_amount: input_inv_amount,
-                return_amount: input_return_amount,
-                inv_type: input_type,
-                return_rate: input_return_rate,
-                return_type: input_return_type,
-                start_date: Some(input_start_date),
-                end_date: Some(input_end_date),
+                name: form_refs.borrow().get_name(),
+                inv_name: form_refs.borrow().get_inv_name(),
+                inv_type: form_refs.borrow().get_inv_type(),
+                return_type: form_refs.borrow().get_return_type(),
+                inv_amount: form_refs.borrow().get_inv_amount(),
+                return_amount: form_refs.borrow().get_return_amount(),
+                return_rate: form_refs.borrow().get_return_rate(),
+                start_date: form_refs.borrow().get_start_date(),
+                end_date: form_refs.borrow().get_end_date(),
                 created_at: None,
                 updated_at: None,
             };
