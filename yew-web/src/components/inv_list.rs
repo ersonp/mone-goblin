@@ -30,13 +30,13 @@ pub fn investment_list(
     html! {
         <section class="p-3 sm:p-5 ">
             <div class="mx-auto px-4 lg:px-12">
-                <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                <div class="bg-background-50 relative shadow-md dark:shadow-white-md sm:rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                         <Accordion open={true} creat_investment={create_investment.clone()}/>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-text-600">
+                            <thead class="text-xs uppercase bg-background-200">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">{"Start Date"}</th>
                                     <th scope="col" class="px-6 py-3 hidden lg:table-cell">{"End Date"}</th>
