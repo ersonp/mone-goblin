@@ -44,11 +44,11 @@ pub fn app() -> Html {
 
     html! {
         <div class="flex flex-col mt-14 mx-auto gap-6">
-            <header class="flex flex-col mx-auto w-full text-black dark:text-white">
+            <header class="flex flex-col mx-auto w-full text-text-50">
             </header>
             <main class="mx-auto my-4 w-full">
                 <div class="flex">
-                    <h1 class="text-3xl font-black text-black dark:text-white">{"Investments"}</h1>
+                    <h1 class="text-3xl font-black text-text-950">{"Investments"}</h1>
                     <div class="ml-auto flex items-center">
                         <DarkModeContent />
                     </div>
