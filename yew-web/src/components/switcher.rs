@@ -30,7 +30,7 @@ pub fn dark_mode_content() -> Html {
             <button onclick={toggle_dark_mode} class="transition-colors duration-1000">
                 {if *dark_mode {
                     html! {
-                        <div class="text-white">
+                        <div>
                             <svg class="animate-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" color="white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle fill="white" cx="12" cy="12" r="5" />
                                 <line x1="12" y1="1" x2="12" y2="3" />
@@ -46,7 +46,7 @@ pub fn dark_mode_content() -> Html {
                     }
                 } else {
                     html! {
-                        <div class="text-white flex items-center">
+                        <div >
                             <svg class="animate-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(40deg)">
                                 <mask id="mask" >
                                     <rect x="0" y="4" width="100%" height="100%" fill="white" />
