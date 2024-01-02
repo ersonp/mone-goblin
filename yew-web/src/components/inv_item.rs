@@ -79,7 +79,7 @@ pub fn investment_item(
     // let id2 = id.clone();
     html! {
             <tbody>
-                <tr class="border-b dark:border-background-200">
+                <tr class="border-b dark:border-background-200 hover:bg-background-50">
                     <td class="px-6 py-4 min-w-max whitespace-nowrap hidden sm:table-cell">
                         {start_date.clone()}
                         <dl class="lg:hidden">
