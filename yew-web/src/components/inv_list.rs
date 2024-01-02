@@ -32,7 +32,7 @@ pub fn investment_list(
             <div class="mx-auto px-4 lg:px-12">
                 <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                        <Accordion open={true} createinvestment={create_investment.clone()}/>
+                        <Accordion open={true} creat_investment={create_investment.clone()}/>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

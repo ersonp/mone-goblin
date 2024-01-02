@@ -9,7 +9,7 @@ use yew::{function_component, html, Callback, Html, Properties, SubmitEvent};
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentFormProps {
-    pub createinvestment: Callback<Investment2>,
+    pub creat_investment: Callback<Investment2>,
 }
 
 struct FormRefs {
@@ -135,7 +135,7 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
     let handle_submit = {
         let form_refs = Rc::clone(&form_refs);
         let form_clone = form_refs.borrow().form.clone();
-        let on_create_investment = props.createinvestment.clone();
+        let on_create_investment = props.creat_investment.clone();
 
         Callback::from(move |event: SubmitEvent| {
             event.prevent_default();
