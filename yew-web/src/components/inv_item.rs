@@ -79,7 +79,7 @@ pub fn investment_item(
     // let id2 = id.clone();
     html! {
             <tbody>
-                <tr class="border-b dark:border-gray-700">
+                <tr class="border-b dark:border-background-200">
                     <td class="px-6 py-4 min-w-max whitespace-nowrap hidden sm:table-cell">
                         {start_date.clone()}
                         <dl class="lg:hidden">
@@ -88,9 +88,9 @@ pub fn investment_item(
                         </dl>
                     </td>
                     <td class="px-6 py-4 min-w-max whitespace-nowrap hidden lg:table-cell">{end_date.clone()}</td>
-                    <th class="px-6 py-4 min-w-max font-medium text-gray-900 dark:text-white ">
+                    <th class="px-6 py-4 min-w-max font-medium text-text-950 ">
                         {investment.clone().inv_name}
-                        <dl class="font-normal text-gray-400">
+                        <dl class="font-normal text-text-500">
                             <dt class="lg:hidden sr-only">{"Name"}</dt>
                             <dd class="lg:hidden mt-1">{investment.clone().name}</dd>
                             <dt class="sm:hidden sr-only">{"Start Date"}</dt>
@@ -102,7 +102,7 @@ pub fn investment_item(
                     <td class="px-6 py-4 min-w-max hidden lg:table-cell">{investment.clone().name}</td>
                     <td class="px-6 py-4 min-w-max hidden sm:table-cell">
                         {investment.clone().inv_type}
-                        <dl class="lg:hidden font-normal text-gray-400">
+                        <dl class="lg:hidden font-normal text-text-500">
                             <dt class="sr-only">{"Return Type"}</dt>
                             <dd class="mt-1">{investment.clone().return_type}</dd>
                             <dt class="sr-only">{"Return Rate"}</dt>
@@ -112,9 +112,9 @@ pub fn investment_item(
                     <td class="px-6 py-4 min-w-max hidden lg:table-cell">{investment.clone().return_type}</td>
                     <td class="px-6 py-4 min-w-max hidden lg:table-cell">{investment.clone().return_rate}</td>
                     <td class="px-6 py-4 min-w-max hidden lg:table-cell">{investment.clone().inv_amount} </td>
-                    <td class="px-6 py-4 min-w-max font-medium text-gray-900 dark:text-white">
+                    <td class="px-6 py-4 min-w-max font-medium text-text-950">
                         {investment.clone().return_amount}
-                        <dl class="lg:hidden font-normal text-gray-400">
+                        <dl class="lg:hidden font-normal text-text-500">
                             <dt class="sr-only">{"Investment"}</dt>
                             <dd class="mt-1">{investment.clone().inv_amount}</dd>
                             <dt class="sr-only sm:hidden">{"Investment Type"}</dt>
@@ -122,8 +122,8 @@ pub fn investment_item(
                         </dl>
                     </td>
                     <td class="flex flex-col items-start px-6 py-4">
-                        <a href="#" class="font-medium hover:underline">{"Renew"}</a>
-                        <a href="#" class="font-medium text-blue-600 hover:underline">{"Edit"}</a>
+                        <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
+                        <a href="#" class="font-medium text-accent-600 hover:underline">{"Edit"}</a>
                         <a onclick={handle_click} class="font-medium text-red-600 hover:underline">{"Remove"}</a>
                     </td>
                 </tr>
