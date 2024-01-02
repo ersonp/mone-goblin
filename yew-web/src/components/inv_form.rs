@@ -168,18 +168,18 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
             <div class="grid gap-6 mb-6 md:grid-cols-2 text-text-950">
                 <div>
                     <label for="inv-name" class="block mb-2 text-sm font-medium">{"Investment Name"}</label>
-                    <input ref={form_refs.borrow().inv_name.clone()} type="text" id="inv-name" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="BCCB" required=true/>
+                    <input ref={form_refs.borrow().inv_name.clone()} type="text" id="inv-name" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="BCCB" required=true/>
                 </div>
                 <div>
                     <label for="name" class="block mb-2 text-sm font-medium">{"Name"}</label>
-                    <input ref={form_refs.borrow().name.clone()} type="text" id="name" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Erson" required=true/>
+                    <input ref={form_refs.borrow().name.clone()} type="text" id="name" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="Erson" required=true/>
                 </div>
                 <div>
                     <label for="investment-type" class="block mb-2 text-sm font-medium">{"Select an option"}</label>
                     <select
                         ref={form_refs.borrow().inv_type.clone()}
-                        class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        id="investment-type">
+                        class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400"
+                        id="investment-type" required=true>
                         <option selected=true disabled=true value="">{"Investment type"}</option>
                         <option value="FD">{"FD"}</option>
                         <option value="RD">{"RD"}</option>
@@ -190,8 +190,8 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                     <label for="return-rate-type" class="block mb-2 text-sm font-medium">{"Select an option"}</label>
                     <select
                         ref={form_refs.borrow().return_type.clone()}
-                        class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        id="return-rate-type" >
+                        class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400"
+                        id="return-rate-type" required=true>
                         <option selected=true disabled=true value="">{"Return type"}</option>
                         <option value="Ordinary">{"Ordinary"}</option>
                         <option value="Culmulative">{"Culmulative"}</option>
@@ -200,25 +200,25 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                 </div>
                 <div>
                     <label for="inv-amount" class="block mb-2 text-sm font-medium ">{"Invested Amount"}</label>
-                    <input ref={form_refs.borrow().inv_amount.clone()} type="number" id="inv-amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10000" required=true/>
+                    <input ref={form_refs.borrow().inv_amount.clone()} type="number" id="inv-amount" aria-describedby="helper-text-explanation" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="10000" required=true/>
                 </div>
                 <div>
                     <label for="return-amount" class="block mb-2 text-sm font-medium">{"Return Amount"}</label>
-                    <input ref={form_refs.borrow().return_amount.clone()} ype="number" id="return-amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="11000" required=true/>
+                    <input ref={form_refs.borrow().return_amount.clone()} ype="number" id="return-amount" aria-describedby="helper-text-explanation" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="11000" required=true/>
                 </div>
                 <div>
                 <label for="return-rate" class="block mb-2 text-sm font-medium">{"Return Rate"}</label>
-                    <input ref={form_refs.borrow().return_rate.clone()} type="number" id="return-rate" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="8" required=true/>
+                    <input ref={form_refs.borrow().return_rate.clone()} type="number" id="return-rate" aria-describedby="helper-text-explanation" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="8" required=true/>
                 </div>
                 <div>
                     <label for="start-date" class="block mb-2 text-sm font-medium">{"Start Date"}</label>
-                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start-date" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
+                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start-date" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="7000" required=true/>
                 </div>
                 <div>
                     <label for="end-date" class="block mb-2 text-sm font-medium">{"End Date"}</label>
-                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end-date" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
+                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end-date" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="7000" required=true/>
                 </div>
-                <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
+                <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-50 bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-600">
                     {"Add Investment"}
                 </button>
             </div>
