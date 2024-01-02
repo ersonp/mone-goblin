@@ -42,92 +42,77 @@ impl FormRefs {
     }
 
     fn get_inv_name(&self) -> String {
-        let input_inv = match validate_input(&self.inv_name, "Investment Name can not be blank") {
+        match validate_input(&self.inv_name, "Investment Name can not be blank") {
             Some(value) => value,
             None => "".to_string(),
-        };
-        input_inv
+        }
     }
+
     fn get_name(&self) -> String {
-        let input_name = match validate_input(&self.name, "Name can not be blank") {
+        match validate_input(&self.name, "Name can not be blank") {
             Some(value) => value,
             None => "".to_string(),
-        };
-        input_name
+        }
     }
+
     fn get_inv_type(&self) -> String {
-        let input_type = match validate_input(&self.inv_type, "Investment type can not be blank") {
+        match validate_input(&self.inv_type, "Investment type can not be blank") {
             Some(value) => value,
             None => "".to_string(),
-        };
-        input_type
+        }
     }
+
     fn get_return_type(&self) -> String {
-        let input_return_type =
-            match validate_input(&self.return_type, "Return type can not be blank") {
-                Some(value) => value,
-                None => "".to_string(),
-            };
-        input_return_type
+        match validate_input(&self.return_type, "Return type can not be blank") {
+            Some(value) => value,
+            None => "".to_string(),
+        }
     }
+
     fn get_inv_amount(&self) -> i32 {
-        let input_inv_amount =
-            match validate_input(&self.inv_amount, "Investment Amount can not be blank") {
-                Some(value) => value.parse::<i32>().unwrap_or_default(),
-                None => 0,
-            };
-        input_inv_amount
+        match validate_input(&self.inv_amount, "Investment Amount can not be blank") {
+            Some(value) => value.parse::<i32>().unwrap_or_default(),
+            None => 0,
+        }
     }
+
     fn get_return_amount(&self) -> i32 {
-        let input_return_amount =
-            match validate_input(&self.return_amount, "Return Amount can not be blank") {
-                Some(value) => value.parse::<i32>().unwrap_or_default(),
-                None => 0,
-            };
-        input_return_amount
+        match validate_input(&self.return_amount, "Return Amount can not be blank") {
+            Some(value) => value.parse::<i32>().unwrap_or_default(),
+            None => 0,
+        }
     }
+
     fn get_return_rate(&self) -> i32 {
-        let input_return_rate =
-            match validate_input(&self.return_rate, "Return Rate can not be blank") {
-                Some(value) => value.parse::<i32>().unwrap_or_default(),
-                None => 0,
-            };
-        input_return_rate
+        match validate_input(&self.return_rate, "Return Rate can not be blank") {
+            Some(value) => value.parse::<i32>().unwrap_or_default(),
+            None => 0,
+        }
     }
+
+    fn get_date(&self, date: &NodeRef, error_message: &str) -> Option<DateTime<Utc>> {
+        match validate_input(date, error_message) {
+            Some(value) => {
+                let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
+                let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
+                    Some(time) => NaiveDateTime::new(naive_date, time),
+                    None => {
+                        // Handle invalid time here
+                        return None;
+                    }
+                };
+                Some(DateTime::<Utc>::from_utc(naive_datetime, Utc))
+            }
+            None => None,
+        }
+    }
+
     fn get_start_date(&self) -> Option<DateTime<Utc>> {
-        let input_start_date = match validate_input(&self.start_date, "Start Date can not be blank")
-        {
-            Some(value) => {
-                let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
-                let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
-                    Some(time) => NaiveDateTime::new(naive_date, time),
-                    None => {
-                        // Handle invalid time here
-                        return None;
-                    }
-                };
-                Some(DateTime::<Utc>::from_utc(naive_datetime, Utc))
-            }
-            None => None,
-        };
-        input_start_date
+        self.get_date(&self.start_date, "Start Date can not be blank")
     }
+
     fn get_end_date(&self) -> Option<DateTime<Utc>> {
-        let input_end_date = match validate_input(&self.end_date, "End Date can not be blank") {
-            Some(value) => {
-                let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
-                let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
-                    Some(time) => NaiveDateTime::new(naive_date, time),
-                    None => {
-                        // Handle invalid time here
-                        return None;
-                    }
-                };
-                Some(DateTime::<Utc>::from_utc(naive_datetime, Utc))
-            }
-            None => None,
-        };
-        input_end_date
+        self.get_date(&self.end_date, "End Date can not be blank")
     }
 }
 
