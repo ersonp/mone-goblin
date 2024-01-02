@@ -1,7 +1,5 @@
 use reqwasm::{http::Request, Error};
-use serde_json;
 use std::collections::VecDeque;
-
 use types::*;
 
 #[allow(dead_code)]
