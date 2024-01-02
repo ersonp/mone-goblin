@@ -165,20 +165,20 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
 
     html! {
         <form ref={form_refs.borrow().form.clone()} onsubmit={handle_submit} class="mx-auto w-full">
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="grid gap-6 mb-6 md:grid-cols-2 text-text-950">
                 <div>
-                    <label for="inv_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Investment Name"}</label>
-                    <input ref={form_refs.borrow().inv_name.clone()} type="text" id="inv_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="BCCB" required=true/>
+                    <label for="inv-name" class="block mb-2 text-sm font-medium">{"Investment Name"}</label>
+                    <input ref={form_refs.borrow().inv_name.clone()} type="text" id="inv-name" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="BCCB" required=true/>
                 </div>
                 <div>
-                    <label for="inv_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Name"}</label>
-                    <input ref={form_refs.borrow().name.clone()} type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Erson" required=true/>
+                    <label for="name" class="block mb-2 text-sm font-medium">{"Name"}</label>
+                    <input ref={form_refs.borrow().name.clone()} type="text" id="name" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Erson" required=true/>
                 </div>
                 <div>
-                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Select an option"}</label>
+                    <label for="investment-type" class="block mb-2 text-sm font-medium">{"Select an option"}</label>
                     <select
                         ref={form_refs.borrow().inv_type.clone()}
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         id="investment-type">
                         <option selected=true disabled=true value="">{"Investment type"}</option>
                         <option value="FD">{"FD"}</option>
@@ -187,10 +187,10 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                     </select>
                 </div>
                 <div>
-                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Select an option"}</label>
+                    <label for="return-rate-type" class="block mb-2 text-sm font-medium">{"Select an option"}</label>
                     <select
                         ref={form_refs.borrow().return_type.clone()}
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         id="return-rate-type" >
                         <option selected=true disabled=true value="">{"Return type"}</option>
                         <option value="Ordinary">{"Ordinary"}</option>
@@ -199,26 +199,26 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                     </select>
                 </div>
                 <div>
-                    <label for="inv_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Invested Amount"}</label>
-                    <input ref={form_refs.borrow().inv_amount.clone()} type="number" id="inv_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10000" required=true/>
+                    <label for="inv-amount" class="block mb-2 text-sm font-medium ">{"Invested Amount"}</label>
+                    <input ref={form_refs.borrow().inv_amount.clone()} type="number" id="inv-amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10000" required=true/>
                 </div>
                 <div>
-                    <label for="return_amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Amount"}</label>
-                    <input ref={form_refs.borrow().return_amount.clone()} ype="number" id="return_amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="11000" required=true/>
+                    <label for="return-amount" class="block mb-2 text-sm font-medium">{"Return Amount"}</label>
+                    <input ref={form_refs.borrow().return_amount.clone()} ype="number" id="return-amount" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="11000" required=true/>
                 </div>
                 <div>
-                <label for="return_rate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Return Rate"}</label>
-                    <input ref={form_refs.borrow().return_rate.clone()} type="number" id="return_rate" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="8" required=true/>
+                <label for="return-rate" class="block mb-2 text-sm font-medium">{"Return Rate"}</label>
+                    <input ref={form_refs.borrow().return_rate.clone()} type="number" id="return-rate" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="8" required=true/>
                 </div>
                 <div>
-                    <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"Start Date"}</label>
-                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
+                    <label for="start-date" class="block mb-2 text-sm font-medium">{"Start Date"}</label>
+                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start-date" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
                 </div>
                 <div>
-                    <label for="end_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{"End Date"}</label>
-                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
+                    <label for="end-date" class="block mb-2 text-sm font-medium">{"End Date"}</label>
+                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end-date" class="bg-gray-50 border border-gray-300 text-text-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7000" required=true/>
                 </div>
-                <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
                     {"Add Investment"}
                 </button>
             </div>
