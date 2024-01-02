@@ -124,5 +124,16 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.input-dark': {
+          'color-scheme': 'dark',
+        },
+      }
+      addUtilities(newUtilities, ['dark'])
+    },
+  ],
 };

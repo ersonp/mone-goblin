@@ -42,6 +42,10 @@
   /* color for dark mode */
 }
 
+.input-dark {
+  color-scheme: dark;
+}
+
 @layer base {
   :root {
     --text-50: #f2f2f2;

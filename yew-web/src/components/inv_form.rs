@@ -212,11 +212,11 @@ pub fn investment_form(props: &InvestmentFormProps) -> Html {
                 </div>
                 <div>
                     <label for="start-date" class="block mb-2 text-sm font-medium">{"Start Date"}</label>
-                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start-date" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="7000" required=true/>
+                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start-date" class="dark:input-dark border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="7000" required=true/>
                 </div>
                 <div>
                     <label for="end-date" class="block mb-2 text-sm font-medium">{"End Date"}</label>
-                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end-date" class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="7000" required=true/>
+                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end-date" class="dark:input-dark border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400" placeholder="7000" required=true/>
                 </div>
                 <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-50 bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-600">
                     {"Add Investment"}
