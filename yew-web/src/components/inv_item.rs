@@ -4,16 +4,16 @@ use yew::{function_component, html, Callback, Event, Html, MouseEvent, Propertie
 #[derive(Properties, PartialEq)]
 pub struct InvestmentItemProps {
     pub investment: Investment2,
-    pub deleteinvestment: Callback<String>,
-    pub toggleinvestment: Callback<String>,
+    pub delete_investment: Callback<String>,
+    pub toggle_investment: Callback<String>,
 }
 
 #[function_component(InvestmentItem)]
 pub fn investment_item(
     InvestmentItemProps {
         investment,
-        deleteinvestment,
-        toggleinvestment,
+        delete_investment,
+        toggle_investment,
     }: &InvestmentItemProps,
 ) -> Html {
     let start_date = if let Some(date) = investment.start_date {
@@ -49,7 +49,7 @@ pub fn investment_item(
 
     let handle_click = {
         let investment = investment.clone();
-        let on_delete_investment = deleteinvestment.clone();
+        let on_delete_investment = delete_investment.clone();
 
         // (todo) fix this
         // let id = match investment.id.clone() {
@@ -62,7 +62,7 @@ pub fn investment_item(
 
     let handle_toggle = {
         let investment = investment.clone();
-        let on_toggle_investment = toggleinvestment.clone();
+        let on_toggle_investment = toggle_investment.clone();
 
         // let id = match investment.id.clone() {
         //     Some(id) => id.tb,

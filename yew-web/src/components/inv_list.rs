@@ -8,23 +8,23 @@ use crate::components::accordion::Accordion;
 #[derive(Properties, PartialEq)]
 pub struct InvestmentListProps {
     pub investments: VecDeque<Investment2>,
-    pub createinvestment: Callback<Investment2>,
-    pub deleteinvestment: Callback<String>,
-    pub toggleinvestment: Callback<String>,
+    pub create_investment: Callback<Investment2>,
+    pub delete_investment: Callback<String>,
+    pub toggle_investment: Callback<String>,
 }
 
 #[function_component(InvestmentList)]
 pub fn investment_list(
     InvestmentListProps {
         investments,
-        createinvestment,
-        deleteinvestment,
-        toggleinvestment,
+        create_investment,
+        delete_investment,
+        toggle_investment,
     }: &InvestmentListProps,
 ) -> Html {
     let investments = investments
         .iter()
-        .map(|investment| html!(<InvestmentItem investment={investment.clone()} deleteinvestment={deleteinvestment} toggleinvestment={toggleinvestment} />))
+        .map(|investment| html!(<InvestmentItem investment={investment.clone()} delete_investment={delete_investment} toggle_investment={toggle_investment} />))
         .collect::<Html>();
 
     html! {
@@ -32,7 +32,7 @@ pub fn investment_list(
             <div class="mx-auto px-4 lg:px-12">
                 <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                        <Accordion open={true} createinvestment={createinvestment.clone()}/>
+                        <Accordion open={true} createinvestment={create_investment.clone()}/>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
