@@ -52,7 +52,7 @@ pub fn app() -> Html {
                     <div class="absolute top-0 left-1/4 w-[30vw] h-[30vw] bg-accent-600 mix-blend-hard-light rounded-full filter blur-xl opacity-70 animate-blob animation-delay-2000 pointer-events-none"></div>
                     <div class="absolute top-0 left-1/4 w-[40vw] h-[40vw] bg-secondary-600 mix-blend-hard-light rounded-full filter blur-xl opacity-70 animate-blob pointer-events-none"></div>
                     <div class="absolute top-3 left-1/2 w-[30vw] h-[30vw] bg-primary-600 mix-blend-hard-light rounded-full filter blur-xl opacity-70 animate-blob animation-delay-3000 pointer-events-none"></div>
-                    <div class="absolute top-3 right-0 w-[30vw] h-[30vw] bg-accent-600 mix-blend-hard-light rounded-full filter blur-xl opacity-70 animate-blob pointer-events-none"></div>
+                    <div class="absolute top-3 right-0 w-[30vw] h-[30vw] bg-accent-600 mix-blend-hard-light rounded-full filter blur-xl opacity-70 animate-blob2 pointer-events-none"></div>
                     <div class="flex">
                         <h1 class="text-3xl font-black text-text-950">{"Investments"}</h1>
                         <div class="ml-auto flex items-center">
