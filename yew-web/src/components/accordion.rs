@@ -38,7 +38,7 @@ impl Component for Accordion {
         html! {
             <div class="w-full mx-auto">
                 <div class="rounded transition-all duration-500 ease-in-out">
-                    <div class={if self.open { "bg-gray-50 dark:bg-gray-700 rounded-t" } else { "bg-gray-50 dark:bg-gray-700 rounded-t" }}>
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-t">
                         <button  class="flex items-center justify-between w-full p-3 font-medium rtl:text-left rounded-t hover:bg-gray-50 hover:dark:bg-gray-700" onclick={ctx.link().callback(|_| Form::Toggle)}>
                         <span class="flex items-center text-gray-500 dark:text-grey-400"> {"Total: 5,00,000"}</span>
                         <svg class="w-7 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24">
