@@ -40,8 +40,6 @@ pub fn investment_item(
     //     date
     // );
 
-    let label_style = "w-full p-3 ml-2 text-lg truncate";
-
     // let completed_investment = match investment.completed {
     //     true => Some("text-gray-600 line-through"),
     //     false => None,
