@@ -7,7 +7,7 @@ use super::inv_form;
 #[derive(Properties, PartialEq, Clone)]
 pub struct Accordion {
     pub open: bool,
-    pub creat_investment: Callback<Investment2>,
+    pub create_investment: Callback<Investment2>,
 }
 
 pub enum Form {
@@ -21,7 +21,7 @@ impl Component for Accordion {
     fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
             open: false,
-            creat_investment: ctx.props().creat_investment.clone(),
+            create_investment: ctx.props().create_investment.clone(),
         }
     }
 
@@ -49,7 +49,7 @@ impl Component for Accordion {
                         <div class={if self.open { "max-h-[1000px] transition-all duration-500 ease-in-out overflow-hidden" } else { "max-h-0 transition-all duration-500 ease-in-out overflow-hidden" }}>
                             <p class="w-full p-4 text-text-950 text-base bg-background-50 rounded-b">
                                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                    <InvestmentForm creat_investment={self.creat_investment.clone()} />
+                                    <InvestmentForm create_investment={self.create_investment.clone()} />
                                 </div>
                             </p>
                         </div>
