@@ -6,7 +6,7 @@ pub struct InvestmentItem {
     pub open: bool,
     pub investment: Investment2,
     pub delete_investment: Callback<String>,
-    pub toggle_investment: Callback<String>,
+    pub edit_investment: Callback<String>,
 }
 
 pub enum InvestmentItemState {
@@ -30,7 +30,7 @@ impl Component for InvestmentItem {
             open: false,
             investment: ctx.props().investment.clone(),
             delete_investment: ctx.props().delete_investment.clone(),
-            toggle_investment: ctx.props().toggle_investment.clone(),
+            edit_investment: ctx.props().edit_investment.clone(),
         }
     }
 
@@ -73,15 +73,15 @@ impl Component for InvestmentItem {
         //     false => None,
         // };
 
-        let handle_toggle = {
-            let on_toggle_investment = self.toggle_investment.clone();
+        let update_toggle = {
+            let on_update_investment = self.edit_investment.clone();
 
             // let id = match self.investment.id.clone() {
             //     Some(id) => id.tb,
             //     None => "".to_string(),
             // };
             // move |_e: Event| on_toggle_investment.emit(id.clone())
-            move |_e: Event| on_toggle_investment.emit(self.investment.id.clone())
+            move |_e: Event| on_update_investment.emit(self.investment.id.clone())
         };
         html! {
                 <>

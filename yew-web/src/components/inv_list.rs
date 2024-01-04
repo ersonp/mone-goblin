@@ -10,7 +10,7 @@ pub struct InvestmentListProps {
     pub investments: VecDeque<Investment2>,
     pub create_investment: Callback<Investment2>,
     pub delete_investment: Callback<String>,
-    pub toggle_investment: Callback<String>,
+    pub edit_investment: Callback<String>,
 }
 
 #[function_component(InvestmentList)]
@@ -19,12 +19,12 @@ pub fn investment_list(
         investments,
         create_investment,
         delete_investment,
-        toggle_investment,
+        edit_investment,
     }: &InvestmentListProps,
 ) -> Html {
     let investments = investments
         .iter()
-        .map(|investment| html!(<InvestmentItem open=true investment={investment.clone()} delete_investment={delete_investment} toggle_investment={toggle_investment} />))
+        .map(|investment| html!(<InvestmentItem open=true investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />))
         .collect::<Html>();
 
     html! {

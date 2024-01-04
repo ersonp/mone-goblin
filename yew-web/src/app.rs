@@ -61,7 +61,7 @@ pub fn app() -> Html {
                     </div>
                     <hr class="mb-6 border-t-2" />
                     <div>
-                        <InvestmentList investments={investments.investments.clone()} create_investment={on_create_investment} delete_investment={on_delete_investment} toggle_investment={on_edit_investment} />
+                        <InvestmentList investments={investments.investments.clone()} create_investment={on_create_investment} delete_investment={on_delete_investment} edit_investment={on_edit_investment} />
                     </div>
                 </div>
             </main>
