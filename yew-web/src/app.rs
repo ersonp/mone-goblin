@@ -39,7 +39,7 @@ pub fn app() -> Html {
     let on_edit_investment = {
         let investment_controller = investment_controller;
 
-        Callback::from(move |id: String| investment_controller.edit_investment(id))
+        Callback::from(move |id: Investment2| investment_controller.edit_investment(id))
     };
 
     html! {

@@ -1,12 +1,12 @@
 use types::Investment2;
-use yew::{html, Callback, Component, Event, Html, MouseEvent, Properties};
+use yew::{html, Callback, Component, Html, MouseEvent, Properties};
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct InvestmentItem {
     pub open: bool,
     pub investment: Investment2,
     pub delete_investment: Callback<String>,
-    pub edit_investment: Callback<String>,
+    pub edit_investment: Callback<Investment2>,
 }
 
 pub enum InvestmentItemState {
@@ -18,6 +18,13 @@ impl InvestmentItem {
         let on_delete_investment = self.delete_investment.clone();
         let id = self.investment.id.clone();
         Callback::from(move |_e: MouseEvent| on_delete_investment.emit(id.clone()))
+    }
+
+    fn handle_update(&self) -> Callback<MouseEvent> {
+        let _on_update_investment = self.edit_investment.clone();
+        // todo: write the update logic
+        // move |_e: Event| on_update_investment.emit(self.investment.id.clone())
+        Callback::from(move |_e: MouseEvent| {})
     }
 }
 
@@ -73,16 +80,6 @@ impl Component for InvestmentItem {
         //     false => None,
         // };
 
-        let update_toggle = {
-            let on_update_investment = self.edit_investment.clone();
-
-            // let id = match self.investment.id.clone() {
-            //     Some(id) => id.tb,
-            //     None => "".to_string(),
-            // };
-            // move |_e: Event| on_toggle_investment.emit(id.clone())
-            move |_e: Event| on_update_investment.emit(self.investment.id.clone())
-        };
         html! {
                 <>
                     <tr class="border-b dark:border-background-200 hover:bg-background-50">
@@ -129,7 +126,7 @@ impl Component for InvestmentItem {
                         </td>
                         <td class="flex flex-col items-start px-6 py-4">
                             <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
-                            <a href="#" class="font-medium text-accent-600 hover:underline">{"Edit"}</a>
+                            <a onclick={self.handle_update()} class="font-medium text-accent-600 hover:underline">{"Edit"}</a>
                             <a onclick={self.handle_click()} class="font-medium text-red-600 hover:underline">{"Remove"}</a>
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::Toggle)}>
                                 { if self.open { "Collapse" } else { "Expand" } }

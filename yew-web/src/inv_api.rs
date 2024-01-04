@@ -26,12 +26,20 @@ pub async fn create_investment(inv: String) -> Result<Investment2, Error> {
     Ok(inv)
 }
 
-pub async fn edit_investment(id: String) -> Result<AffectedRows, Error> {
-    let response = Request::patch(&format!("{BASE_URL}/inv/{id}"))
+pub async fn edit_investment(inv: String) -> Result<Investment2, Error> {
+    let response = Request::patch(&format!("{}/inv", BASE_URL))
+        .header("Content-Type", "application/json")
+        .body(inv) // Set the serialized JSON as the body
         .send()
         .await?;
 
-    response.json().await
+    // Log the response body
+    let response_body = response.text().await?;
+
+    // Parse the response body as JSON
+    let inv: Investment2 = serde_json::from_str(&response_body)?;
+
+    Ok(inv)
 }
 
 pub async fn delete_investment(id: String) -> Result<AffectedRows, Error> {

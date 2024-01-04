@@ -10,7 +10,7 @@ pub struct InvestmentListProps {
     pub investments: VecDeque<Investment2>,
     pub create_investment: Callback<Investment2>,
     pub delete_investment: Callback<String>,
-    pub edit_investment: Callback<String>,
+    pub edit_investment: Callback<Investment2>,
 }
 
 #[function_component(InvestmentList)]
