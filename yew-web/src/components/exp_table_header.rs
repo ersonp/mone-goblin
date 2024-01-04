@@ -10,12 +10,12 @@ pub struct ExpandableHeader {
     pub create_investment: Callback<Investment2>,
 }
 
-pub enum Form {
+pub enum ExpandableHeaderState {
     Toggle,
 }
 
 impl Component for ExpandableHeader {
-    type Message = Form;
+    type Message = ExpandableHeaderState;
     type Properties = ExpandableHeader;
 
     fn create(ctx: &yew::Context<Self>) -> Self {
@@ -27,7 +27,7 @@ impl Component for ExpandableHeader {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Form::Toggle => {
+            ExpandableHeaderState::Toggle => {
                 self.open = !self.open;
                 true
             }
@@ -39,7 +39,7 @@ impl Component for ExpandableHeader {
             <div class="w-full mx-auto">
                 <div class="bg-background-50 rounded">
                     <div class="transition-all duration-500 ease-in-out">
-                        <button  class="flex items-center justify-between w-full p-3 font-medium rtl:text-left" onclick={ctx.link().callback(|_| Form::Toggle)}>
+                        <button  class="flex items-center justify-between w-full p-3 font-medium rtl:text-left" onclick={ctx.link().callback(|_| ExpandableHeaderState::Toggle)}>
                             <span class="flex items-center text-text-950"> {"Total: 5,00,000"}</span>
                                 <svg class="w-7 text-text-950" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 \
