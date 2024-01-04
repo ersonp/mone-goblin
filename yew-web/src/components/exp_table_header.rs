@@ -5,7 +5,7 @@ use yew::prelude::*;
 use super::inv_form;
 
 #[derive(Properties, PartialEq, Clone)]
-pub struct Accordion {
+pub struct ExpandableHeader {
     pub open: bool,
     pub create_investment: Callback<Investment2>,
 }
@@ -14,9 +14,9 @@ pub enum Form {
     Toggle,
 }
 
-impl Component for Accordion {
+impl Component for ExpandableHeader {
     type Message = Form;
-    type Properties = Accordion;
+    type Properties = ExpandableHeader;
 
     fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
