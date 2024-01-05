@@ -21,15 +21,8 @@ pub struct CreateInvFormProps {
 }
 
 pub enum Msg {
-    UpdateInvName(String),
-    UpdateName(String),
-    UpdateInvType(String),
-    UpdateReturnType(String),
-    UpdateInvAmount(i32),
-    UpdateReturnAmount(i32),
-    UpdateReturnRate(i32),
-    UpdateStartDate(Option<DateTime<Utc>>),
-    UpdateEndDate(Option<DateTime<Utc>>),
+    SaveAndValidate(String, String),
+    SaveAndValidateDate(String, Option<DateTime<Utc>>),
     ResetForm,
     SaveForm,
 }
@@ -63,42 +56,48 @@ impl Component for CreateInvForm {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::UpdateInvName(inv_name) => {
-                self.state.inv_name = inv_name;
-                self.error_messages.remove("inv-name");
-            }
-            Msg::UpdateName(name) => {
-                self.state.name = name;
-                self.error_messages.remove("name");
-            }
-            Msg::UpdateInvType(inv_type) => {
-                self.state.inv_type = inv_type;
-                self.error_messages.remove("inv-type");
-            }
-            Msg::UpdateReturnType(return_type) => {
-                self.state.return_type = return_type;
-                self.error_messages.remove("return-type");
-            }
-            Msg::UpdateInvAmount(inv_amount) => {
-                self.state.inv_amount = inv_amount;
-                self.error_messages.remove("inv-amount");
-            }
-            Msg::UpdateReturnAmount(return_amount) => {
-                self.state.return_amount = return_amount;
-                self.error_messages.remove("return-amount");
-            }
-            Msg::UpdateReturnRate(return_rate) => {
-                self.state.return_rate = return_rate;
-                self.error_messages.remove("return-rate");
-            }
-            Msg::UpdateStartDate(start_date) => {
-                self.state.start_date = start_date;
-                self.error_messages.remove("start-date");
-            }
-            Msg::UpdateEndDate(end_date) => {
-                self.state.end_date = end_date;
-                self.error_messages.remove("end-date");
-            }
+            Msg::SaveAndValidate(field, value) => match field.as_str() {
+                "inv-name" => {
+                    self.state.inv_name = value;
+                    self.error_messages.remove("inv-name");
+                }
+                "name" => {
+                    self.state.name = value;
+                    self.error_messages.remove("name");
+                }
+                "inv-type" => {
+                    self.state.inv_type = value;
+                    self.error_messages.remove("inv-type");
+                }
+                "return-type" => {
+                    self.state.return_type = value;
+                    self.error_messages.remove("return-type");
+                }
+                "inv-amount" => {
+                    self.state.inv_amount = value.parse().unwrap_or(0);
+                    self.error_messages.remove("inv-amount");
+                }
+                "return-amount" => {
+                    self.state.return_amount = value.parse().unwrap_or(0);
+                    self.error_messages.remove("return-amount");
+                }
+                "return-rate" => {
+                    self.state.return_rate = value.parse().unwrap_or(0);
+                    self.error_messages.remove("return-rate");
+                }
+                _ => {}
+            },
+            Msg::SaveAndValidateDate(field, date) => match field.as_str() {
+                "start-date" => {
+                    self.state.start_date = date;
+                    self.error_messages.remove("start-date");
+                }
+                "end-date" => {
+                    self.state.end_date = date;
+                    self.error_messages.remove("end-date");
+                }
+                _ => {}
+            },
             Msg::ResetForm => {
                 self.reset_form();
             }
@@ -111,209 +110,32 @@ impl Component for CreateInvForm {
         true
     }
     fn view(&self, ctx: &yew::Context<Self>) -> Html {
-        let label_style = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
         html! {
             <form onsubmit={ctx.link().callback(|e: SubmitEvent| { e.prevent_default(); Msg::SaveForm })} class="mx-auto w-full">
                 <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
-                    <div>
-                        <label for="inv-name" class={label_style}>{"Investment Name"}</label>
-                        <input
-                            type="text"
-                            value={self.state.inv_name.clone()}
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                Msg::UpdateInvName(input.value())
-                            })}
-                            id="inv-name"
-                            class={input_style}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("inv-name") {
-                                html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
+                    { self.input_field(ctx, "inv-name", "text", &self.state.inv_name) }
+                    { self.input_field(ctx, "name", "text", &self.state.name) }
+                    { self.select_field(ctx, "inv-type", &self.state.inv_type,
+                        html! {
+                            <>
+                                <option value="FD">{"FD"}</option>
+                                <option value="RD">{"RD"}</option>
+                            </>
                         }
-                    </div>
-                    <div>
-                    <label for="name" class={label_style}>{"Name"}</label>
-                        <input
-                            type="text"
-                            value={self.state.name.clone()}
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                Msg::UpdateName(input.value())
-                            })}
-                            id="name"
-                            class={input_style}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("name") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
+                    ) }
+                    { self.select_field(ctx, "return-type", &self.state.return_type,
+                        html! {
+                            <>
+                                <option value="Ordinary">{"Ordinary"}</option>
+                                <option value="Culmulative">{"Culmulative"}</option>
+                            </>
                         }
-                    </div>
-                    <div>
-                        <label for="inv-type" class={label_style}>{"Investment Type"}</label>
-                        <select
-                            value={self.state.inv_type.clone()}
-                            onchange={ctx.link().callback(move |e: Event| {
-                                let target = e.target().unwrap();
-                                let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
-                                let value = select_element.value();
-                                Msg::UpdateInvType(value)
-                            })}
-                            id="inv-type"
-                            class={input_style}
-                        >
-                            <option selected={self.state.inv_type.is_empty()} disabled=true value={""}>{""}</option>
-                            <option value="FD">{"FD"}</option>
-                            <option value="RD">{"RD"}</option>
-                        </select>
-                        {
-                            if let Some(error_message) = self.error_messages.get("inv-type") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
-                    <div>
-                        <label for="return-type" class={label_style}>{"Return Type"}</label>
-                        <select
-                            value={self.state.return_type.clone()}
-                            onchange={ctx.link().callback(move |e: Event| {
-                                let target = e.target().unwrap();
-                                let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
-                                let value = select_element.value();
-                                Msg::UpdateReturnType(value)
-                            })}
-                            id="return-type"
-                            class={input_style}
-                        >
-                            <option selected={self.state.return_type.is_empty()} disabled=true value={""}>{""}</option>
-                            <option value="Ordinary">{"Ordinary"}</option>
-                            <option value="Culmulative">{"Culmulative"}</option>
-                        </select>
-                        {
-                            if let Some(error_message) = self.error_messages.get("return-type") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
-                    <div>
-                        <label for="inv-amount" class="block mb-2 text-sm font-medium ">{"Invested Amount"}</label>
-                        <input
-                            type="number"
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                Msg::UpdateInvAmount(input.value().parse().unwrap_or(0))
-                            })}
-                            value={self.state.inv_amount.to_string()}
-                            id="inv-amount"
-                            class={input_style}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("inv-amount") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
-                    <div>
-                        <label for="return-amount" class={label_style}>{"Return Amount"}</label>
-                        <input
-                            type="number"
-                            value={self.state.return_amount.to_string()}
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                Msg::UpdateReturnAmount(input.value().parse().unwrap_or(0))
-                            })}
-                            id="return-amount"
-                            class={input_style}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("return-amount") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
-                    <div>
-                        <label for="return-rate" class={label_style}>{"Return Rate"}</label>
-                        <input
-                            type="number"
-                            value={self.state.return_rate.to_string()}
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                Msg::UpdateReturnRate(input.value().parse().unwrap_or(0))
-                            })}
-                            id="return-rate"
-                            class={input_style}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("return-rate") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
-                    <div>
-                        <label for="start-date" class={label_style}>{"Start Date"}</label>
-                        <input
-                            type="date"
-                            value={self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()}
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
-                                .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| DateTime::<Utc>::from_utc(datetime, Utc)))
-                                .ok()
-                                .flatten();
-                                Msg::UpdateStartDate(date)
-                            })}
-                            id="start-date"
-                            class={format!("{}{}", input_style, " dark:input-dark")}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("start-date") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
-                    <div>
-                        <label for="end-date" class={label_style}>{"End Date"}</label>
-                        <input
-                            type="date"
-                            value={self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()}
-                            oninput={ctx.link().callback(|e: InputEvent| {
-                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                                let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
-                                .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| DateTime::<Utc>::from_utc(datetime, Utc)))
-                                .ok()
-                                .flatten();
-                                Msg::UpdateEndDate(date)
-                            })}
-                            id="end-date"
-                            class={format!("{}{}", input_style, " dark:input-dark")}
-                        />
-                        {
-                            if let Some(error_message) = self.error_messages.get("end-date") {
-                            html! { <p class="error">{ error_message }</p> }
-                            } else {
-                                html! {}
-                            }
-                        }
-                    </div>
+                    ) }
+                    { self.input_field(ctx, "inv-amount", "number", &self.state.inv_amount.to_string()) }
+                    { self.input_field(ctx, "return-amount", "number", &self.state.return_amount.to_string()) }
+                    { self.input_field(ctx, "return-rate", "number", &self.state.return_rate.to_string()) }
+                    { self.date_field(ctx, "start-date", &self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
+                    { self.date_field(ctx, "end-date", &self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
                     <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg border-2 border-primary-600 hover:border-primary-700 focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
                     <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
                 </div>
@@ -323,6 +145,110 @@ impl Component for CreateInvForm {
 }
 
 impl CreateInvForm {
+    fn input_field(
+        &self,
+        ctx: &yew::Context<Self>,
+        field_id: &str,
+        field_type: &str,
+        field_value: &str,
+    ) -> Html {
+        let label_style = "block mb-2 text-sm font-medium";
+        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
+        let field_id_string = field_id.to_string();
+        html! {
+            <div>
+                <label for={field_id_string.clone()} class={label_style}>{field_id_string.clone()}</label>
+                <input
+                    type={field_type.to_string()}
+                    value={field_value.to_string()}
+                    oninput={ctx.link().callback(move |e: InputEvent| {
+                        let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                        Msg::SaveAndValidate(field_id_string.clone(), input.value())
+                    })}
+                    id={field_id_string.clone()}
+                    class={input_style}
+                />
+                {
+                    if let Some(error_message) = self.error_messages.get(field_id) {
+                        html! { <p class="error">{ error_message }</p> }
+                    } else {
+                        html! {}
+                    }
+                }
+            </div>
+        }
+    }
+
+    fn select_field(
+        &self,
+        ctx: &yew::Context<Self>,
+        field_id: &str,
+        field_value: &str,
+        options: Html,
+    ) -> Html {
+        let label_style = "block mb-2 text-sm font-medium";
+        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
+        let field_id_string = field_id.to_string();
+        html! {
+            <div>
+                <label for={field_id_string.clone()} class={label_style}>{field_id_string.clone()}</label>
+                <select
+                    value={field_value.to_string()}
+                    onchange={ctx.link().callback(move |e: Event| {
+                        let target = e.target().unwrap();
+                        let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
+                        let value = select_element.value();
+                        Msg::SaveAndValidate({field_id_string.clone()},value)
+                    })}
+                    id={field_id_string.clone()}
+                    class={input_style}
+                >
+                    <option selected={field_value.is_empty()} disabled=true value={""}>{""}</option>
+                    { options }
+                </select>
+                {
+                    if let Some(error_message) = self.error_messages.get(field_id) {
+                    html! { <p class="error">{ error_message }</p> }
+                    } else {
+                        html! {}
+                    }
+                }
+            </div>
+        }
+    }
+
+    fn date_field(&self, ctx: &yew::Context<Self>, field_id: &str, field_value: &str) -> Html {
+        let label_style: &str = "block mb-2 text-sm font-medium";
+        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
+        let field_id_string = field_id.to_string();
+        html! {
+            <div>
+                <label for={field_id_string.clone()} class={label_style}>{field_id_string.clone()}</label>
+                <input
+                    type="date"
+                    value={field_value.to_string()}
+                    oninput={ctx.link().callback(move |e: InputEvent| {
+                        let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                        let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
+                        .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| DateTime::<Utc>::from_utc(datetime, Utc)))
+                        .ok()
+                        .flatten();
+                        Msg::SaveAndValidateDate({field_id_string.clone()},date)
+                    })}
+                    id={field_id_string.clone()}
+                    class={format!("{}{}", input_style, " dark:input-dark")}
+                />
+                {
+                    if let Some(error_message) = self.error_messages.get(field_id) {
+                        html! { <p class="error">{ error_message }</p> }
+                    } else {
+                        html! {}
+                    }
+                }
+            </div>
+        }
+    }
+
     fn validate_form(&mut self) -> bool {
         // Perform validation
         if self.state.inv_name.is_empty() {
