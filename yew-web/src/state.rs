@@ -1,7 +1,9 @@
 use std::collections::VecDeque;
 use std::rc::Rc;
-use types::Investment2;
+
 use yew::Reducible;
+
+use types::Investment2;
 
 /// reducer's Action
 pub enum InvestmentAction {
