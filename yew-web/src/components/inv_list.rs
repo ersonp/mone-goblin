@@ -1,9 +1,10 @@
 use std::collections::VecDeque;
-use types::Investment2;
+
 use yew::{function_component, html, Callback, Html, Properties};
 
 use super::inv_item::InvestmentItem;
 use crate::components::exp_table_header::ExpandableHeader;
+use types::Investment2;
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentListProps {
