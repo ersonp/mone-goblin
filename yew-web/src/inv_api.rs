@@ -1,5 +1,7 @@
-use reqwasm::{http::Request, Error};
 use std::collections::VecDeque;
+
+use reqwasm::{http::Request, Error};
+
 use types::*;
 
 #[allow(dead_code)]
