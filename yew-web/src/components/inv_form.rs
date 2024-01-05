@@ -168,13 +168,7 @@ impl CreateInvForm {
                     id={field_id_string.clone()}
                     class={input_style}
                 />
-                {
-                    if let Some(error_message) = self.error_messages.get(field_id) {
-                        html! { <p class="error">{ error_message }</p> }
-                    } else {
-                        html! {}
-                    }
-                }
+                { self.error(field_id) }
             </div>
         }
     }
@@ -206,13 +200,7 @@ impl CreateInvForm {
                     <option selected={field_value.is_empty()} disabled=true value={""}>{""}</option>
                     { options }
                 </select>
-                {
-                    if let Some(error_message) = self.error_messages.get(field_id) {
-                    html! { <p class="error">{ error_message }</p> }
-                    } else {
-                        html! {}
-                    }
-                }
+                { self.error(field_id) }
             </div>
         }
     }
@@ -238,75 +226,99 @@ impl CreateInvForm {
                     id={field_id_string.clone()}
                     class={format!("{}{}", input_style, " dark:input-dark")}
                 />
-                {
-                    if let Some(error_message) = self.error_messages.get(field_id) {
-                        html! { <p class="error">{ error_message }</p> }
-                    } else {
-                        html! {}
-                    }
-                }
+                { self.error(field_id) }
             </div>
         }
     }
 
+    fn error(&self, field_id: &str) -> Html {
+        html! {
+            <>
+            {
+                if let Some(error_message) = self.error_messages.get(field_id) {
+                    html! { <p class="error mt-2 text-sm text-red-600 dark:text-red-500">{error_message}</p>}
+                } else {
+                    html! {}
+                }
+            }
+            </>
+        }
+    }
+
     fn validate_form(&mut self) -> bool {
-        // Perform validation
+        let mut is_valid = true;
+
         if self.state.inv_name.is_empty() {
             self.error_messages.insert(
                 "inv-name".to_string(),
                 "Investment Name can not be blank".to_string(),
             );
-            false
-        } else if self.state.name.is_empty() {
+            is_valid = false;
+        }
+
+        if self.state.name.is_empty() {
             self.error_messages
                 .insert("name".to_string(), "Name can not be blank".to_string());
-            false
-        } else if self.state.inv_type.is_empty() {
+            is_valid = false;
+        }
+
+        if self.state.inv_type.is_empty() {
             self.error_messages.insert(
                 "inv-type".to_string(),
-                "Investment type can not be blank".to_string(),
+                "Investment Type can not be blank".to_string(),
             );
-            false
-        } else if self.state.return_type.is_empty() {
+            is_valid = false;
+        }
+
+        if self.state.return_type.is_empty() {
             self.error_messages.insert(
                 "return-type".to_string(),
-                "Return type can not be blank".to_string(),
+                "Return Type can not be blank".to_string(),
             );
-            false
-        } else if self.state.inv_amount == 0 {
+            is_valid = false;
+        }
+
+        if self.state.inv_amount == 0 {
             self.error_messages.insert(
                 "inv-amount".to_string(),
-                "Invested Amount can not be blank".to_string(),
+                "Investment Amount can not be blank".to_string(),
             );
-            false
-        } else if self.state.return_amount == 0 {
+            is_valid = false;
+        }
+
+        if self.state.return_amount == 0 {
             self.error_messages.insert(
                 "return-amount".to_string(),
                 "Return Amount can not be blank".to_string(),
             );
-            false
-        } else if self.state.return_rate == 0 {
+            is_valid = false;
+        }
+
+        if self.state.return_rate == 0 {
             self.error_messages.insert(
                 "return-rate".to_string(),
                 "Return Rate can not be blank".to_string(),
             );
-            log::info!("self.state.start_date {:?}", self.state.start_date);
-            false
-        } else if self.state.start_date.is_none() {
+            is_valid = false;
+        }
+
+        if self.state.start_date.is_none() {
             self.error_messages.insert(
                 "start-date".to_string(),
                 "Start Date can not be blank".to_string(),
             );
-            false
-        } else if self.state.end_date.is_none() {
+            is_valid = false;
+        }
+
+        if self.state.end_date.is_none() {
             self.error_messages.insert(
                 "end-date".to_string(),
                 "End Date can not be blank".to_string(),
             );
-            false
-        } else {
-            true
+            is_valid = false;
         }
+
+        is_valid
     }
 
     fn save_form(&mut self) -> bool {
