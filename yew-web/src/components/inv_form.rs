@@ -113,6 +113,8 @@ impl Component for CreateInvForm {
         html! {
             <form onsubmit={ctx.link().callback(|e: SubmitEvent| { e.prevent_default(); Msg::SaveForm })} class="mx-auto w-full">
                 <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
+                    { self.date_field(ctx, "start-date", &self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
+                    { self.date_field(ctx, "end-date", &self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
                     { self.input_field(ctx, "inv-name", "text", &self.state.inv_name) }
                     { self.input_field(ctx, "name", "text", &self.state.name) }
                     { self.select_field(ctx, "inv-type", &self.state.inv_type,
@@ -134,8 +136,6 @@ impl Component for CreateInvForm {
                     { self.input_field(ctx, "inv-amount", "number", &self.state.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-amount", "number", &self.state.return_amount.to_string()) }
                     { self.input_field(ctx, "return-rate", "number", &self.state.return_rate.to_string()) }
-                    { self.date_field(ctx, "start-date", &self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
-                    { self.date_field(ctx, "end-date", &self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
                     <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg ring-2 ring-primary-600 ring-inset focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
                     <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
                 </div>
