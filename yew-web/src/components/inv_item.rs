@@ -127,7 +127,7 @@ impl Component for InvestmentItem {
                         <td class="flex flex-col items-start px-6 py-4">
                             <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
                             <a onclick={self.handle_update()} class="font-medium text-accent-600 hover:underline">{"Edit"}</a>
-                            <a onclick={self.handle_click()} class="font-medium text-red-600 hover:underline">{"Remove"}</a>
+                            <a onclick={self.handle_click()} class="font-medium text-red-600 dark:text-red-500 hover:underline">{"Remove"}</a>
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::Toggle)}>
                                 { if self.open { "Collapse" } else { "Expand" } }
                             </button>
