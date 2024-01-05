@@ -136,8 +136,8 @@ impl Component for CreateInvForm {
                     { self.input_field(ctx, "return-rate", "number", &self.state.return_rate.to_string()) }
                     { self.date_field(ctx, "start-date", &self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
                     { self.date_field(ctx, "end-date", &self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
-                    <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg border-2 border-primary-600 hover:border-primary-700 focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
-                    <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
+                    <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg ring-2 ring-primary-600 ring-inset focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
+                    <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
                 </div>
             </form>
         }
