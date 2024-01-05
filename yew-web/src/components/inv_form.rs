@@ -1,230 +1,410 @@
-use chrono::{DateTime, NaiveDate, NaiveDateTime, NaiveTime, Utc};
-use gloo_dialogs::alert;
-use std::cell::RefCell;
-use std::rc::Rc;
-use types::Investment2;
-use web_sys::{HtmlFormElement, HtmlInputElement};
-use yew::prelude::NodeRef;
-use yew::{function_component, html, Callback, Html, Properties, SubmitEvent};
+use std::collections::HashMap;
 
-#[derive(Properties, PartialEq)]
-pub struct InvestmentFormProps {
+use chrono::{DateTime, NaiveDate, Utc};
+use web_sys::wasm_bindgen::JsCast;
+use web_sys::HtmlSelectElement;
+use yew::events::{Event, InputEvent};
+use yew::{html, Callback, Component, Html, Properties, SubmitEvent};
+
+use types::Investment2;
+
+#[derive(Properties, PartialEq, Clone)]
+pub struct CreateInvForm {
+    state: Investment2,
+    props: CreateInvFormProps,
+    error_messages: HashMap<String, String>,
+}
+
+#[derive(Properties, PartialEq, Clone)]
+pub struct CreateInvFormProps {
     pub create_investment: Callback<Investment2>,
 }
 
-struct FormRefs {
-    inv_name: NodeRef,
-    name: NodeRef,
-    inv_type: NodeRef,
-    return_type: NodeRef,
-    inv_amount: NodeRef,
-    return_amount: NodeRef,
-    return_rate: NodeRef,
-    start_date: NodeRef,
-    end_date: NodeRef,
-    form: NodeRef,
+pub enum Msg {
+    UpdateInvName(String),
+    UpdateName(String),
+    UpdateInvType(String),
+    UpdateReturnType(String),
+    UpdateInvAmount(i32),
+    UpdateReturnAmount(i32),
+    UpdateReturnRate(i32),
+    UpdateStartDate(Option<DateTime<Utc>>),
+    UpdateEndDate(Option<DateTime<Utc>>),
+    ResetForm,
+    SaveForm,
 }
 
-impl FormRefs {
-    fn new() -> Self {
+impl Component for CreateInvForm {
+    type Message = Msg;
+    type Properties = CreateInvFormProps;
+
+    fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
-            inv_name: NodeRef::default(),
-            name: NodeRef::default(),
-            inv_type: NodeRef::default(),
-            return_type: NodeRef::default(),
-            inv_amount: NodeRef::default(),
-            return_amount: NodeRef::default(),
-            return_rate: NodeRef::default(),
-            start_date: NodeRef::default(),
-            end_date: NodeRef::default(),
-            form: NodeRef::default(),
-        }
-    }
-
-    fn get_inv_name(&self) -> String {
-        match validate_input(&self.inv_name, "Investment Name can not be blank") {
-            Some(value) => value,
-            None => "".to_string(),
-        }
-    }
-
-    fn get_name(&self) -> String {
-        match validate_input(&self.name, "Name can not be blank") {
-            Some(value) => value,
-            None => "".to_string(),
-        }
-    }
-
-    fn get_inv_type(&self) -> String {
-        match validate_input(&self.inv_type, "Investment type can not be blank") {
-            Some(value) => value,
-            None => "".to_string(),
-        }
-    }
-
-    fn get_return_type(&self) -> String {
-        match validate_input(&self.return_type, "Return type can not be blank") {
-            Some(value) => value,
-            None => "".to_string(),
-        }
-    }
-
-    fn get_inv_amount(&self) -> i32 {
-        match validate_input(&self.inv_amount, "Investment Amount can not be blank") {
-            Some(value) => value.parse::<i32>().unwrap_or_default(),
-            None => 0,
-        }
-    }
-
-    fn get_return_amount(&self) -> i32 {
-        match validate_input(&self.return_amount, "Return Amount can not be blank") {
-            Some(value) => value.parse::<i32>().unwrap_or_default(),
-            None => 0,
-        }
-    }
-
-    fn get_return_rate(&self) -> i32 {
-        match validate_input(&self.return_rate, "Return Rate can not be blank") {
-            Some(value) => value.parse::<i32>().unwrap_or_default(),
-            None => 0,
-        }
-    }
-
-    fn get_date(&self, date: &NodeRef, error_message: &str) -> Option<DateTime<Utc>> {
-        match validate_input(date, error_message) {
-            Some(value) => {
-                let naive_date = NaiveDate::parse_from_str(&value, "%Y-%m-%d").unwrap();
-                let naive_datetime = match NaiveTime::from_hms_opt(0, 0, 0) {
-                    Some(time) => NaiveDateTime::new(naive_date, time),
-                    None => {
-                        // Handle invalid time here
-                        return None;
-                    }
-                };
-                Some(DateTime::<Utc>::from_utc(naive_datetime, Utc))
-            }
-            None => None,
-        }
-    }
-
-    fn get_start_date(&self) -> Option<DateTime<Utc>> {
-        self.get_date(&self.start_date, "Start Date can not be blank")
-    }
-
-    fn get_end_date(&self) -> Option<DateTime<Utc>> {
-        self.get_date(&self.end_date, "End Date can not be blank")
-    }
-}
-
-fn validate_input(input: &NodeRef, error_message: &str) -> Option<String> {
-    if let Some(input) = input.cast::<HtmlInputElement>() {
-        let value = input.value();
-        if value.is_empty() {
-            alert(error_message);
-            return None;
-        }
-        return Some(value);
-    }
-    None
-}
-
-#[function_component(InvestmentForm)]
-pub fn investment_form(props: &InvestmentFormProps) -> Html {
-    let form_refs = Rc::new(RefCell::new(FormRefs::new()));
-
-    let handle_submit = {
-        let form_refs = Rc::clone(&form_refs);
-        let form_clone = form_refs.borrow().form.clone();
-        let on_create_investment = props.create_investment.clone();
-
-        Callback::from(move |event: SubmitEvent| {
-            event.prevent_default();
-
-            let investment = Investment2 {
+            state: Investment2 {
                 id: "".to_string(),
-                name: form_refs.borrow().get_name(),
-                inv_name: form_refs.borrow().get_inv_name(),
-                inv_type: form_refs.borrow().get_inv_type(),
-                return_type: form_refs.borrow().get_return_type(),
-                inv_amount: form_refs.borrow().get_inv_amount(),
-                return_amount: form_refs.borrow().get_return_amount(),
-                return_rate: form_refs.borrow().get_return_rate(),
-                start_date: form_refs.borrow().get_start_date(),
-                end_date: form_refs.borrow().get_end_date(),
+                inv_name: "".to_string(),
+                name: "".to_string(),
+                inv_type: "".to_string(),
+                return_type: "".to_string(),
+                inv_amount: 0,
+                return_amount: 0,
+                return_rate: 0,
+                start_date: None,
+                end_date: None,
                 created_at: None,
                 updated_at: None,
-            };
+            },
+            props: CreateInvFormProps {
+                create_investment: ctx.props().create_investment.clone(),
+            },
+            error_messages: HashMap::new(),
+        }
+    }
 
-            on_create_investment.emit(investment);
-            // Reset the form
-            if let Some(form_element) = form_clone.cast::<HtmlFormElement>() {
-                form_element.reset();
+    fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            Msg::UpdateInvName(inv_name) => {
+                self.state.inv_name = inv_name;
+                self.error_messages.remove("inv-name");
             }
-        })
-    };
-
-    let label_style = "block mb-2 text-sm font-medium";
-    let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
-
-    html! {
-        <form ref={form_refs.borrow().form.clone()} onsubmit={handle_submit} class="mx-auto w-full">
-            <div class="grid gap-6 mb-6 md:grid-cols-2 text-text-950">
-                <div>
-                    <label for="inv-name" class={label_style}>{"Investment Name"}</label>
-                    <input ref={form_refs.borrow().inv_name.clone()} type="text" id="inv-name" class={input_style} placeholder="BCCB" required=true/>
-                </div>
-                <div>
+            Msg::UpdateName(name) => {
+                self.state.name = name;
+                self.error_messages.remove("name");
+            }
+            Msg::UpdateInvType(inv_type) => {
+                self.state.inv_type = inv_type;
+                self.error_messages.remove("inv-type");
+            }
+            Msg::UpdateReturnType(return_type) => {
+                self.state.return_type = return_type;
+                self.error_messages.remove("return-type");
+            }
+            Msg::UpdateInvAmount(inv_amount) => {
+                self.state.inv_amount = inv_amount;
+                self.error_messages.remove("inv-amount");
+            }
+            Msg::UpdateReturnAmount(return_amount) => {
+                self.state.return_amount = return_amount;
+                self.error_messages.remove("return-amount");
+            }
+            Msg::UpdateReturnRate(return_rate) => {
+                self.state.return_rate = return_rate;
+                self.error_messages.remove("return-rate");
+            }
+            Msg::UpdateStartDate(start_date) => {
+                self.state.start_date = start_date;
+                self.error_messages.remove("start-date");
+            }
+            Msg::UpdateEndDate(end_date) => {
+                self.state.end_date = end_date;
+                self.error_messages.remove("end-date");
+            }
+            Msg::ResetForm => {
+                self.reset_form();
+            }
+            Msg::SaveForm => {
+                if self.save_form() {
+                    self.reset_form();
+                }
+            }
+        }
+        true
+    }
+    fn view(&self, ctx: &yew::Context<Self>) -> Html {
+        let label_style = "block mb-2 text-sm font-medium";
+        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
+        html! {
+            <form onsubmit={ctx.link().callback(|e: SubmitEvent| { e.prevent_default(); Msg::SaveForm })} class="mx-auto w-full">
+                <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
+                    <div>
+                        <label for="inv-name" class={label_style}>{"Investment Name"}</label>
+                        <input
+                            type="text"
+                            value={self.state.inv_name.clone()}
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                Msg::UpdateInvName(input.value())
+                            })}
+                            id="inv-name"
+                            class={input_style}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("inv-name") {
+                                html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
                     <label for="name" class={label_style}>{"Name"}</label>
-                    <input ref={form_refs.borrow().name.clone()} type="text" id="name" class={input_style} placeholder="Erson" required=true/>
+                        <input
+                            type="text"
+                            value={self.state.name.clone()}
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                Msg::UpdateName(input.value())
+                            })}
+                            id="name"
+                            class={input_style}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("name") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="inv-type" class={label_style}>{"Investment Type"}</label>
+                        <select
+                            value={self.state.inv_type.clone()}
+                            onchange={ctx.link().callback(move |e: Event| {
+                                let target = e.target().unwrap();
+                                let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
+                                let value = select_element.value();
+                                Msg::UpdateInvType(value)
+                            })}
+                            id="inv-type"
+                            class={input_style}
+                        >
+                            <option selected={self.state.inv_type.is_empty()} disabled=true value={""}>{""}</option>
+                            <option value="FD">{"FD"}</option>
+                            <option value="RD">{"RD"}</option>
+                        </select>
+                        {
+                            if let Some(error_message) = self.error_messages.get("inv-type") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="return-type" class={label_style}>{"Return Type"}</label>
+                        <select
+                            value={self.state.return_type.clone()}
+                            onchange={ctx.link().callback(move |e: Event| {
+                                let target = e.target().unwrap();
+                                let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
+                                let value = select_element.value();
+                                Msg::UpdateReturnType(value)
+                            })}
+                            id="return-type"
+                            class={input_style}
+                        >
+                            <option selected={self.state.return_type.is_empty()} disabled=true value={""}>{""}</option>
+                            <option value="Ordinary">{"Ordinary"}</option>
+                            <option value="Culmulative">{"Culmulative"}</option>
+                        </select>
+                        {
+                            if let Some(error_message) = self.error_messages.get("return-type") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="inv-amount" class="block mb-2 text-sm font-medium ">{"Invested Amount"}</label>
+                        <input
+                            type="number"
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                Msg::UpdateInvAmount(input.value().parse().unwrap_or(0))
+                            })}
+                            value={self.state.inv_amount.to_string()}
+                            id="inv-amount"
+                            class={input_style}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("inv-amount") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="return-amount" class={label_style}>{"Return Amount"}</label>
+                        <input
+                            type="number"
+                            value={self.state.return_amount.to_string()}
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                Msg::UpdateReturnAmount(input.value().parse().unwrap_or(0))
+                            })}
+                            id="return-amount"
+                            class={input_style}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("return-amount") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="return-rate" class={label_style}>{"Return Rate"}</label>
+                        <input
+                            type="number"
+                            value={self.state.return_rate.to_string()}
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                Msg::UpdateReturnRate(input.value().parse().unwrap_or(0))
+                            })}
+                            id="return-rate"
+                            class={input_style}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("return-rate") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="start-date" class={label_style}>{"Start Date"}</label>
+                        <input
+                            type="date"
+                            value={self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()}
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
+                                .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| DateTime::<Utc>::from_utc(datetime, Utc)))
+                                .ok()
+                                .flatten();
+                                Msg::UpdateStartDate(date)
+                            })}
+                            id="start-date"
+                            class={format!("{}{}", input_style, " dark:input-dark")}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("start-date") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <div>
+                        <label for="end-date" class={label_style}>{"End Date"}</label>
+                        <input
+                            type="date"
+                            value={self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()}
+                            oninput={ctx.link().callback(|e: InputEvent| {
+                                let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+                                let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
+                                .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| DateTime::<Utc>::from_utc(datetime, Utc)))
+                                .ok()
+                                .flatten();
+                                Msg::UpdateEndDate(date)
+                            })}
+                            id="end-date"
+                            class={format!("{}{}", input_style, " dark:input-dark")}
+                        />
+                        {
+                            if let Some(error_message) = self.error_messages.get("end-date") {
+                            html! { <p class="error">{ error_message }</p> }
+                            } else {
+                                html! {}
+                            }
+                        }
+                    </div>
+                    <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg border-2 border-primary-600 hover:border-primary-700 focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
+                    <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
                 </div>
-                <div>
-                    <label for="investment-type" class={label_style}>{"Select an option"}</label>
-                    <select
-                        ref={form_refs.borrow().inv_type.clone()}
-                        class={input_style}
-                        id="investment-type" required=true>
-                        <option selected=true disabled=true value="">{"Investment type"}</option>
-                        <option value="FD">{"FD"}</option>
-                        <option value="RD">{"RD"}</option>
-                        // Add more options as needed
-                    </select>
-                </div>
-                <div>
-                    <label for="return-rate-type" class={label_style}>{"Select an option"}</label>
-                    <select
-                        ref={form_refs.borrow().return_type.clone()}
-                        class={input_style}
-                        id="return-rate-type" required=true>
-                        <option selected=true disabled=true value="">{"Return type"}</option>
-                        <option value="Ordinary">{"Ordinary"}</option>
-                        <option value="Culmulative">{"Culmulative"}</option>
-                        // Add more options as needed
-                    </select>
-                </div>
-                <div>
-                    <label for="inv-amount" class="block mb-2 text-sm font-medium ">{"Invested Amount"}</label>
-                    <input ref={form_refs.borrow().inv_amount.clone()} type="number" id="inv-amount" aria-describedby="helper-text-explanation" class={input_style} placeholder="10000" required=true/>
-                </div>
-                <div>
-                    <label for="return-amount" class={label_style}>{"Return Amount"}</label>
-                    <input ref={form_refs.borrow().return_amount.clone()} ype="number" id="return-amount" aria-describedby="helper-text-explanation" class={input_style} placeholder="11000" required=true/>
-                </div>
-                <div>
-                <label for="return-rate" class={label_style}>{"Return Rate"}</label>
-                    <input ref={form_refs.borrow().return_rate.clone()} type="number" id="return-rate" aria-describedby="helper-text-explanation" class={input_style} placeholder="8" required=true/>
-                </div>
-                <div>
-                    <label for="start-date" class={label_style}>{"Start Date"}</label>
-                    <input ref={form_refs.borrow().start_date.clone()} type="date" id="start-date" class={format!("{}{}", input_style, " dark:input-dark")} placeholder="7000" required=true/>
-                </div>
-                <div>
-                    <label for="end-date" class={label_style}>{"End Date"}</label>
-                    <input ref={form_refs.borrow().end_date.clone()} type="date" id="end-date" class={format!("{}{}", input_style, " dark:input-dark")} required=true/>
-                </div>
-                <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-text-50 bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-600">
-                    {"Add Investment"}
-                </button>
-            </div>
-        </form>
+            </form>
+        }
+    }
+}
+
+impl CreateInvForm {
+    fn validate_form(&mut self) -> bool {
+        // Perform validation
+        if self.state.inv_name.is_empty() {
+            self.error_messages.insert(
+                "inv-name".to_string(),
+                "Investment Name can not be blank".to_string(),
+            );
+            false
+        } else if self.state.name.is_empty() {
+            self.error_messages
+                .insert("name".to_string(), "Name can not be blank".to_string());
+            false
+        } else if self.state.inv_type.is_empty() {
+            self.error_messages.insert(
+                "inv-type".to_string(),
+                "Investment type can not be blank".to_string(),
+            );
+            false
+        } else if self.state.return_type.is_empty() {
+            self.error_messages.insert(
+                "return-type".to_string(),
+                "Return type can not be blank".to_string(),
+            );
+            false
+        } else if self.state.inv_amount == 0 {
+            self.error_messages.insert(
+                "inv-amount".to_string(),
+                "Invested Amount can not be blank".to_string(),
+            );
+            false
+        } else if self.state.return_amount == 0 {
+            self.error_messages.insert(
+                "return-amount".to_string(),
+                "Return Amount can not be blank".to_string(),
+            );
+            false
+        } else if self.state.return_rate == 0 {
+            self.error_messages.insert(
+                "return-rate".to_string(),
+                "Return Rate can not be blank".to_string(),
+            );
+            log::info!("self.state.start_date {:?}", self.state.start_date);
+            false
+        } else if self.state.start_date.is_none() {
+            self.error_messages.insert(
+                "start-date".to_string(),
+                "Start Date can not be blank".to_string(),
+            );
+            false
+        } else if self.state.end_date.is_none() {
+            self.error_messages.insert(
+                "end-date".to_string(),
+                "End Date can not be blank".to_string(),
+            );
+            false
+        } else {
+            true
+        }
+    }
+
+    fn save_form(&mut self) -> bool {
+        // Validate form fields
+        let is_valid = self.validate_form();
+
+        if is_valid {
+            self.props.create_investment.emit(self.state.clone());
+            true
+        } else {
+            // If the form is not valid, return false
+            false
+        }
+    }
+
+    fn reset_form(&mut self) {
+        self.state.inv_name = "".to_string();
+        self.state.name = "".to_string();
+        self.state.inv_type = "".to_string();
+        self.state.return_type = "".to_string();
+        self.state.inv_amount = 0;
+        self.state.return_amount = 0;
+        self.state.return_rate = 0;
+        self.state.start_date = None;
+        self.state.end_date = None;
     }
 }

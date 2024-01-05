@@ -15,6 +15,7 @@ web-sys = { version = "0.3.61", features = [
     "HtmlFormElement",
     "Element",
     "DomTokenList",
+    "HtmlSelectElement",
 ] }
 yew = { version = "0.20.0", features = ["csr"] }
 types = { path = "../types" }
