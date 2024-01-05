@@ -1,10 +1,10 @@
-use crate::components::switcher::DarkModeContent; // Add this line to import the switcher module
-
 use std::rc::Rc;
-use types::Investment2;
+
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
 
-use crate::{components::inv_list::InvestmentList, controllers::*, state::InvestmentState};
+use crate::components::{inv_list::InvestmentList, switcher::DarkModeContent};
+use crate::{controllers::*, state::InvestmentState};
+use types::Investment2;
 
 #[function_component(App)]
 pub fn app() -> Html {
