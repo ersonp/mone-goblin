@@ -157,7 +157,7 @@ impl CreateInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{field_id_string.clone()}</label>
+                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
                 <input
                     type={field_type.to_string()}
                     value={field_value.to_string()}
@@ -191,7 +191,7 @@ impl CreateInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{field_id_string.clone()}</label>
+                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
                 <select
                     value={field_value.to_string()}
                     onchange={ctx.link().callback(move |e: Event| {
@@ -223,7 +223,7 @@ impl CreateInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{field_id_string.clone()}</label>
+                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
                 <input
                     type="date"
                     value={field_value.to_string()}
@@ -333,4 +333,17 @@ impl CreateInvForm {
         self.state.start_date = None;
         self.state.end_date = None;
     }
+}
+
+fn kebab_to_title(s: &str) -> String {
+    s.split('-')
+        .map(|part| {
+            let mut c = part.chars();
+            match c.next() {
+                None => String::new(),
+                Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
 }
