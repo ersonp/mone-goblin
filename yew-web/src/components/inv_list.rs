@@ -25,7 +25,7 @@ pub fn investment_list(
 ) -> Html {
     let investments = investments
         .iter()
-        .map(|investment| html!(<InvestmentItem open=true investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />))
+        .map(|investment| html!(<InvestmentItem investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />))
         .collect::<Html>();
 
     html! {
