@@ -224,7 +224,7 @@ impl CreateInvForm {
                         Msg::SaveAndValidateDate({field_id_string.clone()},date)
                     })}
                     id={field_id_string.clone()}
-                    class={format!("{}{}", input_style, " dark:input-dark")}
+                    class={format!("{} {}", input_style, "dark:input-dark")}
                 />
                 { self.error(field_id) }
             </div>
