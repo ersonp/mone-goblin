@@ -1,4 +1,4 @@
-use yew::{html, Callback, Component, Html, MouseEvent, Properties};
+use yew::{html, Callback, Component, Html, Properties};
 
 use super::edit_inv_form::EditInvForm;
 use types::Investment2;
@@ -7,6 +7,7 @@ use types::Investment2;
 pub struct InvestmentItem {
     open_more: bool,
     open_edit: bool,
+    show_delete_confirmation: bool,
     props: InvestmentItemProps,
 }
 
@@ -18,16 +19,11 @@ pub struct InvestmentItemProps {
 }
 
 pub enum InvestmentItemState {
-    ExpandMore,
-    ExpandEdit,
-}
-
-impl InvestmentItem {
-    fn handle_delete(&self) -> Callback<MouseEvent> {
-        let on_delete_investment = self.props.delete_investment.clone();
-        let id = self.props.investment.id.clone();
-        Callback::from(move |_e: MouseEvent| on_delete_investment.emit(id.clone()))
-    }
+    ToggleExpandMore,
+    ToggleExpandEdit,
+    ToggleDeleteConfirmation,
+    ConfirmDelete,
+    CancelDelete,
 }
 
 impl Component for InvestmentItem {
@@ -38,6 +34,7 @@ impl Component for InvestmentItem {
         Self {
             open_more: false,
             open_edit: false,
+            show_delete_confirmation: false,
             props: InvestmentItemProps {
                 investment: ctx.props().investment.clone(),
                 delete_investment: ctx.props().delete_investment.clone(),
@@ -48,14 +45,31 @@ impl Component for InvestmentItem {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            InvestmentItemState::ExpandMore => {
+            InvestmentItemState::ToggleExpandMore => {
                 self.open_more = !self.open_more;
                 self.open_edit = false;
                 true
             }
-            InvestmentItemState::ExpandEdit => {
+            InvestmentItemState::ToggleExpandEdit => {
                 self.open_edit = !self.open_edit;
                 self.open_more = false;
+                true
+            }
+            InvestmentItemState::ToggleDeleteConfirmation => {
+                self.show_delete_confirmation = !self.show_delete_confirmation;
+                true
+            }
+            InvestmentItemState::ConfirmDelete => {
+                // Delete the item and hide the confirmation overlay
+                let on_delete_investment = self.props.delete_investment.clone();
+                let id = self.props.investment.id.clone();
+                on_delete_investment.emit(id);
+                self.show_delete_confirmation = false;
+                true
+            }
+            InvestmentItemState::CancelDelete => {
+                // Hide the confirmation overlay without deleting the item
+                self.show_delete_confirmation = false;
                 true
             }
         }
@@ -137,14 +151,21 @@ impl Component for InvestmentItem {
                         </td>
                         <td class="flex flex-col items-start px-6 py-4">
                             <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ExpandEdit)} class="font-medium text-accent-600 hover:underline">
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)} class="font-medium text-accent-600 hover:underline">
                                 { "Edit"}
                             </button>
-                            <a onclick={self.handle_delete()} class="font-medium text-red-600 dark:text-red-500 hover:underline">{"Remove"}</a>
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ExpandMore)}>
+                            <a onclick={ctx.link().callback(|_| InvestmentItemState::ToggleDeleteConfirmation)} class="font-medium text-red-600 dark:text-red-500 hover:underline">{"Remove"}</a>
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)}>
                                 { if self.open_more { "Less" } else { "More" } }
                             </button>
                         </td>
+                        <div class={if self.show_delete_confirmation { "absolute inset-0 flex items-center justify-center bg-black bg-opacity-50" } else { "hidden" }}>
+                            <div class="bg-white p-4 rounded">
+                                <p>{"Are you sure you want to delete this item?"}</p>
+                                <button onclick={ctx.link().callback(|_| InvestmentItemState::ConfirmDelete)} class="bg-red-500 text-white px-4 py-2 rounded">{"Confirm"}</button>
+                                <button onclick={ctx.link().callback(|_| InvestmentItemState::CancelDelete)} class="bg-gray-500 text-white px-4 py-2 rounded">{"Cancel"}</button>
+                            </div>
+                        </div>
                     </tr>
                     <tr class={format!("{} {}", {if self.open_more { "" } else { "hidden" }}, "overflow-hidden border-b dark:border-background-200 hover:bg-background-50")}>
                         <td colspan="100%">
