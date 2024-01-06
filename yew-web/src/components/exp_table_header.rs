@@ -2,7 +2,7 @@ use yew::prelude::*;
 
 use types::Investment2;
 
-use super::inv_form::CreateInvForm;
+use super::create_inv_form::CreateInvForm;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct ExpandableHeader {
