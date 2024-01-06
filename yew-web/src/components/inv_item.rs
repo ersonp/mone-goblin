@@ -107,7 +107,7 @@ impl Component for InvestmentItem {
 
         html! {
                 <>
-                    <tr class={if self.open_more || self.open_edit { "bg-background-50" } else { "border-b dark:border-background-200 hover:bg-background-50" }}>
+                    <tr class={format!("{} {}", {if self.open_more || self.open_edit { "bg-background-50" } else { "border-b dark:border-background-200 hover:bg-background-50" }}, "relative")}>
                         <td class="px-6 py-4 min-w-max whitespace-nowrap hidden sm:table-cell">
                             {start_date.clone()}
                             <dl class="lg:hidden">
@@ -154,18 +154,22 @@ impl Component for InvestmentItem {
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)} class="font-medium text-accent-600 hover:underline">
                                 { "Edit"}
                             </button>
-                            <a onclick={ctx.link().callback(|_| InvestmentItemState::ToggleDeleteConfirmation)} class="font-medium text-red-600 dark:text-red-500 hover:underline">{"Remove"}</a>
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleDeleteConfirmation)} class="font-medium text-red-600 dark:text-red-500 hover:underline">
+                                {"Remove"}
+                            </button>
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)}>
                                 { if self.open_more { "Less" } else { "More" } }
                             </button>
                         </td>
-                        <div class={if self.show_delete_confirmation { "absolute inset-0 flex items-center justify-center bg-black bg-opacity-50" } else { "hidden" }}>
-                            <div class="bg-white p-4 rounded">
-                                <p>{"Are you sure you want to delete this item?"}</p>
-                                <button onclick={ctx.link().callback(|_| InvestmentItemState::ConfirmDelete)} class="bg-red-500 text-white px-4 py-2 rounded">{"Confirm"}</button>
-                                <button onclick={ctx.link().callback(|_| InvestmentItemState::CancelDelete)} class="bg-gray-500 text-white px-4 py-2 rounded">{"Cancel"}</button>
+                        <td class={if self.show_delete_confirmation { "absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-70" } else { "hidden" }}>
+                            <div class="bg-background-50 p-4 rounded text-text-950">
+                                <p class="mb-2">{"Are you sure you want to delete this Investment?"}</p>
+                                <div class="flex justify-center">
+                                    <button onclick={ctx.link().callback(|_| InvestmentItemState::ConfirmDelete)} class="bg-red-500 px-4 py-2 mr-1 rounded">{"Confirm"}</button>
+                                    <button onclick={ctx.link().callback(|_| InvestmentItemState::CancelDelete)} class="bg-background-500 px-4 py-2 ml-1 rounded">{"Cancel"}</button>
+                                </div>
                             </div>
-                        </div>
+                        </td>
                     </tr>
                     <tr class={format!("{} {}", {if self.open_more { "" } else { "hidden" }}, "overflow-hidden border-b dark:border-background-200 hover:bg-background-50")}>
                         <td colspan="100%">
