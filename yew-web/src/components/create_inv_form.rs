@@ -133,8 +133,8 @@ impl Component for CreateInvForm {
                             </>
                         }
                     ) }
-                    { self.input_field(ctx, "inv-amount", "number", &self.state.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-amount", "number", &self.state.return_amount.to_string()) }
+                    { self.input_field(ctx, "inv-amount", "number", &self.state.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-rate", "number", &self.state.return_rate.to_string()) }
                     <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg ring-2 ring-primary-600 ring-inset focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
                     <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
