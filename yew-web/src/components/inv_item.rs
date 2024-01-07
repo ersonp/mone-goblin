@@ -178,6 +178,7 @@ impl Component for InvestmentItem {
                             </p>
                         </td>
                     </tr>
+                    // Render the edit form if the edit button is clicked
                     {if self.open_edit {
                         html! {
                             <tr class="overflow-hidden border-b dark:border-background-200 hover:bg-background-50">
