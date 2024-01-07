@@ -178,15 +178,22 @@ impl Component for InvestmentItem {
                             </p>
                         </td>
                     </tr>
-                    <tr class={format!("{} {}", {if self.open_edit { "" } else { "hidden" }}, "overflow-hidden border-b dark:border-background-200 hover:bg-background-50")}>
-                        <td colspan="100%">
-                            <p class="w-full p-4 text-text-950 text-base bg-background-50 rounded-b">
-                                <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                    <EditInvForm edit_investment={self.props.edit_investment.clone()} investment={self.props.investment.clone()}/>
-                                </div>
-                            </p>
-                        </td>
-                    </tr>
+                    {if self.open_edit {
+                        html! {
+                            <tr class="overflow-hidden border-b dark:border-background-200 hover:bg-background-50">
+                                <td colspan="100%">
+                                    <p class="w-full p-4 text-text-950 text-base bg-background-50 rounded-b">
+                                        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                                            <EditInvForm edit_investment={self.props.edit_investment.clone()} investment={self.props.investment.clone()}/>
+                                        </div>
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                    } else {
+                        html! {}
+                    }}
+
                 </>
 
         }
