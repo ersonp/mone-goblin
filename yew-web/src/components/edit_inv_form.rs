@@ -10,6 +10,7 @@ use types::Investment2;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct EditInvForm {
+    form_changed: bool,
     props: EditInvFormProps,
     error_messages: HashMap<String, String>,
 }
@@ -32,6 +33,7 @@ impl Component for EditInvForm {
 
     fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
+            form_changed: false,
             props: EditInvFormProps {
                 edit_investment: ctx.props().edit_investment.clone(),
                 investment: ctx.props().investment.clone(),
@@ -42,48 +44,47 @@ impl Component for EditInvForm {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::ValidateAndSave(field, value) => match field.as_str() {
-                "inv-name" => {
-                    self.props.investment.inv_name = value;
-                    self.error_messages.remove("inv-name");
+            Msg::ValidateAndSave(field, value) => {
+                match field.as_str() {
+                    "inv-name" => {
+                        self.props.investment.inv_name = value;
+                    }
+                    "name" => {
+                        self.props.investment.name = value;
+                    }
+                    "inv-type" => {
+                        self.props.investment.inv_type = value;
+                    }
+                    "return-type" => {
+                        self.props.investment.return_type = value;
+                    }
+                    "inv-amount" => {
+                        self.props.investment.inv_amount = value.parse().unwrap_or(0);
+                    }
+                    "return-amount" => {
+                        self.props.investment.return_amount = value.parse().unwrap_or(0);
+                    }
+                    "return-rate" => {
+                        self.props.investment.return_rate = value.parse().unwrap_or(0);
+                    }
+                    _ => {}
                 }
-                "name" => {
-                    self.props.investment.name = value;
-                    self.error_messages.remove("name");
+                self.error_messages.remove(field.as_str());
+                self.form_changed = true;
+            }
+            Msg::ValidateDateAndSave(field, date) => {
+                match field.as_str() {
+                    "start-date" => {
+                        self.props.investment.start_date = date;
+                    }
+                    "end-date" => {
+                        self.props.investment.end_date = date;
+                    }
+                    _ => {}
                 }
-                "inv-type" => {
-                    self.props.investment.inv_type = value;
-                    self.error_messages.remove("inv-type");
-                }
-                "return-type" => {
-                    self.props.investment.return_type = value;
-                    self.error_messages.remove("return-type");
-                }
-                "inv-amount" => {
-                    self.props.investment.inv_amount = value.parse().unwrap_or(0);
-                    self.error_messages.remove("inv-amount");
-                }
-                "return-amount" => {
-                    self.props.investment.return_amount = value.parse().unwrap_or(0);
-                    self.error_messages.remove("return-amount");
-                }
-                "return-rate" => {
-                    self.props.investment.return_rate = value.parse().unwrap_or(0);
-                    self.error_messages.remove("return-rate");
-                }
-                _ => {}
-            },
-            Msg::ValidateDateAndSave(field, date) => match field.as_str() {
-                "start-date" => {
-                    self.props.investment.start_date = date;
-                    self.error_messages.remove("start-date");
-                }
-                "end-date" => {
-                    self.props.investment.end_date = date;
-                    self.error_messages.remove("end-date");
-                }
-                _ => {}
-            },
+                self.error_messages.remove(field.as_str());
+                self.form_changed = true;
+            }
             Msg::SaveForm => {
                 if self.save_form() {
                     // self.reset_form();
@@ -119,7 +120,10 @@ impl Component for EditInvForm {
                     { self.input_field(ctx, "return-amount", "number", &self.props.investment.return_amount.to_string()) }
                     { self.input_field(ctx, "inv-amount", "number", &self.props.investment.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-rate", "number", &self.props.investment.return_rate.to_string()) }
-                    <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
+                    <button type="submit" disabled={!self.form_changed}
+                        class={format!("{} {}", {if self.form_changed { "bg-primary-600 hover:bg-primary-700" } else { "bg-background-500" }}, "inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 rounded-lg focus:ring-4 focus:ring-primary-200")}>
+                        {"Update"}
+                    </button>
                 </div>
             </form>
         }
