@@ -103,22 +103,21 @@ impl Component for EditInvForm {
                     { self.select_field(ctx, "inv-type", &self.props.investment.inv_type,
                         html! {
                             <>
-                                <option value="FD">{"FD"}</option>
-                                <option value="RD">{"RD"}</option>
+                                <option value="FD" selected={self.props.investment.inv_type == "FD"}>{"FD"}</option>
+                                <option value="RD" selected={self.props.investment.inv_type == "RD"}>{"RD"}</option>
                             </>
                         }
                     ) }
                     { self.select_field(ctx, "return-type", &self.props.investment.return_type,
                         html! {
-                            // TODO: values are not populate. only the first value is selected
                             <>
-                                <option value="Ordinary">{"Ordinary"}</option>
-                                <option value="Culmulative">{"Culmulative"}</option>
+                                <option value="Ordinary" selected={self.props.investment.return_type == "Ordinary"}>{"Ordinary"}</option>
+                                <option value="Culmulative" selected={self.props.investment.return_type == "Culmulative"}>{"Culmulative"} </option>
                             </>
                         }
                     ) }
-                    { self.input_field(ctx, "inv-amount", "number", &self.props.investment.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-amount", "number", &self.props.investment.return_amount.to_string()) }
+                    { self.input_field(ctx, "inv-amount", "number", &self.props.investment.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-rate", "number", &self.props.investment.return_rate.to_string()) }
                     <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
                 </div>
