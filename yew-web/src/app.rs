@@ -37,9 +37,9 @@ pub fn app() -> Html {
     };
 
     let on_edit_investment = {
-        let investment_controller = investment_controller;
+        let investment_controller = investment_controller.clone();
 
-        Callback::from(move |id: Investment2| investment_controller.edit_investment(id))
+        Callback::from(move |inv: Investment2| investment_controller.edit_investment(inv))
     };
 
     html! {
