@@ -6,7 +6,12 @@ use super::create_inv_form::CreateInvForm;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct ExpandableHeader {
-    pub open: bool,
+    open: bool,
+    pub props: ExpandableHeaderProps,
+}
+
+#[derive(Properties, PartialEq, Clone)]
+pub struct ExpandableHeaderProps {
     pub create_investment: Callback<Investment2>,
 }
 
@@ -16,12 +21,14 @@ pub enum ExpandableHeaderState {
 
 impl Component for ExpandableHeader {
     type Message = ExpandableHeaderState;
-    type Properties = ExpandableHeader;
+    type Properties = ExpandableHeaderProps;
 
     fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
             open: false,
-            create_investment: ctx.props().create_investment.clone(),
+            props: ExpandableHeaderProps {
+                create_investment: ctx.props().create_investment.clone(),
+            },
         }
     }
 
@@ -49,7 +56,7 @@ impl Component for ExpandableHeader {
                         <div class={if self.open { "max-h-[1500px] overflow-hidden transition-all duration-100 ease-in-out" } else { "max-h-0 overflow-hidden transition-all duration-100 ease-in-out" }}>
                             <p class="w-full p-4 text-text-950 text-base bg-background-50 rounded-b">
                                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                    <CreateInvForm create_investment={self.create_investment.clone()} />
+                                    <CreateInvForm create_investment={self.props.create_investment.clone()} />
                                 </div>
                             </p>
                         </div>
