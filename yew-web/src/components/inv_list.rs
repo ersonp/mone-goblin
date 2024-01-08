@@ -35,7 +35,6 @@ pub fn investment_list(
     }
     let investments = investment_items.into_iter().collect::<Html>();
 
-    log::info!("InvestmentList::view::VNode {:#?}", investments);
     html! {
         <section class="p-3 sm:p-5">
             <div class="mx-auto px-4 lg:px-12">
