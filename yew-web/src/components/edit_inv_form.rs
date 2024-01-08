@@ -19,6 +19,7 @@ pub struct EditInvForm {
 pub struct EditInvFormProps {
     pub edit_investment: Callback<Investment2>,
     pub investment: Investment2,
+    pub on_edit: Callback<()>,
 }
 
 pub enum Msg {
@@ -37,6 +38,7 @@ impl Component for EditInvForm {
             props: EditInvFormProps {
                 edit_investment: ctx.props().edit_investment.clone(),
                 investment: ctx.props().investment.clone(),
+                on_edit: ctx.props().on_edit.clone(),
             },
             error_messages: HashMap::new(),
         }
@@ -87,7 +89,7 @@ impl Component for EditInvForm {
             }
             Msg::SaveForm => {
                 if self.save_form() {
-                    // self.reset_form();
+                    self.props.on_edit.emit(());
                 }
             }
         }

@@ -185,7 +185,7 @@ impl Component for InvestmentItem {
                                 <td colspan="100%">
                                     <p class="w-full p-4 text-text-950 text-base bg-background-50 rounded-b">
                                         <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                            <EditInvForm edit_investment={self.props.edit_investment.clone()} investment={self.props.investment.clone()}/>
+                                            <EditInvForm edit_investment={self.props.edit_investment.clone()} investment={self.props.investment.clone()} on_edit={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)}/>
                                         </div>
                                     </p>
                                 </td>
