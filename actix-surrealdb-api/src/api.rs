@@ -31,9 +31,11 @@ pub async fn get(id: Path<String>) -> Result<Json<Investment>> {
     Ok(Json(task))
 }
 
-#[patch("/inv/{id}")]
-pub async fn update(id: Path<String>) -> Result<Json<AffectedRows>> {
-    let updated = update_inv(id.into_inner()).await?;
+#[patch("/inv")]
+pub async fn update(inv: web::Json<Investment2>) -> Result<Json<Investment>> {
+    println!("meaw2");
+    let mut inv = inv.into_inner();
+    let updated = update_inv(&mut inv).await?;
 
     Ok(Json(updated))
 }

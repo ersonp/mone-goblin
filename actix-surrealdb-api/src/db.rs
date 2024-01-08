@@ -16,33 +16,47 @@ pub async fn add_inv(inv: &mut Investment) -> Result<Investment> {
 }
 
 pub async fn get_inv(id: String) -> Result<Investment> {
-    let th = id.split_once(":").unwrap();
+    let th = id.split_once(':').unwrap();
     let rec: Investment = DB.select(th).await?;
 
     Ok(rec)
 }
 
 pub async fn delete_inv(id: String) -> Result<AffectedRows> {
-    let th = id.split_once(":").unwrap();
+    let th = id.split_once(':').unwrap();
     let _rec: Record = DB.delete(th).await?;
 
     Ok(AffectedRows { rows_affected: 1 })
 }
 
-pub async fn update_inv(id: String) -> Result<AffectedRows> {
-    let (tb, id) = id.split_once(":").unwrap();
-    let sql =
-        "UPDATE type::thing($tb, $id) SET completed = function() { return !this.completed; };";
+pub async fn update_inv(inv: &mut Investment2) -> Result<Investment> {
+    let (tb, id) = inv.id.split_once(':').unwrap();
+    let sql = "UPDATE type::thing($tb, $id) SET name = $name, inv_type = $inv_type, inv_name = $inv_name, return_amount = $return_amount, return_rate = $return_rate, return_type = $return_type, inv_amount = $inv_amount, start_date = $start_date, end_date = $end_date, created_at = $created_at, updated_at = $updated_at;";
+    inv.updated_at = Some(Utc::now());
+    let mut response = DB
+        .query(sql)
+        .bind(("tb", tb))
+        .bind(("id", id))
+        .bind(("name", inv.name.clone()))
+        .bind(("inv_type", inv.inv_type.clone()))
+        .bind(("inv_name", inv.inv_name.clone()))
+        .bind(("return_amount", inv.return_amount))
+        .bind(("return_rate", inv.return_rate))
+        .bind(("return_type", inv.return_type.clone()))
+        .bind(("inv_amount", inv.inv_amount))
+        .bind(("start_date", inv.start_date))
+        .bind(("end_date", inv.end_date))
+        .bind(("created_at", inv.created_at))
+        .bind(("updated_at", inv.updated_at))
+        .await?;
 
-    let mut response = DB.query(sql).bind(("tb", tb)).bind(("id", id)).await?;
-
-    let _investment_updated = response
+    let investment_updated = response
         .take::<Vec<Investment>>(0)?
         .into_iter()
         .next()
         .ok_or(Error::Generic("Failed to update record".into()))?;
 
-    Ok(AffectedRows { rows_affected: 1 })
+    Ok(investment_updated)
 }
 
 pub async fn get_all_invs() -> Result<Vec<Investment>> {
