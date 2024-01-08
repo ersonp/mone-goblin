@@ -1,5 +1,6 @@
 use std::collections::VecDeque;
 
+use uuid::Uuid;
 use yew::{function_component, html, Callback, Html, Properties};
 
 use super::inv_item::InvestmentItem;
@@ -23,11 +24,18 @@ pub fn investment_list(
         edit_investment,
     }: &InvestmentListProps,
 ) -> Html {
-    let investments = investments
-        .iter()
-        .map(|investment| html!(<InvestmentItem investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />))
-        .collect::<Html>();
+    let mut investment_items = Vec::new();
+    for investment in investments {
+        // Generate a unique key for each investment everytime so that the DOM can be updated correctly
+        let uuid = Uuid::new_v4();
+        let key = format!("{}-{}", investment.id.clone(), uuid);
 
+        let item = html!(<InvestmentItem key={key} investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />);
+        investment_items.push(item);
+    }
+    let investments = investment_items.into_iter().collect::<Html>();
+
+    log::info!("InvestmentList::view::VNode {:#?}", investments);
     html! {
         <section class="p-3 sm:p-5">
             <div class="mx-auto px-4 lg:px-12">
