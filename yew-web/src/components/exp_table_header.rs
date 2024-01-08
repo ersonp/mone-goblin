@@ -1,4 +1,4 @@
-use yew::prelude::*;
+use yew::prelude::{html, Callback, Component, Html, Properties};
 
 use types::Investment2;
 
