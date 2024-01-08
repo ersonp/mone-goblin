@@ -150,13 +150,13 @@ impl Component for InvestmentItem {
                             </dl>
                         </td>
                         <td class="flex flex-col items-start px-6 py-4">
-                            <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)} class="font-medium text-accent-600 hover:underline">
-                                { "Edit"}
-                            </button>
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleDeleteConfirmation)} class="font-medium text-red-600 dark:text-red-500 hover:underline">
                                 {"Remove"}
                             </button>
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)} class="font-medium text-accent-600 hover:underline">
+                                { "Edit"}
+                            </button>
+                            <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)}>
                                 { if self.open_more { "Less" } else { "More" } }
                             </button>
