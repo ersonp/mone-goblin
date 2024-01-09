@@ -83,6 +83,17 @@ impl Component for InvestmentItem {
         } else {
             String::new()
         };
+
+        let arrow_down = html! {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm.75-10.25a.75.75 0 0 0-1.5 0v4.69L6.03 8.22a.75.75 0 0 0-1.06 1.06l2.5 2.5a.75.75 0 0 0 1.06 0l2.5-2.5a.75.75 0 1 0-1.06-1.06L8.75 9.44V4.75Z" clip-rule="evenodd" />
+            </svg>
+        };
+        let arrow_up = html! {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
+                <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 10.25a.75.75 0 0 0 1.5 0V6.56l1.22 1.22a.75.75 0 1 0 1.06-1.06l-2.5-2.5a.75.75 0 0 0-1.06 0l-2.5 2.5a.75.75 0 0 0 1.06 1.06l1.22-1.22v4.69Z" clip-rule="evenodd" />
+            </svg>
+        };
         // let date = investment
         //     .created_at
         //     .unwrap_or_default()
@@ -145,16 +156,29 @@ impl Component for InvestmentItem {
                                 <dd class="mt-1 sm:hidden">{&self.props.investment.clone().inv_type}</dd>
                             </dl>
                         </td>
-                        <td class="flex flex-col items-start px-6 py-4">
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleDeleteConfirmation)} class="font-medium text-red-600 dark:text-red-500 hover:underline">
-                                {"Remove"}
+                        <td class="flex flex-col items-start px-6 py-4 whitespace-nowrap">
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleDeleteConfirmation)} class="font-medium text-red-600 dark:text-red-500 hover:underline w-full">
+                                <div class="flex items-center justify-between w-full rtl:text-left">
+                                    {"Delete"}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
+                                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm2.78-4.22a.75.75 0 0 1-1.06 0L8 9.06l-1.72 1.72a.75.75 0 1 1-1.06-1.06L6.94 8 5.22 6.28a.75.75 0 0 1 1.06-1.06L8 6.94l1.72-1.72a.75.75 0 1 1 1.06 1.06L9.06 8l1.72 1.72a.75.75 0 0 1 0 1.06Z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                             </button>
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)} class="font-medium text-accent-600 hover:underline">
-                                { "Edit"}
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)} class="font-medium text-accent-600 hover:underline w-full">
+                                <div class="flex items-center justify-between w-full rtl:text-left">
+                                    {"Edit"}{ if self.open_edit { arrow_up.clone() } else { arrow_down.clone() } }
+                                </div>
                             </button>
-                            <a href="#" class="font-medium text-secondary-600 hover:underline">{"Renew"}</a>
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)}>
-                                { if self.open_more { "Less" } else { "More" } }
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)}  class="font-medium text-secondary-600 hover:underline w-full">
+                                <div class="flex items-center justify-between w-full rtl:text-left">
+                                    {"Renew"}{ if self.open_more { arrow_up.clone() } else { arrow_down.clone() } }
+                                </div>
+                            </button>
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)} class="w-full">
+                                <div class="flex items-center justify-between w-full rtl:text-left">
+                                    {"More"}{ if self.open_more { arrow_up.clone() } else { arrow_down.clone() } }
+                                </div>
                             </button>
                         </td>
                         <td class={if self.show_delete_confirmation { "absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-70" } else { "hidden" }}>
