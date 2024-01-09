@@ -48,16 +48,13 @@ impl Component for InvestmentItem {
             InvestmentItemState::ToggleExpandMore => {
                 self.open_more = !self.open_more;
                 self.open_edit = false;
-                true
             }
             InvestmentItemState::ToggleExpandEdit => {
                 self.open_edit = !self.open_edit;
                 self.open_more = false;
-                true
             }
             InvestmentItemState::ToggleDeleteConfirmation => {
                 self.show_delete_confirmation = !self.show_delete_confirmation;
-                true
             }
             InvestmentItemState::ConfirmDelete => {
                 // Delete the item and hide the confirmation overlay
@@ -65,14 +62,13 @@ impl Component for InvestmentItem {
                 let id = self.props.investment.id.clone();
                 on_delete_investment.emit(id);
                 self.show_delete_confirmation = false;
-                true
             }
             InvestmentItemState::CancelDelete => {
                 // Hide the confirmation overlay without deleting the item
                 self.show_delete_confirmation = false;
-                true
             }
         }
+        true
     }
 
     fn view(&self, ctx: &yew::Context<Self>) -> Html {
