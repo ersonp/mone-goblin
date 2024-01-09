@@ -7,6 +7,7 @@ use types::Investment2;
 pub struct InvestmentItem {
     open_more: bool,
     open_edit: bool,
+    open_renew: bool,
     show_delete_confirmation: bool,
     props: InvestmentItemProps,
 }
@@ -21,6 +22,7 @@ pub struct InvestmentItemProps {
 pub enum InvestmentItemState {
     ToggleExpandMore,
     ToggleExpandEdit,
+    ToggleExpandRenew,
     ToggleDeleteConfirmation,
     ConfirmDelete,
     CancelDelete,
@@ -34,6 +36,7 @@ impl Component for InvestmentItem {
         Self {
             open_more: false,
             open_edit: false,
+            open_renew: false,
             show_delete_confirmation: false,
             props: InvestmentItemProps {
                 investment: ctx.props().investment.clone(),
@@ -48,10 +51,17 @@ impl Component for InvestmentItem {
             InvestmentItemState::ToggleExpandMore => {
                 self.open_more = !self.open_more;
                 self.open_edit = false;
+                self.open_renew = false;
             }
             InvestmentItemState::ToggleExpandEdit => {
                 self.open_edit = !self.open_edit;
                 self.open_more = false;
+                self.open_renew = false;
+            }
+            InvestmentItemState::ToggleExpandRenew => {
+                self.open_renew = !self.open_renew;
+                self.open_more = false;
+                self.open_edit = false;
             }
             InvestmentItemState::ToggleDeleteConfirmation => {
                 self.show_delete_confirmation = !self.show_delete_confirmation;
@@ -170,9 +180,9 @@ impl Component for InvestmentItem {
                                     {"Edit"}{ if self.open_edit { arrow_up.clone() } else { arrow_down.clone() } }
                                 </div>
                             </button>
-                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)}  class="font-medium text-secondary-600 hover:underline w-full">
+                            <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandRenew)}  class="font-medium text-secondary-600 hover:underline w-full">
                                 <div class="flex items-center justify-between w-full rtl:text-left">
-                                    {"Renew"}{ if self.open_more { arrow_up.clone() } else { arrow_down.clone() } }
+                                    {"Renew"}{ if self.open_renew { arrow_up.clone() } else { arrow_down.clone() } }
                                 </div>
                             </button>
                             <button onclick={ctx.link().callback(|_| InvestmentItemState::ToggleExpandMore)} class="w-full">
@@ -191,14 +201,7 @@ impl Component for InvestmentItem {
                             </div>
                         </td>
                     </tr>
-                    <tr class={format!("{} {}", {if self.open_more { "" } else { "hidden" }}, "overflow-hidden border-b dark:border-background-200 hover:bg-background-50")}>
-                        <td colspan="100%">
-                            <p class="p-4 text-text-950 text-base bg-background-50 rounded-b">
-                                { "Expanded content" }
-                            </p>
-                        </td>
-                    </tr>
-                    // Render the edit form if the edit button is clicked
+                    // Render the expanded content if the item is expanded
                     {if self.open_edit {
                         html! {
                             <tr class="overflow-hidden border-b dark:border-background-200 hover:bg-background-50">
@@ -207,6 +210,16 @@ impl Component for InvestmentItem {
                                         <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                                             <EditInvForm edit_investment={self.props.edit_investment.clone()} investment={self.props.investment.clone()} on_edit={ctx.link().callback(|_| InvestmentItemState::ToggleExpandEdit)}/>
                                         </div>
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+                    } else if self.open_more {
+                        html! {
+                            <tr class="overflow-hidden border-b dark:border-background-200 hover:bg-background-50">
+                                <td colspan="100%">
+                                    <p class="p-4 text-text-950 text-base bg-background-50 rounded-b">
+                                        { "Expanded content" }
                                     </p>
                                 </td>
                             </tr>
