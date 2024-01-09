@@ -224,6 +224,16 @@ impl Component for InvestmentItem {
                                 </td>
                             </tr>
                         }
+                    }  else if self.open_renew {
+                        html! {
+                            <tr class="overflow-hidden border-b dark:border-background-200 hover:bg-background-50">
+                                <td colspan="100%">
+                                    <p class="p-4 text-text-950 text-base bg-background-50 rounded-b">
+                                        { "renew" }
+                                    </p>
+                                </td>
+                            </tr>
+                        }
                     } else {
                         html! {}
                     }}
