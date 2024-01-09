@@ -2,15 +2,16 @@ use std::collections::HashMap;
 
 use chrono::{DateTime, NaiveDate, Utc};
 use web_sys::wasm_bindgen::JsCast;
-use web_sys::HtmlSelectElement;
+use web_sys::{HtmlSelectElement, MouseEvent};
 use yew::events::{Event, InputEvent};
-use yew::{html, Callback, Component, Html, Properties, SubmitEvent};
+use yew::{html, Callback, Component, Html, Properties};
 
 use types::Investment2;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct EditInvForm {
     form_changed: bool,
+    show_edit_confirmation: bool,
     props: EditInvFormProps,
     error_messages: HashMap<String, String>,
 }
@@ -25,7 +26,9 @@ pub struct EditInvFormProps {
 pub enum Msg {
     ValidateAndSave(String, String),
     ValidateDateAndSave(String, Option<DateTime<Utc>>),
-    SaveForm,
+    ConfirmEditForm,
+    CancelEditForm,
+    EditForm,
 }
 
 impl Component for EditInvForm {
@@ -35,6 +38,7 @@ impl Component for EditInvForm {
     fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
             form_changed: false,
+            show_edit_confirmation: false,
             props: EditInvFormProps {
                 edit_investment: ctx.props().edit_investment.clone(),
                 investment: ctx.props().investment.clone(),
@@ -87,47 +91,73 @@ impl Component for EditInvForm {
                 self.error_messages.remove(field.as_str());
                 self.form_changed = true;
             }
-            Msg::SaveForm => {
+            Msg::ConfirmEditForm => {
                 if self.save_form() {
                     self.props.on_edit.emit(());
                 }
+            }
+            Msg::CancelEditForm => {
+                self.show_edit_confirmation = false;
+            }
+            Msg::EditForm => {
+                self.show_edit_confirmation = true;
             }
         }
         true
     }
     fn view(&self, ctx: &yew::Context<Self>) -> Html {
         html! {
-            <form onsubmit={ctx.link().callback(|e: SubmitEvent| { e.prevent_default(); Msg::SaveForm })} class="mx-auto w-full">
-                <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
-                    { self.date_field(ctx, "start-date", &self.props.investment.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
-                    { self.date_field(ctx, "end-date", &self.props.investment.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
-                    { self.input_field(ctx, "inv-name", "text", &self.props.investment.inv_name) }
-                    { self.input_field(ctx, "name", "text", &self.props.investment.name) }
-                    { self.select_field(ctx, "inv-type", &self.props.investment.inv_type,
-                        html! {
-                            <>
-                                <option value="FD" selected={self.props.investment.inv_type == "FD"}>{"FD"}</option>
-                                <option value="RD" selected={self.props.investment.inv_type == "RD"}>{"RD"}</option>
-                            </>
-                        }
-                    ) }
-                    { self.select_field(ctx, "return-type", &self.props.investment.return_type,
-                        html! {
-                            <>
-                                <option value="Ordinary" selected={self.props.investment.return_type == "Ordinary"}>{"Ordinary"}</option>
-                                <option value="Culmulative" selected={self.props.investment.return_type == "Culmulative"}>{"Culmulative"} </option>
-                            </>
-                        }
-                    ) }
-                    { self.input_field(ctx, "return-amount", "number", &self.props.investment.return_amount.to_string()) }
-                    { self.input_field(ctx, "inv-amount", "number", &self.props.investment.inv_amount.to_string()) }
-                    { self.input_field(ctx, "return-rate", "number", &self.props.investment.return_rate.to_string()) }
-                    <button type="submit" disabled={!self.form_changed}
-                        class={format!("{} {}", {if self.form_changed { "bg-primary-600 hover:bg-primary-700" } else { "bg-background-500" }}, "inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 rounded-lg focus:ring-4 focus:ring-primary-200")}>
-                        {"Update"}
-                    </button>
-                </div>
-            </form>
+            <div class="mx-auto w-full relative">
+                <form>
+                    <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
+                        { self.date_field(ctx, "start-date", &self.props.investment.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
+                        { self.date_field(ctx, "end-date", &self.props.investment.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
+                        { self.input_field(ctx, "inv-name", "text", &self.props.investment.inv_name) }
+                        { self.input_field(ctx, "name", "text", &self.props.investment.name) }
+                        { self.select_field(ctx, "inv-type", &self.props.investment.inv_type,
+                            html! {
+                                <>
+                                    <option value="FD" selected={self.props.investment.inv_type == "FD"}>{"FD"}</option>
+                                    <option value="RD" selected={self.props.investment.inv_type == "RD"}>{"RD"}</option>
+                                </>
+                            }
+                        ) }
+                        { self.select_field(ctx, "return-type", &self.props.investment.return_type,
+                            html! {
+                                <>
+                                    <option value="Ordinary" selected={self.props.investment.return_type == "Ordinary"}>{"Ordinary"}</option>
+                                    <option value="Culmulative" selected={self.props.investment.return_type == "Culmulative"}>{"Culmulative"} </option>
+                                </>
+                            }
+                        ) }
+                        { self.input_field(ctx, "return-amount", "number", &self.props.investment.return_amount.to_string()) }
+                        { self.input_field(ctx, "inv-amount", "number", &self.props.investment.inv_amount.to_string()) }
+                        { self.input_field(ctx, "return-rate", "number", &self.props.investment.return_rate.to_string()) }
+                        <button type="submit" disabled={!self.form_changed}
+                            onclick={ctx.link().callback(|e: MouseEvent| {
+                                // prevent the webpage from moving to top when the button is clicked
+                                e.prevent_default();
+                                Msg::EditForm
+                            })}
+                            class={format!("{} {}", {if self.form_changed { "bg-primary-600 hover:bg-primary-700" } else { "bg-background-500" }}, "inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 rounded-lg focus:ring-4 focus:ring-primary-200")}>
+                            {"Update"}
+                        </button>
+                    </div>
+                </form>
+                {if self.show_edit_confirmation {
+                    html! {
+                        <div class="absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-70">
+                            <div class="bg-background-50 p-4 rounded text-text-950">
+                                <p class="mb-2">{"Are you sure you want to edit this Investment?"}</p>
+                                <div class="flex justify-center">
+                                    <button onclick={ctx.link().callback(|_| Msg::ConfirmEditForm)} class="bg-red-500 px-4 py-2 mr-1 rounded">{"Confirm"}</button>
+                                    <button onclick={ctx.link().callback(|_| Msg::CancelEditForm)} class="bg-background-500 px-4 py-2 ml-1 rounded">{"Cancel"}</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                } else { html! {} } }
+            </div>
         }
     }
 }
