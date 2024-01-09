@@ -125,7 +125,7 @@ impl Component for InvestmentItem {
 
         html! {
                 <>
-                    <tr class={format!("{} {}", {if self.open_more || self.open_edit { "bg-background-50" } else { "border-b dark:border-background-200 hover:bg-background-50" }}, "relative")}>
+                    <tr class={format!("{} {}", {if self.open_more || self.open_edit || self.open_renew { "bg-background-50" } else { "border-b dark:border-background-200 hover:bg-background-50" }}, "relative")}>
                         <td class="px-6 py-4 min-w-max whitespace-nowrap hidden sm:table-cell">
                             {start_date.clone()}
                             <dl class="lg:hidden">
