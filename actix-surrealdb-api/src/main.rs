@@ -4,6 +4,7 @@ mod error;
 mod prelude;
 
 use actix_cors::Cors;
+use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
 use once_cell::sync::Lazy;
 use surrealdb::engine::remote::ws::{Client, Ws};
@@ -18,6 +19,7 @@ const PORT: u16 = 8080;
 
 #[actix_web::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     DB.connect::<Ws>("localhost:8000").await?;
 
     DB.signin(Root {
@@ -28,9 +30,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     DB.use_ns("namespace").use_db("database").await?;
 
-    println!("✅ Database connected successfully!!");
+    log::info!("✅ Database connected successfully!!");
 
-    println!("✅ Server running at http://localhost:{PORT}");
+    log::info!("✅ Server running at http://localhost:{PORT}");
 
     HttpServer::new(|| {
         let cors = Cors::default()
@@ -41,6 +43,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         App::new()
             .wrap(cors)
+            .wrap(Logger::default())
             .service(create)
             .service(get)
             .service(update)
