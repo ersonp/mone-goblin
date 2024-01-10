@@ -7,21 +7,17 @@ use actix_web::{
     web::{Json, Path},
     // HttpResponse,
 };
-use types::*;
+use surrealdb::sql::Thing;
 
 use crate::db::*;
 use crate::prelude::*;
+use types::*;
 
 #[post("/inv")]
 pub async fn create(inv: web::Json<Investment>) -> Result<Json<Investment>> {
     let mut inv = inv.into_inner();
     let todo = add_inv(&mut inv).await?;
     Ok(Json(todo))
-
-    // match todo_id {
-    //     Ok(id) => HttpResponse::Ok().json(id),
-    //     Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-    // }
 }
 
 #[get("/inv/{id}")]
@@ -32,16 +28,15 @@ pub async fn get(id: Path<String>) -> Result<Json<Investment>> {
 }
 
 #[patch("/inv")]
-pub async fn update(inv: web::Json<Investment2>) -> Result<Json<Investment>> {
-    println!("meaw2");
+pub async fn update(inv: web::Json<Investment>) -> Result<Json<Investment>> {
     let mut inv = inv.into_inner();
     let updated = update_inv(&mut inv).await?;
 
     Ok(Json(updated))
 }
 
-#[delete("/inv/{id}")]
-pub async fn delete(id: Path<String>) -> Result<Json<AffectedRows>> {
+#[delete("/inv")]
+pub async fn delete(id: web::Json<Thing>) -> Result<Json<Record>> {
     let deleted = delete_inv(id.into_inner()).await?;
 
     Ok(Json(deleted))
@@ -50,6 +45,5 @@ pub async fn delete(id: Path<String>) -> Result<Json<AffectedRows>> {
 #[get("/invs")]
 pub async fn list() -> Result<Json<Vec<Investment>>> {
     let todos = get_all_invs().await?;
-    println!("meaw");
     Ok(Json(todos))
 }

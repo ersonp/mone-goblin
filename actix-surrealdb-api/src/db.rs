@@ -1,8 +1,9 @@
 use chrono::offset::Utc;
-use types::*;
+use surrealdb::sql::Thing;
 
 use crate::prelude::*;
 use crate::DB;
+use types::*;
 
 const INVESTMENT: &str = "investment";
 
@@ -22,41 +23,22 @@ pub async fn get_inv(id: String) -> Result<Investment> {
     Ok(rec.unwrap())
 }
 
-pub async fn delete_inv(id: String) -> Result<AffectedRows> {
-    let th = id.split_once(':').unwrap();
-    let _rec: Option<Record> = DB.delete(th).await?;
+pub async fn delete_inv(id: Thing) -> Result<Record> {
+    let response_option: Option<Record> = DB.delete(id).await?;
+    let response = response_option.ok_or(Error::Generic("Failed to delete record".into()))?;
 
-    Ok(AffectedRows { rows_affected: 1 })
+    Ok(response)
 }
 
-pub async fn update_inv(inv: &mut Investment2) -> Result<Investment> {
-    let (tb, id) = inv.id.split_once(':').unwrap();
-    let sql = "UPDATE type::thing($tb, $id) SET name = $name, inv_type = $inv_type, inv_name = $inv_name, return_amount = $return_amount, return_rate = $return_rate, return_type = $return_type, inv_amount = $inv_amount, start_date = $start_date, end_date = $end_date, created_at = $created_at, updated_at = $updated_at;";
-    inv.updated_at = Some(Utc::now());
-    let mut response = DB
-        .query(sql)
-        .bind(("tb", tb))
-        .bind(("id", id))
-        .bind(("name", inv.name.clone()))
-        .bind(("inv_type", inv.inv_type.clone()))
-        .bind(("inv_name", inv.inv_name.clone()))
-        .bind(("return_amount", inv.return_amount))
-        .bind(("return_rate", inv.return_rate))
-        .bind(("return_type", inv.return_type.clone()))
-        .bind(("inv_amount", inv.inv_amount))
-        .bind(("start_date", inv.start_date))
-        .bind(("end_date", inv.end_date))
-        .bind(("created_at", inv.created_at))
-        .bind(("updated_at", inv.updated_at))
-        .await?;
+pub async fn update_inv(inv: &mut Investment) -> Result<Investment> {
+    let thing = match inv.id.clone() {
+        Some(thing) => thing,
+        None => return Err(Error::Generic("Failed to update record".into())),
+    };
+    let response_option: Option<Investment> = DB.update(thing).content(inv).await?;
+    let response = response_option.ok_or(Error::Generic("Failed to update record".into()))?;
 
-    let investment_updated = response
-        .take::<Vec<Investment>>(0)?
-        .into_iter()
-        .next()
-        .ok_or(Error::Generic("Failed to update record".into()))?;
-
-    Ok(investment_updated)
+    Ok(response)
 }
 
 pub async fn get_all_invs() -> Result<Vec<Investment>> {
