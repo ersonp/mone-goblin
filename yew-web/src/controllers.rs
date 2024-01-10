@@ -1,4 +1,5 @@
 use gloo_dialogs::alert;
+use serde::{Deserialize, Serialize};
 use surrealdb::sql::{Id, Thing};
 use wasm_bindgen_futures::spawn_local;
 use yew::UseReducerHandle;
@@ -10,7 +11,7 @@ pub struct InvestmentController {
     state: UseReducerHandle<InvestmentState>,
 }
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct TempThing {
     pub tb: String,
     pub id: Id,
@@ -51,7 +52,24 @@ impl InvestmentController {
         let investments = self.state.clone();
 
         spawn_local(async move {
-            let inv = serde_json::json!(inv);
+            // this is a workaround for the fact that we can't serialize a Thing
+            // directly. We need to serialize a struct that contains the Thing's
+            // table name and id and then insert that into the Investment object
+            // and then serialize the Investment object.
+            // TODO: update surrealdb to allow serialization of a Thing after diguring out dependency issues
+            let temp_id = match inv.id.clone() {
+                Some(id) => serialize_thing(id),
+                None => TempThing {
+                    tb: "".to_string(),
+                    id: Id::Number(0),
+                },
+            };
+            let temp_id = serde_json::json!(temp_id);
+            let mut inv = serde_json::json!(inv);
+
+            if let Some(obj1) = inv.as_object_mut() {
+                obj1.insert("id".to_string(), temp_id.clone());
+            }
             let response = edit_investment(inv.to_string()).await;
 
             match response {
@@ -69,10 +87,7 @@ impl InvestmentController {
             // directly. We need to serialize a struct that contains the Thing's
             // table name and id.
             // TODO: update surrealdb to allow serialization of a Thing after diguring out dependency issues
-            let temp_id = TempThing {
-                tb: id.clone().tb,
-                id: id.clone().id,
-            };
+            let temp_id = serialize_thing(id.clone());
             let json_id = serde_json::json!(temp_id);
             let response = delete_investment(json_id.to_string()).await;
 
@@ -82,5 +97,12 @@ impl InvestmentController {
                 Err(e) => alert(&e.to_string()),
             }
         });
+    }
+}
+
+fn serialize_thing(thing: Thing) -> TempThing {
+    TempThing {
+        tb: thing.tb,
+        id: thing.id,
     }
 }
