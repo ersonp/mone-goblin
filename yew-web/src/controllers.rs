@@ -1,4 +1,5 @@
 use gloo_dialogs::alert;
+use surrealdb::sql::Thing;
 use wasm_bindgen_futures::spawn_local;
 use yew::UseReducerHandle;
 
@@ -26,7 +27,7 @@ impl InvestmentController {
         });
     }
 
-    pub fn create_investment(&self, inv: Investment2) {
+    pub fn create_investment(&self, inv: Investment) {
         let investments = self.state.clone();
 
         spawn_local(async move {
@@ -40,7 +41,7 @@ impl InvestmentController {
         });
     }
 
-    pub fn edit_investment(&self, inv: Investment2) {
+    pub fn edit_investment(&self, inv: Investment) {
         let investments = self.state.clone();
 
         spawn_local(async move {
@@ -54,16 +55,15 @@ impl InvestmentController {
         });
     }
 
-    pub fn delete_investment(&self, id: String) {
+    pub fn delete_investment(&self, id: Thing) {
         let investments = self.state.clone();
 
         spawn_local(async move {
-            let response = delete_investment(id.clone()).await;
+            let json_id = serde_json::json!(id.clone());
+            let response = delete_investment(json_id.to_string()).await;
 
             match response {
-                Ok(af) if af.rows_affected == 1 => {
-                    investments.dispatch(InvestmentAction::Delete(id.clone()))
-                }
+                Ok(af) if af.id == id => investments.dispatch(InvestmentAction::Delete(id.clone())),
                 Ok(_) => alert("Did not get a response"),
                 Err(e) => alert(&e.to_string()),
             }

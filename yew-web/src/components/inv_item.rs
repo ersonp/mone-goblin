@@ -1,8 +1,9 @@
+use surrealdb::sql::Thing;
 use yew::{html, Callback, Component, Html, Properties};
 
 use super::edit_inv_form::EditInvForm;
 use super::renew_inv_form::RenewInvForm;
-use types::Investment2;
+use types::Investment;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct InvestmentItem {
@@ -15,9 +16,9 @@ pub struct InvestmentItem {
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct InvestmentItemProps {
-    pub investment: Investment2,
-    pub delete_investment: Callback<String>,
-    pub edit_investment: Callback<Investment2>,
+    pub investment: Investment,
+    pub delete_investment: Callback<Thing>,
+    pub edit_investment: Callback<Investment>,
 }
 
 pub enum InvestmentItemState {
@@ -70,7 +71,13 @@ impl Component for InvestmentItem {
             InvestmentItemState::ConfirmDelete => {
                 // Delete the item and hide the confirmation overlay
                 let on_delete_investment = self.props.delete_investment.clone();
-                let id = self.props.investment.id.clone();
+                let id = match self.props.investment.id.clone() {
+                    Some(thing) => thing,
+                    None => {
+                        // Handle the None case here. For example, you can return an error or a default Thing.
+                        return Default::default();
+                    }
+                };
                 on_delete_investment.emit(id);
                 self.show_delete_confirmation = false;
             }

@@ -1,6 +1,6 @@
 use yew::prelude::{html, Callback, Component, Html, Properties};
 
-use types::Investment2;
+use types::Investment;
 
 use super::create_inv_form::CreateInvForm;
 
@@ -12,7 +12,7 @@ pub struct ExpandableHeader {
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct ExpandableHeaderProps {
-    pub create_investment: Callback<Investment2>,
+    pub create_investment: Callback<Investment>,
 }
 
 pub enum ExpandableHeaderState {

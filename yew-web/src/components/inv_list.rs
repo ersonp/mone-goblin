@@ -1,18 +1,19 @@
 use std::collections::VecDeque;
 
+use surrealdb::sql::Thing;
 use uuid::Uuid;
 use yew::{function_component, html, Callback, Html, Properties};
 
 use super::inv_item::InvestmentItem;
 use crate::components::exp_table_header::ExpandableHeader;
-use types::Investment2;
+use types::Investment;
 
 #[derive(Properties, PartialEq)]
 pub struct InvestmentListProps {
-    pub investments: VecDeque<Investment2>,
-    pub create_investment: Callback<Investment2>,
-    pub delete_investment: Callback<String>,
-    pub edit_investment: Callback<Investment2>,
+    pub investments: VecDeque<Investment>,
+    pub create_investment: Callback<Investment>,
+    pub delete_investment: Callback<Thing>,
+    pub edit_investment: Callback<Investment>,
 }
 
 #[function_component(InvestmentList)]
@@ -29,7 +30,11 @@ pub fn investment_list(
     .map(|investment| {
         // Generate a unique key for each investment everytime so that the DOM can be updated correctly
         let uuid = Uuid::new_v4();
-        let key = format!("{}-{}", investment.id.clone(), uuid);
+        let display_string = match investment.id.clone() {
+            Some(thing) => format!("{}", thing),
+            None => "No Thing available".to_string(),
+        };
+        let key = format!("{}-{}", display_string, uuid);
         html!(<InvestmentItem key={key} investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />)
     })
     .collect::<Html>();

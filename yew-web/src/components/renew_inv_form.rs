@@ -6,7 +6,7 @@ use web_sys::{HtmlSelectElement, MouseEvent};
 use yew::events::{Event, InputEvent};
 use yew::{html, Callback, Component, Html, Properties};
 
-use types::Investment2;
+use types::Investment;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct RenewInvForm {
@@ -18,8 +18,8 @@ pub struct RenewInvForm {
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct RenewInvFormProps {
-    pub edit_investment: Callback<Investment2>,
-    pub investment: Investment2,
+    pub edit_investment: Callback<Investment>,
+    pub investment: Investment,
     pub on_renew: Callback<()>,
 }
 

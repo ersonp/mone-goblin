@@ -1,10 +1,11 @@
 use std::rc::Rc;
 
+use surrealdb::sql::Thing;
 use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
 
 use crate::components::{inv_list::InvestmentList, switcher::DarkModeContent};
 use crate::{controllers::*, state::InvestmentState};
-use types::Investment2;
+use types::Investment;
 
 #[function_component(App)]
 pub fn app() -> Html {
@@ -27,19 +28,19 @@ pub fn app() -> Html {
     let on_create_investment = {
         let investment_controller = investment_controller.clone();
 
-        Callback::from(move |inv: Investment2| investment_controller.create_investment(inv))
+        Callback::from(move |inv: Investment| investment_controller.create_investment(inv))
     };
 
     let on_delete_investment = {
         let investment_controller = investment_controller.clone();
 
-        Callback::from(move |id: String| investment_controller.delete_investment(id))
+        Callback::from(move |id: Thing| investment_controller.delete_investment(id))
     };
 
     let on_edit_investment = {
         let investment_controller = investment_controller.clone();
 
-        Callback::from(move |inv: Investment2| investment_controller.edit_investment(inv))
+        Callback::from(move |inv: Investment| investment_controller.edit_investment(inv))
     };
 
     html! {

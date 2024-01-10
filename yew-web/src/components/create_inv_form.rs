@@ -6,18 +6,18 @@ use web_sys::HtmlSelectElement;
 use yew::events::{Event, InputEvent};
 use yew::{html, Callback, Component, Html, Properties, SubmitEvent};
 
-use types::Investment2;
+use types::Investment;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct CreateInvForm {
-    state: Investment2,
+    state: Investment,
     props: CreateInvFormProps,
     error_messages: HashMap<String, String>,
 }
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct CreateInvFormProps {
-    pub create_investment: Callback<Investment2>,
+    pub create_investment: Callback<Investment>,
 }
 
 pub enum Msg {
@@ -33,8 +33,8 @@ impl Component for CreateInvForm {
 
     fn create(ctx: &yew::Context<Self>) -> Self {
         Self {
-            state: Investment2 {
-                id: "".to_string(),
+            state: Investment {
+                id: None,
                 inv_name: "".to_string(),
                 name: "".to_string(),
                 inv_type: "".to_string(),
