@@ -6,6 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde = { version = "1.0.37", features = ["derive"] }
+serde = { version = "1.0.195", features = ["derive"] }
 surrealdb = "1.0.0-beta.9"
-chrono = { version = "0.4.24", features = ["serde"] }
+chrono = { version = "0.4.31", features = ["serde"] }
