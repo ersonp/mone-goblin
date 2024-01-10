@@ -10,21 +10,21 @@ pub async fn add_inv(inv: &mut Investment) -> Result<Investment> {
     inv.id = None;
     inv.created_at = Some(Utc::now());
     inv.updated_at = Some(Utc::now());
-    let created: Investment = DB.create(INVESTMENT).content(inv).await?;
+    let created: Vec<Investment> = DB.create(INVESTMENT).content(inv).await?;
 
-    Ok(created)
+    Ok(created.clone().pop().unwrap())
 }
 
 pub async fn get_inv(id: String) -> Result<Investment> {
     let th = id.split_once(':').unwrap();
-    let rec: Investment = DB.select(th).await?;
+    let rec: Option<Investment> = DB.select(th).await?;
 
-    Ok(rec)
+    Ok(rec.unwrap())
 }
 
 pub async fn delete_inv(id: String) -> Result<AffectedRows> {
     let th = id.split_once(':').unwrap();
-    let _rec: Record = DB.delete(th).await?;
+    let _rec: Option<Record> = DB.delete(th).await?;
 
     Ok(AffectedRows { rows_affected: 1 })
 }
