@@ -1,5 +1,5 @@
 use gloo_dialogs::alert;
-use surrealdb::sql::Thing;
+use surrealdb::sql::{Id, Thing};
 use wasm_bindgen_futures::spawn_local;
 use yew::UseReducerHandle;
 
@@ -8,6 +8,12 @@ use types::*;
 
 pub struct InvestmentController {
     state: UseReducerHandle<InvestmentState>,
+}
+
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct TempThing {
+    pub tb: String,
+    pub id: Id,
 }
 
 impl InvestmentController {
@@ -59,7 +65,15 @@ impl InvestmentController {
         let investments = self.state.clone();
 
         spawn_local(async move {
-            let json_id = serde_json::json!(id.clone());
+            // temp_id is a workaround for the fact that we can't serialize a Thing
+            // directly. We need to serialize a struct that contains the Thing's
+            // table name and id.
+            // TODO: update surrealdb to allow serialization of a Thing after diguring out dependency issues
+            let temp_id = TempThing {
+                tb: id.clone().tb,
+                id: id.clone().id,
+            };
+            let json_id = serde_json::json!(temp_id);
             let response = delete_investment(json_id.to_string()).await;
 
             match response {
