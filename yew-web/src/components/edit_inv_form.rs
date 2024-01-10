@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{DateTime, NaiveDate, TimeZone, Utc};
 use web_sys::wasm_bindgen::JsCast;
 use web_sys::{HtmlSelectElement, MouseEvent};
 use yew::events::{Event, InputEvent};
@@ -236,7 +236,7 @@ impl EditInvForm {
                     oninput={ctx.link().callback(move |e: InputEvent| {
                         let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
                         let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
-                        .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| DateTime::<Utc>::from_utc(datetime, Utc)))
+                        .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| Utc.from_utc_datetime(&datetime)))
                         .ok()
                         .flatten();
                         Msg::ValidateDateAndSave({field_id_string.clone()},date)
