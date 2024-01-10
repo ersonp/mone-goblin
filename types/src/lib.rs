@@ -18,30 +18,8 @@ pub struct Investment {
     pub updated_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
-pub struct Investment2 {
-    #[serde(skip_serializing_if = "String::is_empty")]
-    pub id: String,
-    pub inv_name: String,
-    pub inv_type: String,
-    pub return_rate: i32,
-    pub return_type: String,
-    pub inv_amount: i32,
-    pub return_amount: i32,
-    pub name: String,
-    pub start_date: Option<DateTime<Utc>>,
-    pub end_date: Option<DateTime<Utc>>,
-    pub created_at: Option<DateTime<Utc>>,
-    pub updated_at: Option<DateTime<Utc>>,
-}
-
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Record {
     #[allow(dead_code)]
     pub id: Thing,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct AffectedRows {
-    pub rows_affected: u64,
 }
