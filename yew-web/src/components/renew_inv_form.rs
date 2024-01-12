@@ -108,6 +108,7 @@ impl Component for RenewInvForm {
         }
         true
     }
+
     fn view(&self, ctx: &yew::Context<Self>) -> Html {
         html! {
             <div class="mx-auto w-full relative">
@@ -173,25 +174,13 @@ impl RenewInvForm {
         field_type: &str,
         field_value: &str,
     ) -> Html {
-        let label_style = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
-        let field_id_string = field_id.to_string();
-        html! {
-            <div>
-                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
-                <input
-                    type={field_type.to_string()}
-                    value={field_value.to_string()}
-                    oninput={ctx.link().callback(move |e: InputEvent| {
-                        let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                        Msg::ValidateAndSave(field_id_string.clone(), input.value())
-                    })}
-                    id={field_id_string.clone()}
-                    class={input_style}
-                />
-                { self.base.error(field_id) }
-            </div>
-        }
+        let field_id_str = field_id.to_string();
+        let on_input = ctx.link().callback(move |e: InputEvent| {
+            let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+            Msg::ValidateAndSave(field_id_str.clone(), input.value())
+        });
+        self.base
+            .input_field(field_id, field_type, field_value, on_input)
     }
 
     fn select_field(
@@ -201,55 +190,32 @@ impl RenewInvForm {
         field_value: &str,
         options: Html,
     ) -> Html {
-        let label_style = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
-        let field_id_string = field_id.to_string();
-        html! {
-            <div>
-                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
-                <select
-                    value={field_value.to_string()}
-                    onchange={ctx.link().callback(move |e: Event| {
-                        let target = e.target().unwrap();
-                        let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
-                        let value = select_element.value();
-                        Msg::ValidateAndSave({field_id_string.clone()},value)
-                    })}
-                    id={field_id_string.clone()}
-                    class={input_style}
-                >
-                    <option selected={field_value.is_empty()} disabled=true value={""}>{""}</option>
-                    { options }
-                </select>
-                { self.base.error(field_id) }
-            </div>
-        }
+        let field_id_str = field_id.to_string();
+        let on_change = ctx.link().callback(move |e: Event| {
+            let target = e.target().unwrap();
+            let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
+            let value = select_element.value();
+            Msg::ValidateAndSave(field_id_str.clone(), value)
+        });
+        self.base
+            .select_field(field_id, field_value, options, on_change)
     }
 
     fn date_field(&self, ctx: &yew::Context<Self>, field_id: &str, field_value: &str) -> Html {
-        let label_style: &str = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
-        let field_id_string = field_id.to_string();
-        html! {
-            <div>
-                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
-                <input
-                    type="date"
-                    value={field_value.to_string()}
-                    oninput={ctx.link().callback(move |e: InputEvent| {
-                        let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-                        let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
-                        .map(|date| date.and_hms_opt(0, 0, 0).map(|datetime| Utc.from_utc_datetime(&datetime)))
-                        .ok()
-                        .flatten();
-                        Msg::ValidateDateAndSave({field_id_string.clone()},date)
-                    })}
-                    id={field_id_string.clone()}
-                    class={format!("{}{}", input_style, " dark:input-dark")}
-                />
-                { self.base.error(field_id) }
-            </div>
-        }
+        let field_id_str = field_id.to_string();
+        let on_input = ctx.link().callback(move |e: InputEvent| {
+            let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
+            let date = NaiveDate::parse_from_str(&input.value(), "%Y-%m-%d")
+                .map(|date| {
+                    date.and_hms_opt(0, 0, 0)
+                        .map(|datetime| Utc.from_utc_datetime(&datetime))
+                })
+                .ok()
+                .flatten();
+            Msg::ValidateDateAndSave(field_id_str.clone(), date)
+        });
+
+        self.base.date_field(field_id, field_value, on_input)
     }
 
     fn validate_form(&mut self) -> bool {
