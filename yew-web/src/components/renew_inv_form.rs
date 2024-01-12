@@ -24,16 +24,16 @@ pub struct RenewInvFormProps {
     pub on_renew: Callback<()>,
 }
 
-pub enum Msg {
-    ValidateAndSave(String, String),
-    ValidateDateAndSave(String, Option<DateTime<Utc>>),
-    ConfirmRenewForm,
-    CancelRenewForm,
-    RenewForm,
+pub enum Form {
+    Update(String, String),
+    UpdateDate(String, Option<DateTime<Utc>>),
+    Confirm,
+    Cancel,
+    Renew,
 }
 
 impl Component for RenewInvForm {
-    type Message = Msg;
+    type Message = Form;
     type Properties = RenewInvFormProps;
 
     fn create(ctx: &yew::Context<Self>) -> Self {
@@ -53,7 +53,7 @@ impl Component for RenewInvForm {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::ValidateAndSave(field, value) => {
+            Form::Update(field, value) => {
                 match field.as_str() {
                     "inv-name" => {
                         self.props.investment.inv_name = value;
@@ -81,7 +81,7 @@ impl Component for RenewInvForm {
                 self.base.error_messages.remove(field.as_str());
                 self.form_changed = true;
             }
-            Msg::ValidateDateAndSave(field, date) => {
+            Form::UpdateDate(field, date) => {
                 match field.as_str() {
                     "start-date" => {
                         self.props.investment.start_date = date;
@@ -94,15 +94,15 @@ impl Component for RenewInvForm {
                 self.base.error_messages.remove(field.as_str());
                 self.form_changed = true;
             }
-            Msg::ConfirmRenewForm => {
+            Form::Confirm => {
                 if self.save_form() {
                     self.props.on_renew.emit(());
                 }
             }
-            Msg::CancelRenewForm => {
+            Form::Cancel => {
                 self.show_renew_confirmation = false;
             }
-            Msg::RenewForm => {
+            Form::Renew => {
                 self.show_renew_confirmation = true;
             }
         }
@@ -141,7 +141,7 @@ impl Component for RenewInvForm {
                             onclick={ctx.link().callback(|e: MouseEvent| {
                                 // prevent the webpage from moving to top when the button is clicked
                                 e.prevent_default();
-                                Msg::RenewForm
+                                Form::Renew
                             })}
                             class={format!("{} {}", {if self.form_changed { "bg-primary-600 hover:bg-primary-700" } else { "bg-background-500" }}, "inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 rounded-lg focus:ring-4 focus:ring-primary-200")}>
                             {"Renew"}
@@ -154,8 +154,8 @@ impl Component for RenewInvForm {
                             <div class="bg-background-50 p-4 rounded text-text-950">
                                 <p class="mb-2">{"Are you sure you want to renew this Investment?"}</p>
                                 <div class="flex justify-center">
-                                    <button onclick={ctx.link().callback(|_| Msg::ConfirmRenewForm)} class="bg-red-500 px-4 py-2 mr-1 rounded">{"Confirm"}</button>
-                                    <button onclick={ctx.link().callback(|_| Msg::CancelRenewForm)} class="bg-background-500 px-4 py-2 ml-1 rounded">{"Cancel"}</button>
+                                    <button onclick={ctx.link().callback(|_| Form::Confirm)} class="bg-red-500 px-4 py-2 mr-1 rounded">{"Confirm"}</button>
+                                    <button onclick={ctx.link().callback(|_| Form::Cancel)} class="bg-background-500 px-4 py-2 ml-1 rounded">{"Cancel"}</button>
                                 </div>
                             </div>
                         </div>
@@ -177,7 +177,7 @@ impl RenewInvForm {
         let field_id_str = field_id.to_string();
         let on_input = ctx.link().callback(move |e: InputEvent| {
             let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-            Msg::ValidateAndSave(field_id_str.clone(), input.value())
+            Form::Update(field_id_str.clone(), input.value())
         });
         self.base
             .input_field(field_id, field_type, field_value, on_input)
@@ -195,7 +195,7 @@ impl RenewInvForm {
             let target = e.target().unwrap();
             let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
             let value = select_element.value();
-            Msg::ValidateAndSave(field_id_str.clone(), value)
+            Form::Update(field_id_str.clone(), value)
         });
         self.base
             .select_field(field_id, field_value, options, on_change)
@@ -212,7 +212,7 @@ impl RenewInvForm {
                 })
                 .ok()
                 .flatten();
-            Msg::ValidateDateAndSave(field_id_str.clone(), date)
+            Form::UpdateDate(field_id_str.clone(), date)
         });
 
         self.base.date_field(field_id, field_value, on_input)
