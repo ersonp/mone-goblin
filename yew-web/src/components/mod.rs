@@ -1,5 +1,8 @@
 //! This module contains various submodules related to the investment feature.
 
+///
+pub mod base_inv_form;
+
 /// This module contains the form used to create a new investment.
 pub mod create_inv_form;
 

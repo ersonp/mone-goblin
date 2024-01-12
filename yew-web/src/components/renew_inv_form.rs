@@ -6,6 +6,7 @@ use web_sys::{HtmlSelectElement, MouseEvent};
 use yew::events::{Event, InputEvent};
 use yew::{html, Callback, Component, Html, Properties};
 
+use super::base_inv_form::BaseFormComponent;
 use types::Investment;
 
 #[derive(Properties, PartialEq, Clone)]
@@ -13,7 +14,7 @@ pub struct RenewInvForm {
     form_changed: bool,
     show_renew_confirmation: bool,
     props: RenewInvFormProps,
-    error_messages: HashMap<String, String>,
+    base: BaseFormComponent,
 }
 
 #[derive(Properties, PartialEq, Clone)]
@@ -44,7 +45,9 @@ impl Component for RenewInvForm {
                 investment: ctx.props().investment.clone(),
                 on_renew: ctx.props().on_renew.clone(),
             },
-            error_messages: HashMap::new(),
+            base: BaseFormComponent {
+                error_messages: HashMap::new(),
+            },
         }
     }
 
@@ -75,7 +78,7 @@ impl Component for RenewInvForm {
                     }
                     _ => {}
                 }
-                self.error_messages.remove(field.as_str());
+                self.base.error_messages.remove(field.as_str());
                 self.form_changed = true;
             }
             Msg::ValidateDateAndSave(field, date) => {
@@ -88,7 +91,7 @@ impl Component for RenewInvForm {
                     }
                     _ => {}
                 }
-                self.error_messages.remove(field.as_str());
+                self.base.error_messages.remove(field.as_str());
                 self.form_changed = true;
             }
             Msg::ConfirmRenewForm => {
@@ -175,7 +178,7 @@ impl RenewInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
                 <input
                     type={field_type.to_string()}
                     value={field_value.to_string()}
@@ -186,7 +189,7 @@ impl RenewInvForm {
                     id={field_id_string.clone()}
                     class={input_style}
                 />
-                { self.error(field_id) }
+                { self.base.error(field_id) }
             </div>
         }
     }
@@ -203,7 +206,7 @@ impl RenewInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
                 <select
                     value={field_value.to_string()}
                     onchange={ctx.link().callback(move |e: Event| {
@@ -218,7 +221,7 @@ impl RenewInvForm {
                     <option selected={field_value.is_empty()} disabled=true value={""}>{""}</option>
                     { options }
                 </select>
-                { self.error(field_id) }
+                { self.base.error(field_id) }
             </div>
         }
     }
@@ -229,7 +232,7 @@ impl RenewInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
                 <input
                     type="date"
                     value={field_value.to_string()}
@@ -244,22 +247,8 @@ impl RenewInvForm {
                     id={field_id_string.clone()}
                     class={format!("{}{}", input_style, " dark:input-dark")}
                 />
-                { self.error(field_id) }
+                { self.base.error(field_id) }
             </div>
-        }
-    }
-
-    fn error(&self, field_id: &str) -> Html {
-        html! {
-            <>
-            {
-                if let Some(error_message) = self.error_messages.get(field_id) {
-                    html! { <p class="error mt-2 text-sm text-red-600 dark:text-red-500">{error_message}</p>}
-                } else {
-                    html! {}
-                }
-            }
-            </>
         }
     }
 
@@ -267,7 +256,7 @@ impl RenewInvForm {
         let mut is_valid = true;
 
         if self.props.investment.inv_name.is_empty() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "inv-name".to_string(),
                 "Investment Name can not be blank".to_string(),
             );
@@ -275,13 +264,14 @@ impl RenewInvForm {
         }
 
         if self.props.investment.name.is_empty() {
-            self.error_messages
+            self.base
+                .error_messages
                 .insert("name".to_string(), "Name can not be blank".to_string());
             is_valid = false;
         }
 
         if self.props.investment.inv_type.is_empty() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "inv-type".to_string(),
                 "Investment Type can not be blank".to_string(),
             );
@@ -289,7 +279,7 @@ impl RenewInvForm {
         }
 
         if self.props.investment.return_type.is_empty() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "return-type".to_string(),
                 "Return Type can not be blank".to_string(),
             );
@@ -297,7 +287,7 @@ impl RenewInvForm {
         }
 
         if self.props.investment.inv_amount == 0 {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "inv-amount".to_string(),
                 "Investment Amount can not be blank".to_string(),
             );
@@ -305,7 +295,7 @@ impl RenewInvForm {
         }
 
         if self.props.investment.return_amount == 0 {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "return-amount".to_string(),
                 "Return Amount can not be blank".to_string(),
             );
@@ -313,7 +303,7 @@ impl RenewInvForm {
         }
 
         if self.props.investment.return_rate == 0 {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "return-rate".to_string(),
                 "Return Rate can not be blank".to_string(),
             );
@@ -321,7 +311,7 @@ impl RenewInvForm {
         }
 
         if self.props.investment.start_date.is_none() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "start-date".to_string(),
                 "Start Date can not be blank".to_string(),
             );
@@ -329,7 +319,7 @@ impl RenewInvForm {
         }
 
         if self.props.investment.end_date.is_none() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "end-date".to_string(),
                 "End Date can not be blank".to_string(),
             );
@@ -353,17 +343,4 @@ impl RenewInvForm {
             false
         }
     }
-}
-
-fn kebab_to_title(s: &str) -> String {
-    s.split('-')
-        .map(|part| {
-            let mut c = part.chars();
-            match c.next() {
-                None => String::new(),
-                Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
-            }
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
 }

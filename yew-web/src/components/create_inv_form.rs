@@ -6,13 +6,14 @@ use web_sys::HtmlSelectElement;
 use yew::events::{Event, InputEvent};
 use yew::{html, Callback, Component, Html, Properties, SubmitEvent};
 
+use super::base_inv_form::BaseFormComponent;
 use types::Investment;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct CreateInvForm {
     state: Investment,
     props: CreateInvFormProps,
-    error_messages: HashMap<String, String>,
+    base: BaseFormComponent,
 }
 
 #[derive(Properties, PartialEq, Clone)]
@@ -50,7 +51,9 @@ impl Component for CreateInvForm {
             props: CreateInvFormProps {
                 create_investment: ctx.props().create_investment.clone(),
             },
-            error_messages: HashMap::new(),
+            base: BaseFormComponent {
+                error_messages: HashMap::new(),
+            },
         }
     }
 
@@ -59,42 +62,42 @@ impl Component for CreateInvForm {
             Msg::SaveAndValidate(field, value) => match field.as_str() {
                 "inv-name" => {
                     self.state.inv_name = value;
-                    self.error_messages.remove("inv-name");
+                    self.base.error_messages.remove("inv-name");
                 }
                 "name" => {
                     self.state.name = value;
-                    self.error_messages.remove("name");
+                    self.base.error_messages.remove("name");
                 }
                 "inv-type" => {
                     self.state.inv_type = value;
-                    self.error_messages.remove("inv-type");
+                    self.base.error_messages.remove("inv-type");
                 }
                 "return-type" => {
                     self.state.return_type = value;
-                    self.error_messages.remove("return-type");
+                    self.base.error_messages.remove("return-type");
                 }
                 "inv-amount" => {
                     self.state.inv_amount = value.parse().unwrap_or(0);
-                    self.error_messages.remove("inv-amount");
+                    self.base.error_messages.remove("inv-amount");
                 }
                 "return-amount" => {
                     self.state.return_amount = value.parse().unwrap_or(0);
-                    self.error_messages.remove("return-amount");
+                    self.base.error_messages.remove("return-amount");
                 }
                 "return-rate" => {
                     self.state.return_rate = value.parse().unwrap_or(0);
-                    self.error_messages.remove("return-rate");
+                    self.base.error_messages.remove("return-rate");
                 }
                 _ => {}
             },
             Msg::SaveAndValidateDate(field, date) => match field.as_str() {
                 "start-date" => {
                     self.state.start_date = date;
-                    self.error_messages.remove("start-date");
+                    self.base.error_messages.remove("start-date");
                 }
                 "end-date" => {
                     self.state.end_date = date;
-                    self.error_messages.remove("end-date");
+                    self.base.error_messages.remove("end-date");
                 }
                 _ => {}
             },
@@ -157,7 +160,7 @@ impl CreateInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
                 <input
                     type={field_type.to_string()}
                     value={field_value.to_string()}
@@ -168,7 +171,7 @@ impl CreateInvForm {
                     id={field_id_string.clone()}
                     class={input_style}
                 />
-                { self.error(field_id) }
+                { self.base.error(field_id) }
             </div>
         }
     }
@@ -185,7 +188,7 @@ impl CreateInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
                 <select
                     value={field_value.to_string()}
                     onchange={ctx.link().callback(move |e: Event| {
@@ -200,7 +203,7 @@ impl CreateInvForm {
                     <option selected={field_value.is_empty()} disabled=true value={""}>{""}</option>
                     { options }
                 </select>
-                { self.error(field_id) }
+                { self.base.error(field_id) }
             </div>
         }
     }
@@ -211,7 +214,7 @@ impl CreateInvForm {
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class={label_style}>{self.base.kebab_to_title(field_id)}</label>
                 <input
                     type="date"
                     value={field_value.to_string()}
@@ -226,22 +229,8 @@ impl CreateInvForm {
                     id={field_id_string.clone()}
                     class={format!("{} {}", input_style, "dark:input-dark")}
                 />
-                { self.error(field_id) }
+                { self.base.error(field_id) }
             </div>
-        }
-    }
-
-    fn error(&self, field_id: &str) -> Html {
-        html! {
-            <>
-            {
-                if let Some(error_message) = self.error_messages.get(field_id) {
-                    html! { <p class="error mt-2 text-sm text-red-600 dark:text-red-500">{error_message}</p>}
-                } else {
-                    html! {}
-                }
-            }
-            </>
         }
     }
 
@@ -249,7 +238,7 @@ impl CreateInvForm {
         let mut is_valid = true;
 
         if self.state.inv_name.is_empty() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "inv-name".to_string(),
                 "Investment Name can not be blank".to_string(),
             );
@@ -257,13 +246,14 @@ impl CreateInvForm {
         }
 
         if self.state.name.is_empty() {
-            self.error_messages
+            self.base
+                .error_messages
                 .insert("name".to_string(), "Name can not be blank".to_string());
             is_valid = false;
         }
 
         if self.state.inv_type.is_empty() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "inv-type".to_string(),
                 "Investment Type can not be blank".to_string(),
             );
@@ -271,7 +261,7 @@ impl CreateInvForm {
         }
 
         if self.state.return_type.is_empty() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "return-type".to_string(),
                 "Return Type can not be blank".to_string(),
             );
@@ -279,7 +269,7 @@ impl CreateInvForm {
         }
 
         if self.state.inv_amount == 0 {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "inv-amount".to_string(),
                 "Investment Amount can not be blank".to_string(),
             );
@@ -287,7 +277,7 @@ impl CreateInvForm {
         }
 
         if self.state.return_amount == 0 {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "return-amount".to_string(),
                 "Return Amount can not be blank".to_string(),
             );
@@ -295,7 +285,7 @@ impl CreateInvForm {
         }
 
         if self.state.return_rate == 0 {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "return-rate".to_string(),
                 "Return Rate can not be blank".to_string(),
             );
@@ -303,7 +293,7 @@ impl CreateInvForm {
         }
 
         if self.state.start_date.is_none() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "start-date".to_string(),
                 "Start Date can not be blank".to_string(),
             );
@@ -311,7 +301,7 @@ impl CreateInvForm {
         }
 
         if self.state.end_date.is_none() {
-            self.error_messages.insert(
+            self.base.error_messages.insert(
                 "end-date".to_string(),
                 "End Date can not be blank".to_string(),
             );
@@ -345,17 +335,4 @@ impl CreateInvForm {
         self.state.start_date = None;
         self.state.end_date = None;
     }
-}
-
-fn kebab_to_title(s: &str) -> String {
-    s.split('-')
-        .map(|part| {
-            let mut c = part.chars();
-            match c.next() {
-                None => String::new(),
-                Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
-            }
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
 }
