@@ -21,15 +21,15 @@ pub struct CreateInvFormProps {
     pub create_investment: Callback<Investment>,
 }
 
-pub enum Msg {
-    SaveAndValidate(String, String),
-    SaveAndValidateDate(String, Option<DateTime<Utc>>),
-    ResetForm,
-    SaveForm,
+pub enum Form {
+    Update(String, String),
+    UpdateDate(String, Option<DateTime<Utc>>),
+    Reset,
+    Save,
 }
 
 impl Component for CreateInvForm {
-    type Message = Msg;
+    type Message = Form;
     type Properties = CreateInvFormProps;
 
     fn create(ctx: &yew::Context<Self>) -> Self {
@@ -59,7 +59,7 @@ impl Component for CreateInvForm {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::SaveAndValidate(field, value) => match field.as_str() {
+            Form::Update(field, value) => match field.as_str() {
                 "inv-name" => {
                     self.state.inv_name = value;
                     self.base.error_messages.remove("inv-name");
@@ -90,7 +90,7 @@ impl Component for CreateInvForm {
                 }
                 _ => {}
             },
-            Msg::SaveAndValidateDate(field, date) => match field.as_str() {
+            Form::UpdateDate(field, date) => match field.as_str() {
                 "start-date" => {
                     self.state.start_date = date;
                     self.base.error_messages.remove("start-date");
@@ -101,10 +101,10 @@ impl Component for CreateInvForm {
                 }
                 _ => {}
             },
-            Msg::ResetForm => {
+            Form::Reset => {
                 self.reset_form();
             }
-            Msg::SaveForm => {
+            Form::Save => {
                 if self.save_form() {
                     self.reset_form();
                 }
@@ -114,7 +114,7 @@ impl Component for CreateInvForm {
     }
     fn view(&self, ctx: &yew::Context<Self>) -> Html {
         html! {
-            <form onsubmit={ctx.link().callback(|e: SubmitEvent| { e.prevent_default(); Msg::SaveForm })} class="mx-auto w-full">
+            <form onsubmit={ctx.link().callback(|e: SubmitEvent| { e.prevent_default(); Form::Save })} class="mx-auto w-full">
                 <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
                     { self.date_field(ctx, "start-date", &self.state.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
                     { self.date_field(ctx, "end-date", &self.state.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
@@ -139,7 +139,7 @@ impl Component for CreateInvForm {
                     { self.input_field(ctx, "return-amount", "number", &self.state.return_amount.to_string()) }
                     { self.input_field(ctx, "inv-amount", "number", &self.state.inv_amount.to_string()) }
                     { self.input_field(ctx, "return-rate", "number", &self.state.return_rate.to_string()) }
-                    <button type="button" onclick={ctx.link().callback(|_| Msg::ResetForm)} class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg ring-2 ring-primary-600 ring-inset focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
+                    <button type="button" onclick={ctx.link().callback(|_| Form::Reset)} class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-950 bg-background-50 hover:bg-background-100 rounded-lg ring-2 ring-primary-600 ring-inset focus:ring-4 focus:ring-primary-200">{"Reset"}</button>
                     <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-3 sm:mt-5 text-sm font-medium text-center text-text-50 bg-primary-600 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-700">{"Save"}</button>
                 </div>
             </form>
@@ -158,7 +158,7 @@ impl CreateInvForm {
         let field_id_str = field_id.to_string();
         let on_input = ctx.link().callback(move |e: InputEvent| {
             let input: web_sys::HtmlInputElement = e.target().unwrap().dyn_into().unwrap();
-            Msg::SaveAndValidate(field_id_str.clone(), input.value())
+            Form::Update(field_id_str.clone(), input.value())
         });
         self.base
             .input_field(field_id, field_type, field_value, on_input)
@@ -176,7 +176,7 @@ impl CreateInvForm {
             let target = e.target().unwrap();
             let select_element = target.dyn_into::<HtmlSelectElement>().unwrap();
             let value = select_element.value();
-            Msg::SaveAndValidate(field_id_str.clone(), value)
+            Form::Update(field_id_str.clone(), value)
         });
         self.base
             .select_field(field_id, field_value, options, on_change)
@@ -193,7 +193,7 @@ impl CreateInvForm {
                 })
                 .ok()
                 .flatten();
-            Msg::SaveAndValidateDate(field_id_str.clone(), date)
+            Form::UpdateDate(field_id_str.clone(), date)
         });
 
         self.base.date_field(field_id, field_value, on_input)
