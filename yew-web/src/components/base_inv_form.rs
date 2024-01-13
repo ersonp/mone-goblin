@@ -18,18 +18,16 @@ impl BaseFormComponent {
         field_value: &str,
         on_input: Callback<InputEvent>,
     ) -> Html {
-        let label_style = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{self.kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class="block mb-2 text-sm font-medium">{self.kebab_to_title(field_id)}</label>
                 <input
                     type={field_type.to_string()}
                     value={field_value.to_string()}
                     oninput={on_input}
                     id={field_id_string.clone()}
-                    class={input_style}
+                    class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400"
                 />
                 { self.error(field_id) }
             </div>
@@ -43,17 +41,15 @@ impl BaseFormComponent {
         options: Html,
         on_change: Callback<Event>,
     ) -> Html {
-        let label_style = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{self.kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class="block mb-2 text-sm font-medium">{self.kebab_to_title(field_id)}</label>
                 <select
                     value={field_value.to_string()}
                     onchange={on_change}
                     id={field_id_string.clone()}
-                    class={input_style}
+                    class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400"
                 >
                     <option selected={field_value.is_empty()} disabled=true value={""}>{""}</option>
                     { options }
@@ -69,18 +65,16 @@ impl BaseFormComponent {
         field_value: &str,
         on_input: Callback<InputEvent>,
     ) -> Html {
-        let label_style: &str = "block mb-2 text-sm font-medium";
-        let input_style = "border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400";
         let field_id_string = field_id.to_string();
         html! {
             <div>
-                <label for={field_id_string.clone()} class={label_style}>{self.kebab_to_title(field_id)}</label>
+                <label for={field_id_string.clone()} class="block mb-2 text-sm font-medium">{self.kebab_to_title(field_id)}</label>
                 <input
                     type="date"
                     value={field_value.to_string()}
                     oninput={on_input}
                     id={field_id_string.clone()}
-                    class={format!("{}{}", input_style, " dark:input-dark")}
+                    class="border border-background-300 text-text-950 text-sm rounded-lg block w-full p-2.5 bg-background-50 placeholder-text-400 dark:input-dark"
                 />
                 { self.error(field_id) }
             </div>
