@@ -54,44 +54,13 @@ impl Component for EditInvForm {
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Form::Update(field, value) => {
-                match field.as_str() {
-                    "inv-name" => {
-                        self.props.investment.inv_name = value;
-                    }
-                    "name" => {
-                        self.props.investment.name = value;
-                    }
-                    "inv-type" => {
-                        self.props.investment.inv_type = value;
-                    }
-                    "return-type" => {
-                        self.props.investment.return_type = value;
-                    }
-                    "inv-amount" => {
-                        self.props.investment.inv_amount = value.parse().unwrap_or(0);
-                    }
-                    "return-amount" => {
-                        self.props.investment.return_amount = value.parse().unwrap_or(0);
-                    }
-                    "return-rate" => {
-                        self.props.investment.return_rate = value.parse().unwrap_or(0);
-                    }
-                    _ => {}
-                }
-                self.base.error_messages.remove(field.as_str());
+                self.base
+                    .update_field(&mut self.props.investment, &field, value);
                 self.form_changed = true;
             }
             Form::UpdateDate(field, date) => {
-                match field.as_str() {
-                    "start-date" => {
-                        self.props.investment.start_date = date;
-                    }
-                    "end-date" => {
-                        self.props.investment.end_date = date;
-                    }
-                    _ => {}
-                }
-                self.base.error_messages.remove(field.as_str());
+                self.base
+                    .update_date_field(&mut self.props.investment, &field, date);
                 self.form_changed = true;
             }
             Form::Confirm => {
