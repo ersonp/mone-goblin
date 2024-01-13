@@ -186,86 +186,9 @@ impl EditInvForm {
         self.base.date_field(field_id, field_value, on_input)
     }
 
-    fn validate_form(&mut self) -> bool {
-        let mut is_valid = true;
-
-        if self.props.investment.inv_name.is_empty() {
-            self.base.error_messages.insert(
-                "inv-name".to_string(),
-                "Investment Name can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.name.is_empty() {
-            self.base
-                .error_messages
-                .insert("name".to_string(), "Name can not be blank".to_string());
-            is_valid = false;
-        }
-
-        if self.props.investment.inv_type.is_empty() {
-            self.base.error_messages.insert(
-                "inv-type".to_string(),
-                "Investment Type can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.return_type.is_empty() {
-            self.base.error_messages.insert(
-                "return-type".to_string(),
-                "Return Type can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.inv_amount == 0 {
-            self.base.error_messages.insert(
-                "inv-amount".to_string(),
-                "Investment Amount can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.return_amount == 0 {
-            self.base.error_messages.insert(
-                "return-amount".to_string(),
-                "Return Amount can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.return_rate == 0 {
-            self.base.error_messages.insert(
-                "return-rate".to_string(),
-                "Return Rate can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.start_date.is_none() {
-            self.base.error_messages.insert(
-                "start-date".to_string(),
-                "Start Date can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        if self.props.investment.end_date.is_none() {
-            self.base.error_messages.insert(
-                "end-date".to_string(),
-                "End Date can not be blank".to_string(),
-            );
-            is_valid = false;
-        }
-
-        is_valid
-    }
-
     fn save_form(&mut self) -> bool {
         // Validate form fields
-        let is_valid = self.validate_form();
+        let is_valid = self.base.validate_form(&mut self.props.investment);
 
         if is_valid {
             self.props
