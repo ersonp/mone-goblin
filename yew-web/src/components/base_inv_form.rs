@@ -132,6 +132,82 @@ impl BaseFormComponent {
         self.error_messages.remove(field);
     }
 
+    pub fn validate_form(&mut self, investment: &mut Investment) -> bool {
+        let mut is_valid = true;
+
+        if investment.inv_name.is_empty() {
+            self.error_messages.insert(
+                "inv-name".to_string(),
+                "Investment Name can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.name.is_empty() {
+            self.error_messages
+                .insert("name".to_string(), "Name can not be blank".to_string());
+            is_valid = false;
+        }
+
+        if investment.inv_type.is_empty() {
+            self.error_messages.insert(
+                "inv-type".to_string(),
+                "Investment Type can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.return_type.is_empty() {
+            self.error_messages.insert(
+                "return-type".to_string(),
+                "Return Type can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.inv_amount == 0 {
+            self.error_messages.insert(
+                "inv-amount".to_string(),
+                "Investment Amount can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.return_amount == 0 {
+            self.error_messages.insert(
+                "return-amount".to_string(),
+                "Return Amount can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.return_rate == 0 {
+            self.error_messages.insert(
+                "return-rate".to_string(),
+                "Return Rate can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.start_date.is_none() {
+            self.error_messages.insert(
+                "start-date".to_string(),
+                "Start Date can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.end_date.is_none() {
+            self.error_messages.insert(
+                "end-date".to_string(),
+                "End Date can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        is_valid
+    }
+
     pub fn error(&self, field_id: &str) -> Html {
         html! {
             <>
