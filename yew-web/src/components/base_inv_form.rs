@@ -121,7 +121,7 @@ impl BaseFormComponent {
         value: Option<DateTime<Utc>>,
     ) {
         match field {
-            "start_date" => {
+            "start-date" => {
                 investment.start_date = value;
             }
             "end-date" => {
