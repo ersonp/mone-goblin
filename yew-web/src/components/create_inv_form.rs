@@ -59,48 +59,12 @@ impl Component for CreateInvForm {
 
     fn update(&mut self, _ctx: &yew::Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Form::Update(field, value) => match field.as_str() {
-                "inv-name" => {
-                    self.state.inv_name = value;
-                    self.base.error_messages.remove("inv-name");
-                }
-                "name" => {
-                    self.state.name = value;
-                    self.base.error_messages.remove("name");
-                }
-                "inv-type" => {
-                    self.state.inv_type = value;
-                    self.base.error_messages.remove("inv-type");
-                }
-                "return-type" => {
-                    self.state.return_type = value;
-                    self.base.error_messages.remove("return-type");
-                }
-                "inv-amount" => {
-                    self.state.inv_amount = value.parse().unwrap_or(0);
-                    self.base.error_messages.remove("inv-amount");
-                }
-                "return-amount" => {
-                    self.state.return_amount = value.parse().unwrap_or(0);
-                    self.base.error_messages.remove("return-amount");
-                }
-                "return-rate" => {
-                    self.state.return_rate = value.parse().unwrap_or(0);
-                    self.base.error_messages.remove("return-rate");
-                }
-                _ => {}
-            },
-            Form::UpdateDate(field, date) => match field.as_str() {
-                "start-date" => {
-                    self.state.start_date = date;
-                    self.base.error_messages.remove("start-date");
-                }
-                "end-date" => {
-                    self.state.end_date = date;
-                    self.base.error_messages.remove("end-date");
-                }
-                _ => {}
-            },
+            Form::Update(field, value) => {
+                self.base.update_field(&mut self.state, &field, value);
+            }
+            Form::UpdateDate(field, date) => {
+                self.base.update_date_field(&mut self.state, &field, date);
+            }
             Form::Reset => {
                 self.reset_form();
             }
