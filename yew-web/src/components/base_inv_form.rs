@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 
+use chrono::{DateTime, Utc};
 use yew::{html, Callback, Event, Html, InputEvent, Properties};
+
+use types::Investment;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct BaseFormComponent {
@@ -83,6 +86,51 @@ impl BaseFormComponent {
             </div>
         }
     }
+    pub fn update_field(&mut self, investment: &mut Investment, field: &str, value: String) {
+        match field {
+            "inv-name" => {
+                investment.inv_name = value;
+            }
+            "name" => {
+                investment.name = value;
+            }
+            "inv-type" => {
+                investment.inv_type = value;
+            }
+            "return-type" => {
+                investment.return_type = value;
+            }
+            "return-rate" => {
+                investment.return_rate = value.parse().unwrap_or(0);
+            }
+            "inv-amount" => {
+                investment.inv_amount = value.parse().unwrap_or(0);
+            }
+            "return-amount" => {
+                investment.return_amount = value.parse().unwrap_or(0);
+            }
+            _ => {}
+        }
+        self.error_messages.remove(field);
+    }
+
+    pub fn update_date_field(
+        &mut self,
+        investment: &mut Investment,
+        field: &str,
+        value: Option<DateTime<Utc>>,
+    ) {
+        match field {
+            "start_date" => {
+                investment.start_date = value;
+            }
+            "end-date" => {
+                investment.end_date = value;
+            }
+            _ => {}
+        }
+        self.error_messages.remove(field);
+    }
 
     pub fn error(&self, field_id: &str) -> Html {
         html! {
@@ -111,3 +159,5 @@ impl BaseFormComponent {
             .join(" ")
     }
 }
+
+// In shared_form_utils.rs
