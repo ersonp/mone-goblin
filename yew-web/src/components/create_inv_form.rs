@@ -43,6 +43,7 @@ impl Component for CreateInvForm {
                 inv_amount: 0,
                 return_amount: 0,
                 return_rate: 0,
+                inv_status: None,
                 start_date: None,
                 end_date: None,
                 created_at: None,
