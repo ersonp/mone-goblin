@@ -17,6 +17,7 @@ pub struct InvestmentItem {
 #[derive(Properties, PartialEq, Clone)]
 pub struct InvestmentItemProps {
     pub investment: Investment,
+    pub create_investment: Callback<Investment>,
     pub delete_investment: Callback<Thing>,
     pub edit_investment: Callback<Investment>,
 }
@@ -42,6 +43,7 @@ impl Component for InvestmentItem {
             show_delete_confirmation: false,
             props: InvestmentItemProps {
                 investment: ctx.props().investment.clone(),
+                create_investment: ctx.props().create_investment.clone(),
                 delete_investment: ctx.props().delete_investment.clone(),
                 edit_investment: ctx.props().edit_investment.clone(),
             },
@@ -238,7 +240,7 @@ impl Component for InvestmentItem {
                                 <td colspan="100%">
                                     <p class="w-full p-4 text-text-950 text-base bg-background-50 rounded-b">
                                         <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                            <RenewInvForm edit_investment={self.props.edit_investment.clone()} investment={self.props.investment.clone()} on_renew={ctx.link().callback(|_| InvestmentItemState::ToggleExpandRenew)}/>
+                                            <RenewInvForm create_investment={self.props.create_investment.clone()} edit_investment={self.props.edit_investment.clone()} old_investment={self.props.investment.clone()} on_renew={ctx.link().callback(|_| InvestmentItemState::ToggleExpandRenew)}/>
                                         </div>
                                     </p>
                                 </td>
