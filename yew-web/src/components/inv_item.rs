@@ -114,6 +114,7 @@ impl Component for InvestmentItem {
                 <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 10.25a.75.75 0 0 0 1.5 0V6.56l1.22 1.22a.75.75 0 1 0 1.06-1.06l-2.5-2.5a.75.75 0 0 0-1.06 0l-2.5 2.5a.75.75 0 0 0 1.06 1.06l1.22-1.22v4.69Z" clip-rule="evenodd" />
             </svg>
         };
+
         // let date = investment
         //     .created_at
         //     .unwrap_or_default()
@@ -229,7 +230,7 @@ impl Component for InvestmentItem {
                             <tr class="overflow-hidden border-b dark:border-background-200 hover:bg-background-50">
                                 <td colspan="100%">
                                     <p class="p-4 text-text-950 text-base bg-background-50 rounded-b">
-                                        { "Expanded content" }
+                                        {self.props.investment.inv_status.as_ref().map_or("No status", |s| &s.status)}
                                     </p>
                                 </td>
                             </tr>

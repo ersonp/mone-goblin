@@ -7,7 +7,7 @@ use yew::events::{Event, InputEvent};
 use yew::{html, Callback, Component, Html, Properties};
 
 use super::base_inv_form::BaseFormComponent;
-use types::Investment;
+use types::{InvStatus, Investment};
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct RenewInvForm {
@@ -15,12 +15,14 @@ pub struct RenewInvForm {
     show_renew_confirmation: bool,
     props: RenewInvFormProps,
     base: BaseFormComponent,
+    renewed_investment: Investment,
 }
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct RenewInvFormProps {
     pub edit_investment: Callback<Investment>,
-    pub investment: Investment,
+    pub create_investment: Callback<Investment>,
+    pub old_investment: Investment,
     pub on_renew: Callback<()>,
 }
 
@@ -40,9 +42,25 @@ impl Component for RenewInvForm {
         Self {
             form_changed: false,
             show_renew_confirmation: false,
+            renewed_investment: Investment {
+                id: None,
+                inv_name: ctx.props().old_investment.inv_name.clone(),
+                name: ctx.props().old_investment.name.clone(),
+                inv_type: ctx.props().old_investment.inv_type.clone(),
+                return_type: ctx.props().old_investment.return_type.clone(),
+                inv_amount: ctx.props().old_investment.return_amount,
+                return_amount: 0,
+                return_rate: 0,
+                inv_status: None,
+                start_date: ctx.props().old_investment.end_date,
+                end_date: None,
+                created_at: None,
+                updated_at: None,
+            },
             props: RenewInvFormProps {
                 edit_investment: ctx.props().edit_investment.clone(),
-                investment: ctx.props().investment.clone(),
+                create_investment: ctx.props().create_investment.clone(),
+                old_investment: ctx.props().old_investment.clone(),
                 on_renew: ctx.props().on_renew.clone(),
             },
             base: BaseFormComponent {
@@ -55,12 +73,12 @@ impl Component for RenewInvForm {
         match msg {
             Form::Update(field, value) => {
                 self.base
-                    .update_field(&mut self.props.investment, &field, value);
+                    .update_field(&mut self.renewed_investment, &field, value);
                 self.form_changed = true;
             }
             Form::UpdateDate(field, date) => {
                 self.base
-                    .update_date_field(&mut self.props.investment, &field, date);
+                    .update_date_field(&mut self.renewed_investment, &field, date);
                 self.form_changed = true;
             }
             Form::Confirm => {
@@ -83,29 +101,29 @@ impl Component for RenewInvForm {
             <div class="mx-auto w-full relative">
                 <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-2 lg:grid-cols-3 text-text-950">
-                        { self.date_field(ctx, "start-date", &self.props.investment.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
-                        { self.date_field(ctx, "end-date", &self.props.investment.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
-                        { self.input_field(ctx, "inv-name", "text", &self.props.investment.inv_name) }
-                        { self.input_field(ctx, "name", "text", &self.props.investment.name) }
-                        { self.select_field(ctx, "inv-type", &self.props.investment.inv_type,
+                        { self.date_field(ctx, "start-date", &self.renewed_investment.start_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
+                        { self.date_field(ctx, "end-date", &self.renewed_investment.end_date.map(|d| d.format("%Y-%m-%d").to_string()).unwrap_or_default()) }
+                        { self.input_field(ctx, "inv-name", "text", &self.renewed_investment.inv_name) }
+                        { self.input_field(ctx, "name", "text", &self.renewed_investment.name) }
+                        { self.select_field(ctx, "inv-type", &self.renewed_investment.inv_type,
                             html! {
                                 <>
-                                    <option value="FD" selected={self.props.investment.inv_type == "FD"}>{"FD"}</option>
-                                    <option value="RD" selected={self.props.investment.inv_type == "RD"}>{"RD"}</option>
+                                    <option value="FD" selected={self.renewed_investment.inv_type == "FD"}>{"FD"}</option>
+                                    <option value="RD" selected={self.renewed_investment.inv_type == "RD"}>{"RD"}</option>
                                 </>
                             }
                         ) }
-                        { self.select_field(ctx, "return-type", &self.props.investment.return_type,
+                        { self.select_field(ctx, "return-type", &self.renewed_investment.return_type,
                             html! {
                                 <>
-                                    <option value="Ordinary" selected={self.props.investment.return_type == "Ordinary"}>{"Ordinary"}</option>
-                                    <option value="Culmulative" selected={self.props.investment.return_type == "Culmulative"}>{"Culmulative"} </option>
+                                    <option value="Ordinary" selected={self.renewed_investment.return_type == "Ordinary"}>{"Ordinary"}</option>
+                                    <option value="Culmulative" selected={self.renewed_investment.return_type == "Culmulative"}>{"Culmulative"} </option>
                                 </>
                             }
                         ) }
-                        { self.input_field(ctx, "return-amount", "number", &self.props.investment.return_amount.to_string()) }
-                        { self.input_field(ctx, "inv-amount", "number", &self.props.investment.inv_amount.to_string()) }
-                        { self.input_field(ctx, "return-rate", "number", &self.props.investment.return_rate.to_string()) }
+                        { self.input_field(ctx, "return-amount", "number", &self.renewed_investment.return_amount.to_string()) }
+                        { self.input_field(ctx, "inv-amount", "number", &self.renewed_investment.inv_amount.to_string()) }
+                        { self.input_field(ctx, "return-rate", "number", &self.renewed_investment.return_rate.to_string()) }
                         <button type="submit" disabled={!self.form_changed}
                             onclick={ctx.link().callback(|e: MouseEvent| {
                                 // prevent the webpage from moving to top when the button is clicked
@@ -189,12 +207,21 @@ impl RenewInvForm {
 
     fn save_form(&mut self) -> bool {
         // Validate form fields
-        let is_valid = self.base.validate_form(&mut self.props.investment);
+        let is_valid = self.base.validate_form(&mut self.renewed_investment);
 
         if is_valid {
+            // add inv_status to old investment with the id of the renewed investment
+            // and status as "renewed"
+            self.props.old_investment.inv_status = Some(InvStatus {
+                id: self.renewed_investment.id.clone(),
+                status: "renewed".to_string(),
+            });
             self.props
                 .edit_investment
-                .emit(self.props.investment.clone());
+                .emit(self.props.old_investment.clone());
+            self.props
+                .create_investment
+                .emit(self.renewed_investment.clone());
             true
         } else {
             // If the form is not valid, return false
