@@ -35,7 +35,7 @@ pub fn investment_list(
             None => "No Thing available".to_string(),
         };
         let key = format!("{}-{}", display_string, uuid);
-        html!(<InvestmentItem key={key} investment={investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />)
+        html!(<InvestmentItem key={key} investment={investment.clone()} create_investment={create_investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />)
     })
     .collect::<Html>();
 
