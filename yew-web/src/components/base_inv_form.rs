@@ -99,9 +99,15 @@ impl BaseFormComponent {
             }
             "inv-amount" => {
                 investment.inv_amount = value.parse().unwrap_or(0);
+                if investment.inv_amount < investment.return_amount {
+                    self.error_messages.remove("return-amount");
+                }
             }
             "return-amount" => {
                 investment.return_amount = value.parse().unwrap_or(0);
+                if investment.inv_amount < investment.return_amount {
+                    self.error_messages.remove("inv-amount");
+                }
             }
             _ => {}
         }
@@ -171,6 +177,18 @@ impl BaseFormComponent {
             self.error_messages.insert(
                 "return-amount".to_string(),
                 "Return Amount can not be blank".to_string(),
+            );
+            is_valid = false;
+        }
+
+        if investment.inv_amount > investment.return_amount {
+            self.error_messages.insert(
+                "inv-amount".to_string(),
+                "Investment Amount can not be more than Return Amount".to_string(),
+            );
+            self.error_messages.insert(
+                "return-amount".to_string(),
+                "Return Amount can not be less than Investment Amount".to_string(),
             );
             is_valid = false;
         }
