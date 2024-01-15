@@ -12,10 +12,17 @@ pub struct Investment {
     pub inv_amount: i32,
     pub return_amount: i32,
     pub name: String,
+    pub inv_status: Option<InvStatus>,
     pub start_date: Option<DateTime<Utc>>,
     pub end_date: Option<DateTime<Utc>>,
     pub created_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Clone, PartialEq, Debug, Deserialize, Serialize)]
+pub struct InvStatus {
+    pub id: Option<Thing>,
+    pub status: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
