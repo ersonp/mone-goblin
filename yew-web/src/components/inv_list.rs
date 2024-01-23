@@ -14,6 +14,7 @@ pub struct InvestmentListProps {
     pub create_investment: Callback<Investment>,
     pub delete_investment: Callback<Thing>,
     pub edit_investment: Callback<Investment>,
+    pub renew_investment: Callback<(Investment, Investment)>,
 }
 
 #[function_component(InvestmentList)]
@@ -23,6 +24,7 @@ pub fn investment_list(
         create_investment,
         delete_investment,
         edit_investment,
+        renew_investment,
     }: &InvestmentListProps,
 ) -> Html {
     let investments = investments
@@ -35,7 +37,7 @@ pub fn investment_list(
             None => "No Thing available".to_string(),
         };
         let key = format!("{}-{}", display_string, uuid);
-        html!(<InvestmentItem key={key} investment={investment.clone()} create_investment={create_investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} />)
+        html!(<InvestmentItem key={key} investment={investment.clone()} create_investment={create_investment.clone()} delete_investment={delete_investment} edit_investment={edit_investment} renew_investment={renew_investment} />)
     })
     .collect::<Html>();
 

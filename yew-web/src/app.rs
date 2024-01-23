@@ -43,6 +43,14 @@ pub fn app() -> Html {
         Callback::from(move |inv: Investment| investment_controller.edit_investment(inv))
     };
 
+    let on_renew_investment = {
+        let investment_controller = investment_controller.clone();
+
+        Callback::from(move |(old_inv, renew_inv): (Investment, Investment)| {
+            investment_controller.renew_investment(old_inv, renew_inv)
+        })
+    };
+
     html! {
         <div class="flex flex-col mt-14 mx-auto gap-6">
             <header class="flex flex-col mx-auto w-full text-text-50">
@@ -62,7 +70,7 @@ pub fn app() -> Html {
                     </div>
                     <hr class="mb-6 border-t-2" />
                     <div>
-                        <InvestmentList investments={investments.investments.clone()} create_investment={on_create_investment} delete_investment={on_delete_investment} edit_investment={on_edit_investment} />
+                        <InvestmentList investments={investments.investments.clone()} create_investment={on_create_investment} delete_investment={on_delete_investment} edit_investment={on_edit_investment} renew_investment={on_renew_investment}/>
                     </div>
                 </div>
             </main>
