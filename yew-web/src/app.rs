@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
 use surrealdb::sql::Thing;
-use yew::{function_component, html, use_effect_with_deps, use_reducer, Callback, Html};
+use yew::{function_component, html, use_effect_with, use_reducer, Callback, Html};
 
 use crate::components::{inv_list::InvestmentList, switcher::DarkModeContent};
 use crate::{controllers::*, state::InvestmentState};
@@ -16,13 +16,10 @@ pub fn app() -> Html {
     {
         let investment_controller = investment_controller.clone();
 
-        use_effect_with_deps(
-            move |_| {
-                investment_controller.init_investments();
-                || {} // return empty destructor closure (cleanup use_effect)
-            },
-            (),
-        ); // only call on first render
+        use_effect_with((), move |_| {
+            investment_controller.init_investments();
+            || {} // return empty destructor closure (cleanup use_effect)
+        }); // only call on first render
     }
 
     let on_create_investment = {

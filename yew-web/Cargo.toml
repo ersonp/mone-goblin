@@ -16,7 +16,7 @@ web-sys = { version = "0.3.66", features = [
     "DomTokenList",
     "HtmlSelectElement",
 ] }
-yew = { version = "0.20.0", features = ["csr"] }
+yew = { version = "0.21.0", features = ["csr"] }
 types = { path = "../types" }
 surrealdb = "1.0.0-beta.9"
 log = "0.4.20"
